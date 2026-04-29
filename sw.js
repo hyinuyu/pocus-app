@@ -1,27 +1,28 @@
-const CACHE = 'pocus-v999';
-const FILES = [
-  './',
-  './index.html'
-];
+const CACHE = 'pocus-dynamic-cache';
 
+// 설치 시 즉시 대기 상태 건너뛰기
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(FILES))
-  );
   self.skipWaiting();
 });
 
+// 활성화 시 기존 클라이언트 즉시 제어
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
-  );
   self.clients.claim();
 });
 
+// 핵심: Network-First (네트워크 먼저) 전략
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
+    fetch(e.request)
+      .then(res => {
+        // 인터넷 연결 정상: 최신 파일을 가져오고, 동시에 캐시도 몰래 최신화!
+        const resClone = res.clone();
+        caches.open(CACHE).then(cache => cache.put(e.request, resClone));
+        return res;
+      })
+      .catch(() => {
+        // 인터넷 끊김 (오프라인): 에러 뱉지 말고 폰에 저장해둔 예전 파일 꺼내기!
+        return caches.match(e.request);
+      })
   );
 });
