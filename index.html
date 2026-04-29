@@ -309,6 +309,49 @@
   }
   .dvt-side-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
+
+  /* ── BLUE PROTOCOL ── */
+  .blue-side-label {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    letter-spacing: 0.12em; color: var(--text2); margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .blue-side-label::after { content: ''; flex: 1; height: 1px; background: var(--border); display: inline-block; }
+
+  .blue-tag {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px; letter-spacing: 0.06em;
+  }
+  .tag-a   { background: rgba(0,212,255,.12); border: 1px solid rgba(0,212,255,.3); color: var(--accent); }
+  .tag-b   { background: rgba(255,215,64,.1); border: 1px solid rgba(255,215,64,.3); color: var(--yellow); }
+  .tag-c   { background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.3); color: var(--orange); }
+  .tag-eff { background: rgba(187,134,252,.1); border: 1px solid rgba(187,134,252,.3); color: var(--purple); }
+  .tag-ns  { background: rgba(255,61,90,.1); border: 1px solid rgba(255,61,90,.3); color: var(--red); }
+
+  .blue-grp {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .bbtn {
+    width: 100%; padding: 5px 4px;
+    border: 1px solid var(--border); border-radius: 5px;
+    background: var(--bg2); color: var(--text3);
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    cursor: pointer; transition: all 0.13s; text-align: center;
+  }
+  .bbtn:hover { border-color: var(--border2); color: var(--text2); }
+  .active-ba  { background: rgba(0,212,255,.1);   border-color: rgba(0,212,255,.35); color: var(--accent) !important; }
+  .active-bb  { background: rgba(255,215,64,.1);  border-color: rgba(255,215,64,.35); color: var(--yellow) !important; }
+  .active-bc  { background: rgba(255,107,53,.1);  border-color: rgba(255,107,53,.35); color: var(--orange) !important; }
+  .active-beff{ background: rgba(187,134,252,.1); border-color: rgba(187,134,252,.35); color: var(--purple) !important; }
+  .active-bns { background: rgba(255,61,90,.1);   border-color: rgba(255,61,90,.35); color: var(--red) !important; }
+
+  .blue-summary {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 7px; padding: 9px 11px; margin-top: 2px;
+  }
+
+  /* remove leftover guide-btn style if any */
+  
   /* ── BUTTONS ── */
   .guide-btn {
     display: inline-flex; align-items: center; gap: 3px;
@@ -451,22 +494,7 @@
 
 <div class="container">
 
-  <!-- ═══ IMPRESSION ═══ -->
-  <div class="section" style="border-color:rgba(0,212,255,0.2)">
-    <div class="section-header" onclick="toggleSection('impression')">
-      <span class="section-icon">🔍</span>
-      <span class="section-title">Impression</span>
-      <span class="section-toggle open" id="toggle-impression">▼</span>
-    </div>
-    <div class="section-body" id="body-impression">
-      <div class="impression-badges" id="impressionBadges">
-        <span class="badge badge-normal">데이터를 입력하면 자동 분석됩니다</span>
-      </div>
-      <textarea id="impressionText" placeholder="자동 추천 또는 직접 입력..." rows="3"></textarea>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;text-align:right">✏️ 직접 수정 가능</div>
-    </div>
-  </div>
-
+  
   <!-- ═══ CARDIAC ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('cardiac')">
@@ -749,104 +777,94 @@
     </div>
   </div>
 
-  <!-- ═══ LUNG ═══ -->
+  <!-- ═══ LUNG — BLUE Protocol ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
-      <span class="section-title">Lung (8-Zone)</span>
+      <span class="section-title">Lung — BLUE Protocol</span>
       <span class="section-toggle open" id="toggle-lung">▼</span>
     </div>
     <div class="section-body" id="body-lung">
-      <div class="lung-grid">
-        <div>
-          <div class="lung-side-label">▷ RIGHT</div>
-          <div class="lung-zones">
-            <div class="zone-item"><div class="zone-label">R-Ant Sup</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-r1-a" onclick="setLung('r1','A')">A</button>
-                <button class="toggle-btn" id="lung-r1-b" onclick="setLung('r1','B')">B</button>
-                <button class="toggle-btn" id="lung-r1-ns" onclick="setLung('r1','NS')">NS</button>
-              </div>
-            </div>
-            <div class="zone-item"><div class="zone-label">R-Ant Inf</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-r2-a" onclick="setLung('r2','A')">A</button>
-                <button class="toggle-btn" id="lung-r2-b" onclick="setLung('r2','B')">B</button>
-                <button class="toggle-btn" id="lung-r2-ns" onclick="setLung('r2','NS')">NS</button>
-              </div>
-            </div>
-            <div class="zone-item"><div class="zone-label">R-Lat Sup</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-r3-a" onclick="setLung('r3','A')">A</button>
-                <button class="toggle-btn" id="lung-r3-b" onclick="setLung('r3','B')">B</button>
-                <button class="toggle-btn" id="lung-r3-ns" onclick="setLung('r3','NS')">NS</button>
-              </div>
-            </div>
-            <div class="zone-item"><div class="zone-label">R-Lat Inf</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-r4-a" onclick="setLung('r4','A')">A</button>
-                <button class="toggle-btn" id="lung-r4-b" onclick="setLung('r4','B')">B</button>
-                <button class="toggle-btn" id="lung-r4-ns" onclick="setLung('r4','NS')">NS</button>
-              </div>
-            </div>
-          </div>
+      <!-- Legend + guide -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          <span class="blue-tag tag-a">A</span>
+          <span class="blue-tag tag-b">B</span>
+          <span class="blue-tag tag-c">C</span>
+          <span class="blue-tag tag-eff">Eff</span>
+          <span class="blue-tag tag-ns">NS</span>
         </div>
-        <div>
-          <div class="lung-side-label">◁ LEFT</div>
-          <div class="lung-zones">
-            <div class="zone-item"><div class="zone-label">L-Ant Sup</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-l1-a" onclick="setLung('l1','A')">A</button>
-                <button class="toggle-btn" id="lung-l1-b" onclick="setLung('l1','B')">B</button>
-                <button class="toggle-btn" id="lung-l1-ns" onclick="setLung('l1','NS')">NS</button>
-              </div>
-            </div>
-            <div class="zone-item"><div class="zone-label">L-Ant Inf</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-l2-a" onclick="setLung('l2','A')">A</button>
-                <button class="toggle-btn" id="lung-l2-b" onclick="setLung('l2','B')">B</button>
-                <button class="toggle-btn" id="lung-l2-ns" onclick="setLung('l2','NS')">NS</button>
-              </div>
-            </div>
-            <div class="zone-item"><div class="zone-label">L-Lat Sup</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-l3-a" onclick="setLung('l3','A')">A</button>
-                <button class="toggle-btn" id="lung-l3-b" onclick="setLung('l3','B')">B</button>
-                <button class="toggle-btn" id="lung-l3-ns" onclick="setLung('l3','NS')">NS</button>
-              </div>
-            </div>
-            <div class="zone-item"><div class="zone-label">L-Lat Inf</div>
-              <div class="toggle-group" style="flex-direction:column;gap:2px">
-                <button class="toggle-btn active-a" id="lung-l4-a" onclick="setLung('l4','A')">A</button>
-                <button class="toggle-btn" id="lung-l4-b" onclick="setLung('l4','B')">B</button>
-                <button class="toggle-btn" id="lung-l4-ns" onclick="setLung('l4','NS')">NS</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <button class="tip-btn" onclick="event.stopPropagation(); showTip('lung')">📐 BLUE 가이드</button>
       </div>
-      <div class="divider"></div>
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--text3);margin-bottom:6px">PLAPS</div>
-      <div class="grid-2">
-        <div class="field">
-          <div class="field-label">Right PLAPS</div>
-          <div class="toggle-group">
-            <button class="toggle-btn active-neg" id="plaps-rt-neg" onclick="setToggle('plaps-rt','neg')">NEG</button>
-            <button class="toggle-btn" id="plaps-rt-pos" onclick="setToggle('plaps-rt','pos')">POS</button>
-          </div>
-        </div>
-        <div class="field">
-          <div class="field-label">Left PLAPS</div>
-          <div class="toggle-group">
-            <button class="toggle-btn active-neg" id="plaps-lt-neg" onclick="setToggle('plaps-lt','neg')">NEG</button>
-            <button class="toggle-btn" id="plaps-lt-pos" onclick="setToggle('plaps-lt','pos')">POS</button>
-          </div>
-        </div>
+
+      <!-- RIGHT -->
+      <div class="blue-side-label">RIGHT</div>
+      <div class="grid-3" style="margin-bottom:10px">
+        <div class="field"><div class="field-label">Upper BLUE (Rt)</div>
+          <div class="blue-grp" id="bz-r-upper">
+            <button class="bbtn active-ba" onclick="setBlue('r-upper','A')">A</button>
+            <button class="bbtn" onclick="setBlue('r-upper','B')">B</button>
+            <button class="bbtn" onclick="setBlue('r-upper','C')">C</button>
+            <button class="bbtn" onclick="setBlue('r-upper','Eff')">Eff</button>
+            <button class="bbtn" onclick="setBlue('r-upper','NS')">NS</button>
+          </div></div>
+        <div class="field"><div class="field-label">Lower BLUE (Rt)</div>
+          <div class="blue-grp" id="bz-r-lower">
+            <button class="bbtn active-ba" onclick="setBlue('r-lower','A')">A</button>
+            <button class="bbtn" onclick="setBlue('r-lower','B')">B</button>
+            <button class="bbtn" onclick="setBlue('r-lower','C')">C</button>
+            <button class="bbtn" onclick="setBlue('r-lower','Eff')">Eff</button>
+            <button class="bbtn" onclick="setBlue('r-lower','NS')">NS</button>
+          </div></div>
+        <div class="field"><div class="field-label">PLAPS (Rt)</div>
+          <div class="blue-grp" id="bz-r-plaps">
+            <button class="bbtn active-ba" onclick="setBlue('r-plaps','A')">A</button>
+            <button class="bbtn" onclick="setBlue('r-plaps','B')">B</button>
+            <button class="bbtn" onclick="setBlue('r-plaps','C')">C</button>
+            <button class="bbtn" onclick="setBlue('r-plaps','Eff')">Eff</button>
+            <button class="bbtn" onclick="setBlue('r-plaps','NS')">NS</button>
+          </div></div>
       </div>
+
+      <!-- LEFT -->
+      <div class="blue-side-label">LEFT</div>
+      <div class="grid-3" style="margin-bottom:10px">
+        <div class="field"><div class="field-label">Upper BLUE (Lt)</div>
+          <div class="blue-grp" id="bz-l-upper">
+            <button class="bbtn active-ba" onclick="setBlue('l-upper','A')">A</button>
+            <button class="bbtn" onclick="setBlue('l-upper','B')">B</button>
+            <button class="bbtn" onclick="setBlue('l-upper','C')">C</button>
+            <button class="bbtn" onclick="setBlue('l-upper','Eff')">Eff</button>
+            <button class="bbtn" onclick="setBlue('l-upper','NS')">NS</button>
+          </div></div>
+        <div class="field"><div class="field-label">Lower BLUE (Lt)</div>
+          <div class="blue-grp" id="bz-l-lower">
+            <button class="bbtn active-ba" onclick="setBlue('l-lower','A')">A</button>
+            <button class="bbtn" onclick="setBlue('l-lower','B')">B</button>
+            <button class="bbtn" onclick="setBlue('l-lower','C')">C</button>
+            <button class="bbtn" onclick="setBlue('l-lower','Eff')">Eff</button>
+            <button class="bbtn" onclick="setBlue('l-lower','NS')">NS</button>
+          </div></div>
+        <div class="field"><div class="field-label">PLAPS (Lt)</div>
+          <div class="blue-grp" id="bz-l-plaps">
+            <button class="bbtn active-ba" onclick="setBlue('l-plaps','A')">A</button>
+            <button class="bbtn" onclick="setBlue('l-plaps','B')">B</button>
+            <button class="bbtn" onclick="setBlue('l-plaps','C')">C</button>
+            <button class="bbtn" onclick="setBlue('l-plaps','Eff')">Eff</button>
+            <button class="bbtn" onclick="setBlue('l-plaps','NS')">NS</button>
+          </div></div>
+      </div>
+
+      <!-- BLUE Profile auto-diagnosis -->
+      <div id="blueProfileSummary" class="blue-summary">
+        <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--accent);margin-bottom:5px">BLUE PROFILE 자동 분석</div>
+        <div id="blueProfileResult" style="font-size:12px;color:var(--text2);line-height:1.7">— 프로파일 선택 시 자동 표시</div>
+      </div>
+
     </div>
   </div>
 
-  <!-- ═══ VASCULAR / IVC ═══ -->
+<!-- ═══ VASCULAR / IVC ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
@@ -870,8 +888,8 @@
 
       <div style="margin-top:8px">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-          <span>IVC Plethora <button class="tip-btn" onclick="event.stopPropagation(); showTip('plethora')">📐 측정법</button></span>
-          <button class="guide-btn" onclick="openGuide()">📐 측정법</button>
+          <span>IVC Plethora</span>
+          <button class="tip-btn" onclick="event.stopPropagation(); showTip('plethora')">📐 측정법</button>
         </div>
         <div class="toggle-group">
           <button class="toggle-btn active-neg" id="ivcPlethora-neg" onclick="setToggle('ivcPlethora','neg')">정상 변동 (NEG)</button>
@@ -973,7 +991,24 @@
     </div>
   </div>
 
-  <!-- Action Buttons -->
+<!-- ═══ IMPRESSION ═══ -->
+  <div class="section" style="border-color:rgba(0,212,255,0.2)">
+    <div class="section-header" onclick="toggleSection('impression')">
+      <span class="section-icon">🔍</span>
+      <span class="section-title">Impression</span>
+      <span class="section-toggle open" id="toggle-impression">▼</span>
+    </div>
+    <div class="section-body" id="body-impression">
+      <div class="impression-badges" id="impressionBadges">
+        <span class="badge badge-normal">데이터를 입력하면 자동 분석됩니다</span>
+      </div>
+      <textarea id="impressionText" placeholder="자동 추천 또는 직접 입력..." rows="3"></textarea>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;text-align:right">✏️ 직접 수정 가능</div>
+    </div>
+  </div>
+
+
+    <!-- Action Buttons -->
   <div class="action-bar">
     <button class="btn btn-copy" onclick="copyReport()">📋 의무기록 복사</button>
     <button class="btn btn-reset" onclick="resetAll()">↺ 초기화</button>
@@ -985,87 +1020,7 @@
 <!-- ═══════════════════════════════════════
      IVC PLETHORA GUIDE MODAL
 ═══════════════════════════════════════ -->
-<div class="modal-overlay" id="ivcGuideModal" onclick="closeGuideOutside(event)">
-  <div class="modal" id="ivcGuideModalBox">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title">🩸 IVC Plethora 측정법</span>
-      <button class="modal-close" onclick="closeGuide()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="guide-criteria-box" style="border-color:rgba(0,212,255,0.2);margin-bottom:12px">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--accent);margin-bottom:6px">DEFINITION</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.7">
-          IVC <strong>&gt;2.1cm</strong> + 흡기 시 직경 감소 <span class="red">&lt;12%</span> (자발호흡) 또는 &lt;50% (일반 기준)<br>
-          → 우심방압 상승 반영. Cardiac Tamponade 민감도 <span class="green">92%</span>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">1</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">프로브 & 자세</div>
-          <div class="guide-step-desc">프로브: <strong>Phased array / Curvilinear</strong><br>환자: <span class="green">앙와위(Supine)</span>, 자발 호흡 중<br>기계환기 환자: Collapsibility &lt;12% 기준 적용</div>
-          <div class="guide-probe-diagram">Subxiphoid — 마커 Head 방향(12시)<br>간(Liver)을 acoustic window로 활용<br><span style="color:var(--text3);font-size:9px">약간 우측으로 tilt</span></div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">2</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">측정 위치</div>
-          <div class="guide-step-desc">RA-IVC junction 확인 후,<br><strong>간정맥(hepatic vein) 합류부 1~2cm 원위부</strong>에 M-mode 커서 위치</div>
-          <div class="guide-probe-diagram" style="font-size:10px;line-height:2">
-            <span style="color:var(--text3)">RA ←</span><span style="color:var(--accent)"> ══[HV합류]══ ● ─── </span><span style="color:var(--text3)">→ dist</span><br>
-            <span style="color:var(--text3);font-size:9px">● = 측정점 (hepatic vein 원위 1-2cm)</span>
-          </div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">3</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">M-mode 측정 & 공식</div>
-          <div class="guide-step-desc"><strong>IVC<sub>max</sub></strong>: <span class="green">호기</span> 최대 직경<br><strong>IVC<sub>min</sub></strong>: <span class="cyan">흡기</span> 최소 직경</div>
-          <div class="guide-criteria-box">
-            <div style="font-family:var(--mono);font-size:13px;text-align:center;color:var(--accent);padding:6px 0">(IVC<sub>max</sub> − IVC<sub>min</sub>) ÷ IVC<sub>max</sub> × 100</div>
-          </div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">4</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">판독 기준 (이 앱 자동판정)</div>
-          <div class="guide-criteria-box">
-            <div class="criteria-row"><span class="criteria-key">IVC 직경</span><span class="criteria-val" style="color:var(--red)">&gt; 2.1 cm</span></div>
-            <div class="criteria-row"><span class="criteria-key">Collapsibility</span><span class="criteria-val" style="color:var(--red)">&lt; 12 %</span></div>
-            <div class="criteria-row"><span class="criteria-key">→ Plethora 자동 POS</span><span class="criteria-val" style="color:var(--orange)">✓ 자동 표시</span></div>
-          </div>
-          <div class="guide-criteria-box" style="margin-top:6px">
-            <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.12em;margin-bottom:6px">CVP 추정</div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">&lt;2.1cm + ≥50%</span><span class="criteria-val" style="color:var(--green);font-size:10px">~3 mmHg</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">&lt;2.1cm + &lt;50%</span><span class="criteria-val" style="color:var(--yellow);font-size:10px">~8 mmHg</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">&gt;2.1cm + &lt;50%</span><span class="criteria-val" style="color:var(--red);font-size:10px">~15 mmHg ⚠</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">5</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">Tamponade 병합 소견</div>
-          <div class="guide-criteria-box">
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">Pericardial Effusion</span><span class="criteria-val" style="color:var(--yellow);font-size:10px">필수</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">RA systolic collapse</span><span class="criteria-val" style="color:var(--orange);font-size:10px">Apical 4-Ch</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">RV diastolic collapse</span><span class="criteria-val" style="color:var(--orange);font-size:10px">PLAX M-mode</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">Swinging heart</span><span class="criteria-val" style="color:var(--text3);font-size:10px">대량 effusion</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="guide-warning">저혈량증 동반 시 IVC가 작아 Plethora 없을 수 있음 (Low-pressure tamponade). 부재가 배제를 의미하지 않음.</div>
-    </div>
-  </div>
-</div>
 
-<!-- ═══════════════════════════════════════
-     TOOLTIP MODAL (generic)
-═══════════════════════════════════════ -->
 <div class="modal-overlay tip-modal" id="tipModal" onclick="closeTipOutside(event)">
   <div class="modal" style="max-height:88vh">
     <div class="modal-handle"></div>
@@ -1432,7 +1387,7 @@ function resetAll() {
     document.getElementById(id).classList.remove('abnormal');
   });
   Object.keys(state.toggles).forEach(k=>setToggle(k,'neg'));
-  ['r1','r2','r3','r4','l1','l2','l3','l4'].forEach(z=>setLung(z,'A'));
+  Object.keys(blueState).forEach(z=>setBlue(z,'A'));
   Object.keys(state.rwma).forEach(seg => { state.rwma[seg] = 'norm'; });
   renderAllSegs();
   updateSummaryTable();
@@ -1443,11 +1398,105 @@ function resetAll() {
 }
 
 // ── IVC GUIDE MODAL ────────────────────────────────────────
-function openGuide() { document.getElementById('ivcGuideModal').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeGuide(){ document.getElementById('ivcGuideModal').classList.remove('open'); document.body.style.overflow=''; }
-function closeGuideOutside(e){ if(e.target===document.getElementById('ivcGuideModal')) closeGuide(); }
 
 // ── TOOLTIP DATA ───────────────────────────────────────────
+
+// ── BLUE PROTOCOL ──────────────────────────────────────────
+const blueState = {
+  'r-upper': 'A', 'r-lower': 'A', 'r-plaps': 'A',
+  'l-upper': 'A', 'l-lower': 'A', 'l-plaps': 'A'
+};
+
+const BLUE_CLASS = { A:'active-ba', B:'active-bb', C:'active-bc', Eff:'active-beff', NS:'active-bns' };
+
+function setBlue(zone, val) {
+  blueState[zone] = val;
+  const grp = document.getElementById('bz-' + zone);
+  if (!grp) return;
+  grp.querySelectorAll('.bbtn').forEach((btn, i) => {
+    const v = ['A','B','C','Eff','NS'][i];
+    btn.className = 'bbtn' + (v === val ? ' ' + BLUE_CLASS[val] : '');
+  });
+  analyzeBlue();
+  update();
+}
+
+function analyzeBlue() {
+  const z = blueState;
+  const allA   = v => v === 'A';
+  const hasB   = v => v === 'B';
+  const hasC   = v => v === 'C';
+  const hasEff = v => v === 'Eff';
+  const hasNS  = v => v === 'NS';
+
+  const zones = Object.values(z);
+  const anterior = [z['r-upper'], z['r-lower'], z['l-upper'], z['l-lower']];
+  const plaps    = [z['r-plaps'], z['l-plaps']];
+
+  let profiles = [];
+
+  // A-profile: 전방 A-line + Sliding present (NS 없음)
+  const antAllA   = anterior.every(allA);
+  const antHasNS  = anterior.some(hasNS);
+  const antHasB   = anterior.some(hasB);
+  const antHasC   = anterior.some(hasC);
+  const plapsHasEff = plaps.some(hasEff);
+  const plapsHasC   = plaps.some(hasC);
+  const plapsAllA   = plaps.every(allA);
+
+  // PTX: anterior NS + A-line
+  if (antHasNS && anterior.filter(allA).length + anterior.filter(hasNS).length === 4) {
+    profiles.push({ label: '💨 Pneumothorax 의심', color: 'var(--red)',
+      basis: 'Ant NS + A-line (Lung point 확인 권고)' });
+  }
+
+  // A-profile: 전방 A + PLAPS A → 정상 또는 PE 의심
+  if (antAllA && plapsAllA) {
+    profiles.push({ label: '🔵 A-Profile', color: 'var(--accent)',
+      basis: '전방 A-line + PLAPS A → 정상폐 or PE/폐색전 의심 (DVT scan 권고)' });
+  }
+
+  // B-profile: 전방 B-line (양측)
+  if (anterior.filter(hasB).length >= 2) {
+    profiles.push({ label: '🟡 B-Profile', color: 'var(--yellow)',
+      basis: '전방 B-line ≥2구역 → 폐부종(심인성) 의심' });
+  }
+
+  // B'-profile: B-line + No Sliding
+  if (antHasB && antHasNS) {
+    profiles.push({ label: '🟡 B'-Profile', color: 'var(--yellow)',
+      basis: 'B-line + Lung Sliding 소실 → Pneumonia 의심' });
+  }
+
+  // A-profile + PLAPS C or Eff → A/B profile
+  if (antAllA && (plapsHasC || plapsHasEff)) {
+    profiles.push({ label: '🟠 A/B-Profile', color: 'var(--orange)',
+      basis: '전방 A-line + PLAPS consolidation/effusion → Pneumonia 의심' });
+  }
+
+  // C-profile (consolidation 전방)
+  if (antHasC) {
+    profiles.push({ label: '🟠 C-Profile', color: 'var(--orange)',
+      basis: '전방 Consolidation → Pneumonia 가능성 높음' });
+  }
+
+  // Effusion 전방/PLAPS
+  if (plapsHasEff) {
+    profiles.push({ label: '🟣 Pleural Effusion', color: 'var(--purple)',
+      basis: 'PLAPS Effusion → 흉수 확인' });
+  }
+
+  const el = document.getElementById('blueProfileResult');
+  if (profiles.length === 0) {
+    el.innerHTML = '<span style="color:var(--text3)">— 프로파일 선택 시 자동 표시</span>';
+  } else {
+    el.innerHTML = profiles.map(p =>
+      `<div style="margin-bottom:4px"><span style="color:${p.color};font-family:var(--mono);font-weight:700">${p.label}</span><br>
+       <span style="font-size:10px;color:var(--text3)">${p.basis}</span></div>`
+    ).join('');
+  }
+}
+
 const TIPS = {
   ef: { title: '❤️  EF — 좌심실 박출률', html: `
 <div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">Ejection Fraction</div><div class="gd">좌심실 수축 기능의 핵심 지표. POCUS에서는 <strong>시각 추정(Eyeballing)</strong>이 가장 빠르며, 여러 view를 종합 판단.</div></div></div>
@@ -1578,6 +1627,33 @@ const TIPS = {
 <div class="gcr"><span class="gck">완전 허탈</span><span class="gcv" style="color:var(--green)">DVT NEG</span></div>
 <div class="gcr"><span class="gck">불완전 압박 / 에코 혈전</span><span class="gcv" style="color:var(--red)">DVT POS</span></div></div>
 <div class="gwarn">Wells score 높은 경우 음성이어도 48시간 내 재검. D-dimer 병행.</div>` },
+
+  lung: { title: '🫁  BLUE Protocol 가이드', html: `
+<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">BLUE Protocol (Bedside Lung Ultrasound in Emergency)</div><div class="gd">Lichtenstein DA (2008) 제안. 6개 zone × 5가지 profile로 급성 호흡부전 원인을 85% 이상 정확도로 감별.</div></div></div>
+<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">6구역 위치</div><div class="gd">
+<span class="c">Upper BLUE point</span>: 손을 쇄골 아래 전흉부에 올렸을 때 세 번째 손가락 끝 위치 (전방 상부)<br>
+<span class="c">Lower BLUE point</span>: 같은 손 손바닥 하단 위치 (전방 하부)<br>
+<span class="c">PLAPS point</span>: 후외측, Posterolateral Alveolar and/or Pleural Syndrome — 액와후선 · 횡격막 위
+</div></div></div>
+<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">5가지 Profile 정의</div>
+<div class="gbox">
+<div class="gcr"><span class="gck" style="color:var(--accent)">A-Profile</span><span class="gcv" style="font-size:9px">전방 A-line + Sliding 정상 → 정상폐 or PE</span></div>
+<div class="gcr"><span class="gck" style="color:var(--yellow)">B-Profile</span><span class="gcv" style="font-size:9px">전방 B-line(3개/구역) + Sliding → 심인성 폐부종</span></div>
+<div class="gcr"><span class="gck" style="color:var(--yellow)">B'-Profile</span><span class="gcv" style="font-size:9px">B-line + Sliding 소실 → 폐렴</span></div>
+<div class="gcr"><span class="gck" style="color:var(--orange)">A/B-Profile</span><span class="gcv" style="font-size:9px">한쪽 A + 반대쪽 B → 폐렴</span></div>
+<div class="gcr"><span class="gck" style="color:var(--orange)">C-Profile</span><span class="gcv" style="font-size:9px">전방 Consolidation (tissue-like sign) → 폐렴</span></div>
+<div class="gcr"><span class="gck" style="color:var(--purple)">Eff (Effusion)</span><span class="gcv" style="font-size:9px">PLAPS 무에코 공간 → 흉수</span></div>
+<div class="gcr"><span class="gck" style="color:var(--red)">NS (No Sliding)</span><span class="gcv" style="font-size:9px">Lung Sliding 소실 → PTX 의심 (M-mode Barcode sign)</span></div>
+</div></div></div>
+<div class="gs"><div class="gn">3</div><div class="gc"><div class="gtt">BLUE 감별 진단 알고리즘</div>
+<div class="gbox">
+<div class="gcr"><span class="gck">A-Profile</span><span class="gcv" style="color:var(--accent);font-size:9px">+ DVT POS → PE. + DVT NEG → 폐렴/COPD 고려</span></div>
+<div class="gcr"><span class="gck">B-Profile</span><span class="gcv" style="color:var(--yellow);font-size:9px">심인성 폐부종 (민감도 97%)</span></div>
+<div class="gcr"><span class="gck">A/B or B' or C</span><span class="gcv" style="color:var(--orange);font-size:9px">폐렴 (PLAPS consolidation 확인)</span></div>
+<div class="gcr"><span class="gck">NS + A-line</span><span class="gcv" style="color:var(--red);font-size:9px">PTX → Lung point 위치로 범위 추정</span></div>
+</div></div></div>
+<div class="gtip">BLUE Protocol 전체 민감도: 폐부종 97%, PE 81%, PTX 88%, 폐렴 89% (Lichtenstein 2008, Chest).</div>
+<div class="gwarn">BLUE는 전방 구역 중심. PLAPS는 후외측 — 흉수·폐렴 검출에 필수. 반드시 양측 비교.</div>` },
 
   fast: { title: '🔬  FAST — 외상 집중 초음파', html: `
 <div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">복강 내 유리액(혈복증) 탐색. 중력에 먼저 모이는 3개 구역을 순서대로 평가.</div></div></div>
