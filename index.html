@@ -768,7 +768,6 @@
         <div class="rwma-sum-row" id="sum-rca-inf">  <span class="rwma-sum-seg">Inf</span>      <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-inf">Normal</span></div>
         <div class="rwma-sum-row" id="sum-rca-isep"> <span class="rwma-sum-seg">InfSep</span>   <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-isep">Normal</span></div>
         <div class="rwma-sum-row" id="sum-rca-ilat"> <span class="rwma-sum-seg">InfLat</span>   <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-ilat">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-rca-rv">   <span class="rwma-sum-seg">RV</span>       <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-rv">Normal</span></div>
         <div class="rwma-sum-row" id="sum-lcx-lat">  <span class="rwma-sum-seg">Lat</span>      <span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-lcx-lat">Normal</span></div>
         <div class="rwma-sum-row" id="sum-lcx-plat"> <span class="rwma-sum-seg">PostLat</span>  <span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-lcx-plat">Normal</span></div>
         <div class="rwma-sum-row" id="sum-lcx-post"> <span class="rwma-sum-seg">Post</span>     <span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-lcx-post">Normal</span></div>
@@ -1043,10 +1042,9 @@ const state = {
     'dvt-rf':'neg','dvt-rp':'neg','dvt-lf':'neg','dvt-lp':'neg',
     'fast-ruq':'neg','fast-luq':'neg','fast-pelvis':'neg'
   },
-  lungs: { r1:'A',r2:'A',r3:'A',r4:'A', l1:'A',l2:'A',l3:'A',l4:'A' },
   rwma: {
     'lad-ant':'norm','lad-asep':'norm','lad-alat':'norm','lad-apex':'norm',
-    'rca-inf':'norm','rca-isep':'norm','rca-ilat':'norm','rca-rv':'norm',
+    'rca-inf':'norm','rca-isep':'norm','rca-ilat':'norm',
     'lcx-lat':'norm','lcx-plat':'norm','lcx-post':'norm'
   },
   ivcPlethoraAuto: false,
@@ -1056,7 +1054,7 @@ const state = {
 // RWMA vessel map
 const RWMA_VESSELS = {
   lad: ['lad-ant','lad-asep','lad-alat','lad-apex'],
-  rca: ['rca-inf','rca-isep','rca-ilat','rca-rv'],
+  rca: ['rca-inf','rca-isep','rca-ilat'],
   lcx: ['lcx-lat','lcx-plat','lcx-post']
 };
 
@@ -1086,21 +1084,13 @@ function setToggle(name, val) {
 }
 
 // ── LUNG ───────────────────────────────────────────────────
-function setLung(zone, val) {
-  state.lungs[zone] = val;
-  ['A','B','NS'].forEach(v => {
-    document.getElementById('lung-'+zone+'-'+v.toLowerCase()).className =
-      'toggle-btn' + (v===val ? (v==='A'?' active-a':v==='B'?' active-b':' active-ns') : '');
-  });
-  update();
-}
 
 // ── RWMA ───────────────────────────────────────────────────
 // seg → which segments map to which canonical key
 // Multiple SVG paths may share the same state key (multi-view)
 const SEG_VESSEL = {
   'lad-ant':'lad','lad-asep':'lad','lad-alat':'lad','lad-apex':'lad',
-  'rca-inf':'rca','rca-isep':'rca','rca-ilat':'rca','rca-rv':'rca',
+  'rca-inf':'rca','rca-isep':'rca','rca-ilat':'rca',
   'lcx-lat':'lcx','lcx-plat':'lcx','lcx-post':'lcx'
 };
 
@@ -1217,10 +1207,10 @@ function markAbnormal(id, flag) {
   if (el) { el.classList.toggle('abnormal', flag); }
 }
 
-function hasBLines() { return Object.values(state.lungs).filter(v=>v==='B').length >= 2; }
-function allALines()  { return Object.values(state.lungs).every(v=>v==='A'); }
-function hasALines()  { return Object.values(state.lungs).some(v=>v==='A'); }
-function hasNSliding(){ return Object.values(state.lungs).some(v=>v==='NS'); }
+function hasBLines() { return Object.values(blueState).filter(v=>v==='B').length >= 2; }
+function allALines()  { return Object.values(blueState).every(v=>v==='A'); }
+function hasALines()  { return Object.values(blueState).some(v=>v==='A'); }
+function hasNSliding(){ return Object.values(blueState).some(v=>v==='NS'); }
 function dvtPos()     { return ['dvt-rf','dvt-rp','dvt-lf','dvt-lp'].some(k=>state.toggles[k]==='pos'); }
 
 // ── MAIN UPDATE ────────────────────────────────────────────
@@ -1334,16 +1324,18 @@ document.getElementById('impressionText').addEventListener('input', () => {
 
 // ── COPY REPORT ────────────────────────────────────────────
 function getLungSummary() {
-  const rt = ['r1','r2','r3','r4'].map(z=>state.lungs[z]).join('/');
-  const lt = ['l1','l2','l3','l4'].map(z=>state.lungs[z]).join('/');
-  return { rt, lt };
+  const z = blueState;
+  return {
+    rt: `Upper:${z['r-upper']} Lower:${z['r-lower']} PLAPS:${z['r-plaps']}`,
+    lt: `Upper:${z['l-upper']} Lower:${z['l-lower']} PLAPS:${z['l-plaps']}`
+  };
 }
 
 function getRwmaText() {
   const lines = [];
   const labels = {
     'lad-ant':'Ant','lad-asep':'AntSep','lad-alat':'AntLat','lad-apex':'Apex',
-    'rca-inf':'Inf','rca-isep':'InfSep','rca-ilat':'InfLat','rca-rv':'RV',
+    'rca-inf':'Inf','rca-isep':'InfSep','rca-ilat':'InfLat',
     'lcx-lat':'Lat','lcx-plat':'PostLat','lcx-post':'Post'
   };
   for (const [vessel, segs] of Object.entries(RWMA_VESSELS)) {
@@ -1464,8 +1456,8 @@ function analyzeBlue() {
 
   // B'-profile: B-line + No Sliding
   if (antHasB && antHasNS) {
-    profiles.push({ label: '🟡 B'-Profile', color: 'var(--yellow)',
-      basis: 'B-line + Lung Sliding 소실 → Pneumonia 의심' });
+    profiles.push({ label: "🟡 B'-Profile", color: "var(--yellow)",
+      basis: "B-line + Lung Sliding 소실 → Pneumonia 의심" });
   }
 
   // A-profile + PLAPS C or Eff → A/B profile
@@ -1487,6 +1479,7 @@ function analyzeBlue() {
   }
 
   const el = document.getElementById('blueProfileResult');
+  if (!el) return;
   if (profiles.length === 0) {
     el.innerHTML = '<span style="color:var(--text3)">— 프로파일 선택 시 자동 표시</span>';
   } else {
@@ -1639,7 +1632,7 @@ const TIPS = {
 <div class="gbox">
 <div class="gcr"><span class="gck" style="color:var(--accent)">A-Profile</span><span class="gcv" style="font-size:9px">전방 A-line + Sliding 정상 → 정상폐 or PE</span></div>
 <div class="gcr"><span class="gck" style="color:var(--yellow)">B-Profile</span><span class="gcv" style="font-size:9px">전방 B-line(3개/구역) + Sliding → 심인성 폐부종</span></div>
-<div class="gcr"><span class="gck" style="color:var(--yellow)">B'-Profile</span><span class="gcv" style="font-size:9px">B-line + Sliding 소실 → 폐렴</span></div>
+<div class="gcr"><span class="gck" style="color:var(--yellow)">B&#39;-Profile</span><span class="gcv" style="font-size:9px">B-line + Sliding 소실 → 폐렴</span></div>
 <div class="gcr"><span class="gck" style="color:var(--orange)">A/B-Profile</span><span class="gcv" style="font-size:9px">한쪽 A + 반대쪽 B → 폐렴</span></div>
 <div class="gcr"><span class="gck" style="color:var(--orange)">C-Profile</span><span class="gcv" style="font-size:9px">전방 Consolidation (tissue-like sign) → 폐렴</span></div>
 <div class="gcr"><span class="gck" style="color:var(--purple)">Eff (Effusion)</span><span class="gcv" style="font-size:9px">PLAPS 무에코 공간 → 흉수</span></div>
@@ -1701,9 +1694,13 @@ function closeTip(){ document.getElementById('tipModal').classList.remove('open'
 function closeTipOutside(e){ if(e.target===document.getElementById('tipModal')) closeTip(); }
 
 // ── INIT ───────────────────────────────────────────────────
-renderAllSegs();
-updateSummaryTable();
-update();
+document.addEventListener('DOMContentLoaded', function() {
+  updateTime();
+  renderAllSegs();
+  updateSummaryTable();
+  analyzeBlue();
+  update();
+});
 </script>
 
 <script>
