@@ -477,6 +477,53 @@
     .rwma-btn { font-size: 8px; padding: 3px 1px; }
     .toggle-btn { font-size: 10px; padding: 7px 2px; }
   }
+
+  /* ── SKIP TOGGLE ── */
+  .skip-toggle {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 12px;
+    border: 1px solid var(--border2); background: transparent;
+    color: var(--text3); font-family: var(--mono);
+    font-size: 9px; font-weight: 600; letter-spacing: 0.05em;
+    cursor: pointer; transition: all 0.15s; margin-right: 8px;
+  }
+  .skip-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .skip-toggle.skipped {
+    background: rgba(120,120,140,.15);
+    border-color: rgba(120,120,140,.4);
+    color: var(--text2);
+  }
+  .skip-toggle.skipped::before { content: '✓ '; }
+  .section.skipped { opacity: 0.45; background: rgba(0,0,0,0.2); }
+  .section.skipped .section-body { pointer-events: none; filter: grayscale(0.7); }
+  .section.skipped .section-header { background: rgba(120,120,140,.05); }
+  .conclusion-box {
+    background: linear-gradient(135deg, rgba(0,212,255,.05), rgba(0,212,255,.02));
+    border: 1px solid rgba(0,212,255,.3);
+    border-radius: 8px; padding: 14px 16px; margin-top: 10px; margin-bottom: 12px;
+  }
+  .conclusion-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+    color: var(--accent); margin-bottom: 8px; font-weight: 700;
+  }
+  .conclusion-text { font-size: 13px; color: var(--text); line-height: 1.7; font-family: var(--sans); }
+  .conclusion-text .key { color: var(--accent); font-weight: 600; }
+  .conclusion-text .abn { color: var(--yellow); font-weight: 600; }
+  .conclusion-text .crit { color: var(--red); font-weight: 700; }
+  .conclusion-text .skip { color: var(--text3); font-style: italic; }
+
+
+  .badge-distributive { background: rgba(255,140,80,.12); border: 1px solid rgba(255,140,80,.4); color: #ff8c50; }
+  .badge-edema     { background: rgba(255,215,64,.1); border: 1px solid rgba(255,215,64,.3); color: var(--yellow); }
+  .badge-pna       { background: rgba(255,107,53,.12); border: 1px solid rgba(255,107,53,.4); color: var(--orange); }
+  .badge-effusion  { background: rgba(187,134,252,.1); border: 1px solid rgba(187,134,252,.3); color: var(--purple); }
+  .badge-aaa       { background: rgba(255,61,90,.13); border: 1px solid rgba(255,61,90,.4); color: var(--red); }
+  .badge-fast      { background: rgba(255,61,90,.1); border: 1px solid rgba(255,61,90,.35); color: var(--red); }
+  .badge-diastolic { background: rgba(192,132,252,.1); border: 1px solid rgba(192,132,252,.3); color: #c084fc; }
+  .badge-lvdysfx   { background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.3); color: var(--orange); }
+  .badge-overload  { background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.3); color: var(--accent); }
+  .badge-dvt       { background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.3); color: var(--orange); }
+
 </style>
 </head>
 <body>
@@ -500,7 +547,7 @@
     <div class="section-header" onclick="toggleSection('cardiac')">
       <span class="section-icon">❤️</span>
       <span class="section-title">Cardiac</span>
-      <span class="section-toggle open" id="toggle-cardiac">▼</span>
+      <button class="skip-toggle" id="skip-cardiac" onclick="event.stopPropagation(); toggleSkip('cardiac')">안봤음</button><span class="section-toggle open" id="toggle-cardiac">▼</span>
     </div>
     <div class="section-body" id="body-cardiac">
       <div class="grid-2" style="margin-bottom:8px">
@@ -549,7 +596,7 @@
     <div class="section-header" onclick="toggleSection('rwma')">
       <span class="section-icon">🫀</span>
       <span class="section-title">RWMA</span>
-      <span class="section-toggle open" id="toggle-rwma">▼</span>
+      <button class="skip-toggle" id="skip-rwma" onclick="event.stopPropagation(); toggleSkip('rwma')">안봤음</button><span class="section-toggle open" id="toggle-rwma">▼</span>
     </div>
     <div class="section-body" id="body-rwma">
 
@@ -781,7 +828,7 @@
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
       <span class="section-title">Lung — BLUE Protocol</span>
-      <span class="section-toggle open" id="toggle-lung">▼</span>
+      <button class="skip-toggle" id="skip-lung" onclick="event.stopPropagation(); toggleSkip('lung')">안봤음</button><span class="section-toggle open" id="toggle-lung">▼</span>
     </div>
     <div class="section-body" id="body-lung">
       <!-- Legend + guide -->
@@ -868,7 +915,7 @@
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
       <span class="section-title">Vascular / IVC</span>
-      <span class="section-toggle open" id="toggle-vascular">▼</span>
+      <button class="skip-toggle" id="skip-vascular" onclick="event.stopPropagation(); toggleSkip('vascular')">안봤음</button><span class="section-toggle open" id="toggle-vascular">▼</span>
     </div>
     <div class="section-body" id="body-vascular">
       <div class="grid-2" style="margin-bottom:8px">
@@ -912,7 +959,7 @@
     <div class="section-header" onclick="toggleSection('dvt')">
       <span class="section-icon">🦵</span>
       <span class="section-title">DVT Scan</span>
-      <span class="section-toggle open" id="toggle-dvt">▼</span>
+      <button class="skip-toggle" id="skip-dvt" onclick="event.stopPropagation(); toggleSkip('dvt')">안봤음</button><span class="section-toggle open" id="toggle-dvt">▼</span>
     </div>
     <div class="section-body" id="body-dvt">
       <div style="margin-bottom:10px">
@@ -961,7 +1008,7 @@
     <div class="section-header" onclick="toggleSection('fast')">
       <span class="section-icon">🔬</span>
       <span class="section-title">FAST</span>
-      <span class="section-toggle open" id="toggle-fast">▼</span>
+      <button class="skip-toggle" id="skip-fast" onclick="event.stopPropagation(); toggleSkip('fast')">안봤음</button><span class="section-toggle open" id="toggle-fast">▼</span>
     </div>
     <div class="section-body" id="body-fast">
       <div class="grid-3">
@@ -998,6 +1045,10 @@
       <span class="section-toggle open" id="toggle-impression">▼</span>
     </div>
     <div class="section-body" id="body-impression">
+      <div class="conclusion-box">
+        <div class="conclusion-label">📋 CONCLUSION</div>
+        <div class="conclusion-text" id="conclusionText">데이터를 입력하면 종합 결론이 표시됩니다.</div>
+      </div>
       <div class="impression-badges" id="impressionBadges">
         <span class="badge badge-normal">데이터를 입력하면 자동 분석됩니다</span>
       </div>
@@ -1037,6 +1088,7 @@
 <script>
 // ── STATE ──────────────────────────────────────────────────
 const state = {
+  skipped: { cardiac:false, rwma:false, lung:false, vascular:false, dvt:false, fast:false },
   toggles: {
     'peri':'neg','ivcPlethora':'neg',
     'dvt-rf':'neg','dvt-rp':'neg','dvt-lf':'neg','dvt-lp':'neg',
@@ -1272,36 +1324,137 @@ function update() {
     tag.textContent = '― IVC 수치 미입력 (수동 선택 가능)';
   }
 
-  // ── AUTO IMPRESSION LOGIC ────────────────────────────────
+  // ── AUTO IMPRESSION LOGIC (skip-aware, multi-protocol) ──
   const imps = [];
+  const sk = state.skipped;
 
-  // 1. Cardiogenic Shock
-  if (ef!==null && ef<30 && ee!==null && ee>14 && hasBLines())
+  // ── SHOCK CATEGORIES (RUSH protocol) ──
+  // 1. Cardiogenic Shock — EF↓ + B-lines + E/e'↑
+  if (!sk.cardiac && !sk.lung && ef!==null && ef<30 && hasBLines() &&
+      (ee===null || ee>14)) {
     imps.push({ label:'🚨 Cardiogenic Shock', cls:'badge-cardiogenic' });
+  }
 
-  // 2. Hypovolemic Shock
-  if (ivc!==null && ivc<1.5 && allALines() && ef!==null && ef>=50)
+  // 2. Hypovolemic Shock — IVC↓ + 정상 EF + A-line
+  if (!sk.cardiac && !sk.lung && !sk.vascular &&
+      ivc!==null && ivc<1.5 && allALines() && ef!==null && ef>=50) {
     imps.push({ label:'💧 Hypovolemic Shock', cls:'badge-hypovolemic' });
+  }
 
-  // 3. Pulmonary Embolism
-  if (rvlv!==null && rvlv>1.0 && dvtPos() && allALines())
-    imps.push({ label:'⚠️ Pulmonary Embolism', cls:'badge-pe' });
+  // 3. Distributive Shock (Sepsis) — IVC↓ + 정상~hyperdynamic EF + A-line + FAST(-)
+  if (!sk.cardiac && !sk.vascular && !sk.lung &&
+      ivc!==null && ivc<1.5 && ef!==null && ef>=60 && allALines() &&
+      (sk.fast || (state.toggles['fast-ruq']==='neg' && state.toggles['fast-luq']==='neg' && state.toggles['fast-pelvis']==='neg'))) {
+    imps.push({ label:'🌡️ Distributive Shock 의심 (Sepsis 등)', cls:'badge-distributive' });
+  }
 
-  // 4. Pneumothorax
-  if (hasNSliding() && hasALines())
-    imps.push({ label:'💨 Pneumothorax', cls:'badge-ptx' });
+  // 4. Obstructive Shock — Pulmonary Embolism
+  if (!sk.cardiac && rvlv!==null && rvlv>1.0 &&
+      (sk.dvt ? true : dvtPos()) &&
+      (sk.lung || allALines())) {
+    imps.push({ label:'⚠️ Pulmonary Embolism (Massive PE 의심)', cls:'badge-pe' });
+  }
 
-  // 5. Rule out Cardiac Tamponade (IVC Plethora + Pericardial Effusion)
-  if (state.toggles['ivcPlethora']==='pos' && state.toggles['peri']==='pos')
+  // 5. Obstructive Shock — Cardiac Tamponade
+  if (!sk.cardiac && !sk.vascular &&
+      state.toggles['ivcPlethora']==='pos' && state.toggles['peri']==='pos') {
     imps.push({ label:'🫀 R/O Cardiac Tamponade', cls:'badge-tamponade' });
+  }
 
-  // 6. RWMA → Acute MI suggestion
-  const rwmaFindings = getRwmaSummary();
-  for (const f of rwmaFindings) {
-    if (f.hasAk) {
-      imps.push({ label:`🔴 Suggestive of Acute MI (${f.vessel})`, cls:'badge-rwma' });
-    } else if (f.hasHypo) {
-      imps.push({ label:`🟡 RWMA – Hypokinesia (${f.vessel})`, cls:'badge-rwma' });
+  // 6. Obstructive Shock — Tension Pneumothorax
+  if (!sk.lung && hasNSliding() && hasALines()) {
+    imps.push({ label:'💨 Pneumothorax (Tension PTX 가능성)', cls:'badge-ptx' });
+  }
+
+  // ── BLUE Profile derivatives (호흡곤란) ──
+  if (!sk.lung) {
+    const z = blueState;
+    const ant = [z['r-upper'],z['r-lower'],z['l-upper'],z['l-lower']];
+    const plaps = [z['r-plaps'],z['l-plaps']];
+    const anyB = ant.filter(v=>v==='B').length;
+    const allAnt_A = ant.every(v=>v==='A');
+    const anyC = ant.some(v=>v==='C');
+    const anyEff = plaps.some(v=>v==='Eff');
+    const anyPlapsC = plaps.some(v=>v==='C');
+    
+    // Pulmonary Edema (B-profile)
+    if (anyB >= 2 && !ant.some(v=>v==='NS')) {
+      // 이미 Cardiogenic shock으로 잡혔으면 중복 제외
+      const alreadyCardio = imps.some(i=>i.label.includes('Cardiogenic'));
+      if (!alreadyCardio) {
+        imps.push({ label:'🟡 Pulmonary Edema (B-profile)', cls:'badge-edema' });
+      }
+    }
+    // Pneumonia (A/B, B', C profile)
+    if (anyC || (allAnt_A && (anyEff || anyPlapsC))) {
+      imps.push({ label:'🟠 Pneumonia 의심 (Consolidation)', cls:'badge-pna' });
+    }
+    // Pleural Effusion
+    if (anyEff && !anyB && !anyC) {
+      imps.push({ label:'🟣 Pleural Effusion', cls:'badge-effusion' });
+    }
+  }
+
+  // ── ABDOMINAL EMERGENCIES ──
+  // 7. AAA - rupture risk
+  if (!sk.vascular && aaa!==null) {
+    if (aaa >= 5.5) imps.push({ label:'🔴 AAA — 수술 적응증', cls:'badge-aaa' });
+    else if (aaa >= 3.0) imps.push({ label:'🟡 AAA (감시 필요)', cls:'badge-aaa' });
+  }
+
+  // 8. Hemoperitoneum (FAST positive)
+  if (!sk.fast) {
+    const fastPosCount = ['fast-ruq','fast-luq','fast-pelvis'].filter(k=>state.toggles[k]==='pos').length;
+    if (fastPosCount > 0) {
+      imps.push({ label:'🩸 Hemoperitoneum (FAST 양성)', cls:'badge-fast' });
+    }
+  }
+
+  // 9. RWMA → Acute MI
+  if (!sk.rwma) {
+    const rwmaFindings = getRwmaSummary();
+    for (const f of rwmaFindings) {
+      if (f.hasAk) {
+        imps.push({ label:`🔴 Acute MI 의심 (${f.vessel} 영역)`, cls:'badge-rwma' });
+      } else if (f.hasHypo) {
+        imps.push({ label:`🟡 RWMA – Hypokinesia (${f.vessel})`, cls:'badge-rwma' });
+      }
+    }
+  }
+
+  // 10. Diastolic Dysfunction
+  if (!sk.cardiac && ef!==null && ef>=50 && ee!==null && ee>14) {
+    const alreadyCardio = imps.some(i=>i.label.includes('Cardiogenic'));
+    if (!alreadyCardio) {
+      imps.push({ label:'💔 Diastolic Dysfunction (HFpEF 가능성)', cls:'badge-diastolic' });
+    }
+  }
+
+  // 11. Reduced LV Systolic Function (without shock criteria)
+  if (!sk.cardiac && ef!==null && ef<40) {
+    const alreadyShock = imps.some(i=>i.label.includes('Shock'));
+    if (!alreadyShock) {
+      imps.push({ label:`💔 LV Systolic Dysfunction (EF ${ef}%)`, cls:'badge-lvdysfx' });
+    }
+  }
+
+  // 12. Volume Overload
+  if (!sk.vascular && ivc!==null && ivc>2.5 && ivcC!==null && ivcC<20 &&
+      state.toggles['ivcPlethora']!=='pos') {
+    imps.push({ label:'💧 Volume Overload', cls:'badge-overload' });
+  }
+
+  // 13. DVT alone (without PE picture)
+  if (!sk.dvt) {
+    const dvtFound = dvtPos();
+    const alreadyPE = imps.some(i=>i.label.includes('Pulmonary Embolism'));
+    if (dvtFound && !alreadyPE) {
+      const sites = [];
+      if (state.toggles['dvt-rf']==='pos') sites.push('Rt Femoral');
+      if (state.toggles['dvt-rp']==='pos') sites.push('Rt Popliteal');
+      if (state.toggles['dvt-lf']==='pos') sites.push('Lt Femoral');
+      if (state.toggles['dvt-lp']==='pos') sites.push('Lt Popliteal');
+      imps.push({ label:`🦵 Deep Vein Thrombosis (${sites.join(', ')})`, cls:'badge-dvt' });
     }
   }
 
@@ -1316,11 +1469,181 @@ function update() {
       ? ''
       : imps.map(i=>i.label.replace(/^[^\w가-힣]+/,'')).join(' / ');
   }
+
+  // ── Build Conclusion ──
+  const conc = document.getElementById('conclusionText');
+  if (conc) conc.innerHTML = buildConclusion();
 }
 
 document.getElementById('impressionText').addEventListener('input', () => {
   state.impressionManuallyEdited = true;
 });
+
+// ── SKIP TOGGLE ────────────────────────────────────────────
+function toggleSkip(secId) {
+  state.skipped[secId] = !state.skipped[secId];
+  const btn = document.getElementById('skip-' + secId);
+  const sec = btn.closest('.section');
+  if (state.skipped[secId]) {
+    btn.classList.add('skipped');
+    btn.textContent = '안봤음';
+    sec.classList.add('skipped');
+  } else {
+    btn.classList.remove('skipped');
+    btn.textContent = '안봤음';
+    sec.classList.remove('skipped');
+  }
+  update();
+}
+
+// ── BUILD CONCLUSION (conversational summary) ─────────────
+function buildConclusion() {
+  const ef    = val('ef');
+  const epss  = val('epss');
+  const rvlv  = val('rvlv');
+  const ee    = val('ee');
+  const ea    = val('ea');
+  const sep   = val('septale');
+  const ivc   = val('ivc');
+  const ivcC  = val('ivcCollapse');
+  const aaa   = val('aaa');
+  const sk    = state.skipped;
+  const lines = [];
+
+  // ─ Cardiac ─
+  if (sk.cardiac) {
+    lines.push('<span class="skip">심장 초음파는 시행하지 않았습니다.</span>');
+  } else {
+    const cardiacBits = [];
+    if (ef !== null) {
+      if (ef < 30)      cardiacBits.push(`EF는 <span class="crit">${ef}%로 중증 감소</span>`);
+      else if (ef < 40) cardiacBits.push(`EF는 <span class="abn">${ef}%로 중등도 감소</span>`);
+      else if (ef < 55) cardiacBits.push(`EF는 <span class="abn">${ef}%로 경도 감소</span>`);
+      else              cardiacBits.push(`EF는 <span class="key">${ef}%로 정상 범위</span>`);
+    }
+    if (epss !== null) {
+      if (epss > 10)    cardiacBits.push(`EPSS <span class="crit">${epss}mm</span> (수축 기능 저하 시사)`);
+      else if (epss > 7) cardiacBits.push(`EPSS <span class="abn">${epss}mm</span>`);
+      else              cardiacBits.push(`EPSS ${epss}mm는 정상`);
+    }
+    if (rvlv !== null) {
+      if (rvlv > 1.0)    cardiacBits.push(`RV/LV 비율 <span class="crit">${rvlv} (RV strain 시사)</span>`);
+      else if (rvlv > 0.6) cardiacBits.push(`RV/LV 비율 <span class="abn">${rvlv}</span>`);
+      else               cardiacBits.push(`RV/LV 비율 ${rvlv}는 정상`);
+    }
+    if (ee !== null) {
+      if (ee > 14) cardiacBits.push(`E/e' <span class="crit">${ee} (좌심실 충만압 상승)</span>`);
+      else if (ee > 8) cardiacBits.push(`E/e' ${ee} (중간 영역)`);
+      else cardiacBits.push(`E/e' ${ee}는 정상`);
+    }
+    if (state.toggles['peri'] === 'pos') {
+      cardiacBits.push('<span class="crit">심낭삼출 양성</span>');
+    }
+    if (cardiacBits.length > 0) {
+      lines.push('심장은 ' + cardiacBits.join(', ') + '.');
+    }
+  }
+
+  // ─ RWMA ─
+  if (sk.rwma) {
+    lines.push('<span class="skip">국소벽운동은 평가하지 않았습니다.</span>');
+  } else {
+    const rwmaSum = getRwmaSummary();
+    if (rwmaSum.length === 0) {
+      lines.push('국소벽운동 이상 소견은 없었습니다.');
+    } else {
+      const parts = rwmaSum.map(f => {
+        const sev = f.hasAk ? '<span class="crit">akinesia/dyskinesia</span>' : '<span class="abn">hypokinesia</span>';
+        return `${f.vessel} 영역에 ${sev}`;
+      });
+      lines.push('국소벽운동에서 ' + parts.join(', ') + '가 관찰되었습니다.');
+    }
+  }
+
+  // ─ Lung (BLUE) ─
+  if (sk.lung) {
+    lines.push('<span class="skip">폐 초음파는 시행하지 않았습니다.</span>');
+  } else {
+    const z = blueState;
+    const ant = [z['r-upper'],z['r-lower'],z['l-upper'],z['l-lower']];
+    const plaps = [z['r-plaps'],z['l-plaps']];
+    const allA = ant.every(v=>v==='A') && plaps.every(v=>v==='A');
+    const hasNS = ant.some(v=>v==='NS');
+    const hasB = ant.filter(v=>v==='B').length;
+    const hasC = ant.some(v=>v==='C') || plaps.some(v=>v==='C');
+    const hasEff = plaps.some(v=>v==='Eff');
+    if (allA) {
+      lines.push('폐는 양측 모두 <span class="key">A-line 패턴</span>으로 BLUE A-profile에 해당합니다.');
+    } else {
+      const lungBits = [];
+      if (hasB >= 2) lungBits.push(`전방에 <span class="abn">B-line ${hasB}구역</span> (간질액 시사)`);
+      if (hasNS) lungBits.push('<span class="crit">Lung sliding 소실</span> (기흉 의심)');
+      if (hasC) lungBits.push('<span class="abn">consolidation</span> 관찰');
+      if (hasEff) lungBits.push('<span class="abn">흉수</span> 확인');
+      if (lungBits.length > 0) lines.push('폐에서 ' + lungBits.join(', ') + '되었습니다.');
+    }
+  }
+
+  // ─ IVC / Vascular ─
+  if (sk.vascular) {
+    lines.push('<span class="skip">IVC/대동맥은 평가하지 않았습니다.</span>');
+  } else {
+    const vBits = [];
+    if (ivc !== null) {
+      let ivcDesc = `IVC 직경 ${ivc}cm`;
+      if (ivcC !== null) ivcDesc += ` (변동성 ${ivcC}%)`;
+      if (state.toggles['ivcPlethora'] === 'pos') {
+        vBits.push(`<span class="crit">${ivcDesc}으로 plethora</span>`);
+      } else if (ivc < 1.5) {
+        vBits.push(`<span class="abn">${ivcDesc}으로 저혈량 시사</span>`);
+      } else if (ivc > 2.5) {
+        vBits.push(`<span class="abn">${ivcDesc}으로 확장</span>`);
+      } else {
+        vBits.push(`<span class="key">${ivcDesc}로 정상 범위</span>`);
+      }
+    }
+    if (aaa !== null) {
+      if (aaa >= 5.5)      vBits.push(`복부대동맥 <span class="crit">${aaa}cm로 수술 적응증</span>`);
+      else if (aaa >= 3.0) vBits.push(`복부대동맥 <span class="abn">${aaa}cm (AAA)</span>`);
+      else                 vBits.push(`복부대동맥 ${aaa}cm는 정상`);
+    }
+    if (vBits.length > 0) lines.push(vBits.join(', ') + '.');
+  }
+
+  // ─ DVT ─
+  if (sk.dvt) {
+    lines.push('<span class="skip">DVT 평가는 시행하지 않았습니다.</span>');
+  } else {
+    const dvtSites = [];
+    if (state.toggles['dvt-rf']==='pos') dvtSites.push('우측 대퇴정맥');
+    if (state.toggles['dvt-rp']==='pos') dvtSites.push('우측 슬와정맥');
+    if (state.toggles['dvt-lf']==='pos') dvtSites.push('좌측 대퇴정맥');
+    if (state.toggles['dvt-lp']==='pos') dvtSites.push('좌측 슬와정맥');
+    if (dvtSites.length > 0) {
+      lines.push(`<span class="crit">DVT 양성</span>: ${dvtSites.join(', ')}.`);
+    } else {
+      lines.push('DVT는 평가한 모든 부위에서 음성입니다.');
+    }
+  }
+
+  // ─ FAST ─
+  if (sk.fast) {
+    lines.push('<span class="skip">FAST는 시행하지 않았습니다.</span>');
+  } else {
+    const fastPos = [];
+    if (state.toggles['fast-ruq']==='pos') fastPos.push('RUQ');
+    if (state.toggles['fast-luq']==='pos') fastPos.push('LUQ');
+    if (state.toggles['fast-pelvis']==='pos') fastPos.push('Pelvis');
+    if (fastPos.length > 0) {
+      lines.push(`<span class="crit">FAST 양성</span>: ${fastPos.join(', ')}에서 유리액 확인.`);
+    } else {
+      lines.push('FAST에서 복강 내 유리액은 관찰되지 않았습니다.');
+    }
+  }
+
+  return lines.join(' ');
+}
+
 
 // ── COPY REPORT ────────────────────────────────────────────
 function getLungSummary() {
@@ -1351,18 +1674,69 @@ function getRwmaText() {
 
 function copyReport() {
   const g = id => document.getElementById(id).value || '___';
-  const lung = getLungSummary();
-  const fast = `RUQ:${state.toggles['fast-ruq'].toUpperCase()}, LUQ:${state.toggles['fast-luq'].toUpperCase()}, Pelvis:${state.toggles['fast-pelvis'].toUpperCase()}`;
-  const ivcPl = state.toggles['ivcPlethora']==='pos' ? 'Plethora(+)' : 'Plethora(-)';
-  const report =
-`[POCUS Report]
-- Cardiac: EF ${g('ef')}%, EPSS ${g('epss')}mm, RV/LV ${g('rvlv')}, E/e' ${g('ee')}, Pericardial Effusion: ${state.toggles['peri'].toUpperCase()}
-- RWMA: ${getRwmaText()}
-- Hemodynamics: IVC ${g('ivc')}cm (Collapsibility ${g('ivcCollapse')}%) ${ivcPl}
-- Lung: Rt [${lung.rt}], Lt [${lung.lt}]
-- FAST: ${fast}, AAA: ${g('aaa')}cm
-- DVT: Rt(F:${state.toggles['dvt-rf'].toUpperCase()}, P:${state.toggles['dvt-rp'].toUpperCase()}), Lt(F:${state.toggles['dvt-lf'].toUpperCase()}, P:${state.toggles['dvt-lp'].toUpperCase()})
-- Impression: ${document.getElementById('impressionText').value || 'No significant abnormality'}`;
+  const sk = state.skipped;
+  const lines = ['[POCUS Report]'];
+
+  // Cardiac
+  if (sk.cardiac) {
+    lines.push('- Cardiac: 평가 안함 (Not assessed)');
+  } else {
+    lines.push(`- Cardiac: EF ${g('ef')}%, EPSS ${g('epss')}mm, RV/LV ${g('rvlv')}, E/e' ${g('ee')}, Pericardial Effusion: ${state.toggles['peri'].toUpperCase()}`);
+  }
+
+  // RWMA
+  if (sk.rwma) {
+    lines.push('- RWMA: 평가 안함');
+  } else {
+    lines.push(`- RWMA: ${getRwmaText()}`);
+  }
+
+  // Vascular / IVC
+  if (sk.vascular) {
+    lines.push('- Hemodynamics: 평가 안함');
+  } else {
+    const ivcPl = state.toggles['ivcPlethora']==='pos' ? 'Plethora(+)' : 'Plethora(-)';
+    lines.push(`- Hemodynamics: IVC ${g('ivc')}cm (Collapsibility ${g('ivcCollapse')}%) ${ivcPl}`);
+    lines.push(`- AAA: ${g('aaa')}cm`);
+  }
+
+  // Lung
+  if (sk.lung) {
+    lines.push('- Lung: 평가 안함');
+  } else {
+    const lung = getLungSummary();
+    lines.push(`- Lung (BLUE): Rt [${lung.rt}], Lt [${lung.lt}]`);
+  }
+
+  // FAST
+  if (sk.fast) {
+    lines.push('- FAST: 평가 안함');
+  } else {
+    const fast = `RUQ:${state.toggles['fast-ruq'].toUpperCase()}, LUQ:${state.toggles['fast-luq'].toUpperCase()}, Pelvis:${state.toggles['fast-pelvis'].toUpperCase()}`;
+    lines.push(`- FAST: ${fast}`);
+  }
+
+  // DVT
+  if (sk.dvt) {
+    lines.push('- DVT: 평가 안함');
+  } else {
+    lines.push(`- DVT: Rt(F:${state.toggles['dvt-rf'].toUpperCase()}, P:${state.toggles['dvt-rp'].toUpperCase()}), Lt(F:${state.toggles['dvt-lf'].toUpperCase()}, P:${state.toggles['dvt-lp'].toUpperCase()})`);
+  }
+
+  // Conclusion (plain text from HTML)
+  const concHtml = document.getElementById('conclusionText').innerHTML || '';
+  const concText = concHtml.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  if (concText) {
+    lines.push('');
+    lines.push('[Conclusion]');
+    lines.push(concText);
+  }
+
+  // Impression
+  lines.push('');
+  lines.push(`[Impression] ${document.getElementById('impressionText').value || 'No significant abnormality'}`);
+
+  const report = lines.join('\n');
 
   navigator.clipboard.writeText(report).then(() => {
     const msg = document.getElementById('copyMsg');
