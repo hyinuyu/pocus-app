@@ -1038,7 +1038,7 @@
 // ── STATE ──────────────────────────────────────────────────
 const state = {
   toggles: {
-    'peri':'neg','plaps-rt':'neg','plaps-lt':'neg','ivcPlethora':'neg',
+    'peri':'neg','ivcPlethora':'neg',
     'dvt-rf':'neg','dvt-rp':'neg','dvt-lf':'neg','dvt-lp':'neg',
     'fast-ruq':'neg','fast-luq':'neg','fast-pelvis':'neg'
   },
@@ -1359,7 +1359,7 @@ function copyReport() {
 - Cardiac: EF ${g('ef')}%, EPSS ${g('epss')}mm, RV/LV ${g('rvlv')}, E/e' ${g('ee')}, Pericardial Effusion: ${state.toggles['peri'].toUpperCase()}
 - RWMA: ${getRwmaText()}
 - Hemodynamics: IVC ${g('ivc')}cm (Collapsibility ${g('ivcCollapse')}%) ${ivcPl}
-- Lung: Rt [${lung.rt}], Lt [${lung.lt}] / PLAPS: Rt ${state.toggles['plaps-rt'].toUpperCase()}, Lt ${state.toggles['plaps-lt'].toUpperCase()}
+- Lung: Rt [${lung.rt}], Lt [${lung.lt}]
 - FAST: ${fast}, AAA: ${g('aaa')}cm
 - DVT: Rt(F:${state.toggles['dvt-rf'].toUpperCase()}, P:${state.toggles['dvt-rp'].toUpperCase()}), Lt(F:${state.toggles['dvt-lf'].toUpperCase()}, P:${state.toggles['dvt-lp'].toUpperCase()})
 - Impression: ${document.getElementById('impressionText').value || 'No significant abnormality'}`;
