@@ -309,51 +309,6 @@
   }
   .dvt-side-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ── BUTTONS ── */
-  .guide-btn {
-    display: inline-flex; align-items: center; gap: 3px;
-    padding: 2px 7px; border-radius: 4px;
-    border: 1px solid var(--border2); background: transparent;
-    color: var(--accent); font-family: var(--mono);
-    font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
-    cursor: pointer; transition: all 0.15s; flex-shrink: 0;
-  }
-  .guide-btn:hover { background: rgba(0,212,255,0.08); }
-
-  /* ── TOOLTIP '?' ── */
-  .tip-btn {
-    display: inline-flex; align-items: center; gap: 3px;
-    padding: 2px 7px; border-radius: 4px;
-    border: 1px solid rgba(0,212,255,.22); background: rgba(0,212,255,.05);
-    color: var(--accent); font-family: var(--mono);
-    font-size: 8px; font-weight: 700; letter-spacing: .08em;
-    cursor: pointer; transition: all 0.15s; flex-shrink: 0; line-height: 1.4;
-  }
-  .tip-btn:hover { background: rgba(0,212,255,0.12); }
-
-  /* ── GUIDE CONTENT ── */
-  .gs { display:flex; gap:9px; margin-bottom:11px; padding-bottom:11px; border-bottom:1px solid rgba(255,255,255,.04); }
-  .gs:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-  .gn { flex-shrink:0; width:21px; height:21px; border-radius:50%; background:rgba(0,212,255,.1); border:1px solid rgba(0,212,255,.3); color:var(--accent); font-family:var(--mono); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; }
-  .gc { flex:1; }
-  .gtt { font-family:var(--mono); font-size:11px; font-weight:700; color:var(--text); letter-spacing:.05em; margin-bottom:3px; }
-  .gd { font-size:11.5px; color:var(--text2); line-height:1.65; }
-  .gd strong { color:var(--yellow); }
-  .gd .r { color:var(--red); font-weight:600; }
-  .gd .g { color:var(--green); font-weight:600; }
-  .gd .c { color:var(--accent); font-weight:600; }
-  .gbox { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 10px; margin:5px 0; }
-  .gbox-t { font-family:var(--mono); font-size:8px; letter-spacing:.13em; color:var(--text3); margin-bottom:5px; text-transform:uppercase; }
-  .gcr { display:flex; justify-content:space-between; align-items:center; padding:3px 0; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); font-size:10px; }
-  .gcr:last-child { border-bottom:none; }
-  .gck { color:var(--text3); font-size:9px; }
-  .gcv { font-weight:700; }
-  .gdiag { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:9px; margin:5px 0; font-family:var(--mono); font-size:9.5px; color:var(--text2); line-height:2; text-align:center; }
-  .gwarn { background:rgba(255,61,90,.06); border:1px solid rgba(255,61,90,.2); border-radius:6px; padding:8px 10px; margin-top:7px; font-size:11px; color:var(--text2); line-height:1.6; }
-  .gwarn::before { content:'⚠  '; }
-  .gtip { background:rgba(0,212,255,.05); border:1px solid rgba(0,212,255,.15); border-radius:6px; padding:8px 10px; margin-top:6px; font-size:11px; color:var(--text2); line-height:1.6; }
-  .gtip::before { content:'💡  '; }
-
   /* ── ACTION BAR ── */
   .action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; padding-bottom: 28px; }
   .btn { padding: 14px; border: none; border-radius: 8px; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; cursor: pointer; transition: all 0.15s; text-align: center; }
@@ -366,68 +321,6 @@
   /* ── EF BAR ── */
   .ef-visual { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; overflow: hidden; }
   .ef-bar { height: 100%; border-radius: 2px; transition: width 0.3s ease, background 0.3s; }
-
-  /* ═══════════════════════════════════════
-     MODAL (shared base)
-  ═══════════════════════════════════════ */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
-    z-index: 999; align-items: flex-end; justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--bg3); border: 1px solid var(--border2);
-    border-radius: 16px 16px 0 0;
-    width: 100%; max-width: 600px; max-height: 82vh; overflow-y: auto;
-    padding-bottom: 24px; animation: slideUp 0.22s ease;
-  }
-  @keyframes slideUp { from { transform: translateY(40px); opacity:0; } to { transform: translateY(0); opacity:1; } }
-
-  .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 12px auto 0; }
-  .modal-header {
-    padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
-  .modal-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; }
-  .modal-close { background: none; border: none; color: var(--text2); font-size: 18px; cursor: pointer; padding: 2px 6px; border-radius: 4px; line-height: 1; }
-  .modal-close:hover { background: rgba(255,255,255,0.06); }
-  .modal-body { padding: 14px 16px; }
-
-  /* guide steps */
-  .guide-step { display: flex; gap: 10px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-  .guide-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-  .guide-step-num {
-    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
-    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);
-    color: var(--accent); font-family: var(--mono); font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .guide-step-content { flex: 1; }
-  .guide-step-title { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--text); letter-spacing: 0.06em; margin-bottom: 4px; }
-  .guide-step-desc { font-size: 12px; color: var(--text2); line-height: 1.65; }
-  .guide-step-desc strong { color: var(--yellow); font-weight: 600; }
-  .guide-step-desc .red { color: var(--red); font-weight: 600; }
-  .guide-step-desc .green { color: var(--green); font-weight: 600; }
-  .guide-step-desc .cyan { color: var(--accent); font-weight: 600; }
-
-  .guide-criteria-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin: 8px 0; }
-  .criteria-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-family: var(--mono); font-size: 11px; }
-  .criteria-row:last-child { border-bottom: none; }
-  .criteria-key { color: var(--text3); }
-  .criteria-val { font-weight: 700; }
-  .guide-probe-diagram { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin: 8px 0; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--text2); line-height: 2; }
-  .guide-warning { background: rgba(255,61,90,0.06); border: 1px solid rgba(255,61,90,0.2); border-radius: 6px; padding: 10px 12px; margin-top: 10px; font-size: 11px; color: var(--text2); line-height: 1.6; }
-  .guide-warning::before { content: '⚠️  '; }
-
-  /* tooltip mini modal */
-  .tip-modal .modal-title { color: var(--yellow); }
-  .tip-content { font-size: 12px; color: var(--text2); line-height: 1.7; }
-  .tip-content .tip-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--text3); text-transform: uppercase; margin: 10px 0 4px; }
-  .tip-content .tip-value { font-family: var(--mono); font-size: 13px; font-weight: 700; }
-  .tip-content .tip-normal { color: var(--green); }
-  .tip-content .tip-abnormal { color: var(--red); }
 
   /* Responsive */
   @media (max-width: 360px) {
@@ -451,6 +344,7 @@
 
 <div class="container">
 
+  <!-- ═══ IMPRESSION ═══ -->
   <div class="section" style="border-color:rgba(0,212,255,0.2)">
     <div class="section-header" onclick="toggleSection('impression')">
       <span class="section-icon">🔍</span>
@@ -466,6 +360,7 @@
     </div>
   </div>
 
+  <!-- ═══ CARDIAC ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('cardiac')">
       <span class="section-icon">❤️</span>
@@ -475,37 +370,37 @@
     <div class="section-body" id="body-cardiac">
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">EF <span class="unit">(%)</span> <button class="tip-btn" onclick="showTip('ef')">📐 측정법</button></div>
+          <div class="field-label">EF <span class="unit">(%)</span></div>
           <input type="number" id="ef" min="0" max="100" placeholder="정상 ≥55" oninput="update()">
           <div class="ef-visual"><div class="ef-bar" id="efBar"></div></div>
         </div>
         <div class="field">
-          <div class="field-label">EPSS <span class="unit">(mm)</span> <button class="tip-btn" onclick="showTip('epss')">📐 측정법</button></div>
+          <div class="field-label">EPSS <span class="unit">(mm)</span></div>
           <input type="number" id="epss" min="0" max="50" placeholder="정상 &lt;7" oninput="update()">
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">RV/LV Ratio <button class="tip-btn" onclick="showTip('rvlv')">📐 측정법</button></div>
+          <div class="field-label">RV/LV Ratio</div>
           <input type="number" id="rvlv" min="0" max="3" step="0.1" placeholder="정상 &lt;1.0" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-label">E/A Ratio <button class="tip-btn" onclick="showTip('ea')">📐 측정법</button></div>
+          <div class="field-label">E/A Ratio</div>
           <input type="number" id="ea" min="0" max="5" step="0.1" placeholder="정상 0.8-1.5" oninput="update()">
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">Septal e' <span class="unit">(cm/s)</span> <button class="tip-btn" onclick="showTip('septale')">📐 측정법</button></div>
+          <div class="field-label">Septal e' <span class="unit">(cm/s)</span></div>
           <input type="number" id="septale" min="0" max="30" step="0.1" placeholder="정상 ≥8" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-label">E/e' Ratio <button class="tip-btn" onclick="showTip('ee')">📐 측정법</button></div>
+          <div class="field-label">E/e' Ratio</div>
           <input type="number" id="ee" min="0" max="50" step="0.1" placeholder="정상 &lt;14" oninput="update()">
         </div>
       </div>
       <div class="field">
-        <div class="field-label">Pericardial Effusion <button class="tip-btn" onclick="showTip('peri')">📐 측정법</button></div>
+        <div class="field-label">Pericardial Effusion</div>
         <div class="toggle-group">
           <button class="toggle-btn active-neg" id="peri-neg" onclick="setToggle('peri','neg')">NEG</button>
           <button class="toggle-btn" id="peri-pos" onclick="setToggle('peri','pos')">POS</button>
@@ -514,6 +409,7 @@
     </div>
   </div>
 
+  <!-- ═══ RWMA ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('rwma')">
       <span class="section-icon">🫀</span>
@@ -522,6 +418,7 @@
     </div>
     <div class="section-body" id="body-rwma">
 
+      <!-- View Tabs -->
       <div class="rwma-tabs">
         <button class="rwma-tab active" id="tab-psax" onclick="switchView('psax')">PSAX</button>
         <button class="rwma-tab" id="tab-a4c"  onclick="switchView('a4c')">A4C</button>
@@ -530,26 +427,41 @@
       </div>
       <div class="rwma-view-label" id="rwmaViewLabel">Parasternal Short Axis — 탭 또는 구역을 터치하여 입력</div>
 
+      <!-- SVG Diagram Area -->
       <div class="rwma-diagram-wrap">
 
+        <!-- ── PSAX ── -->
         <svg id="view-psax" class="rwma-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer wall ring -->
           <circle cx="140" cy="140" r="128" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
+          <!-- RV crescent -->
           <path d="M 75 68 Q 20 140 75 212 Q 55 175 52 140 Q 52 105 75 68 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
           <text x="36" y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RV</text>
 
+          <!-- 6 LV segments — pie slices, clicking cycles norm→hypo→ak -->
+          <!-- Anterior (top, LAD) -->
           <path id="seg-psax-ant"   class="seg-path" d="M140,140 L140,14  A126,126 0 0,1 224,72  Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')" />
+          <!-- AntSeptal (upper-right, LAD) -->
           <path id="seg-psax-asep"  class="seg-path" d="M140,140 L224,72  A126,126 0 0,1 266,140 Z" data-seg="lad-asep" onclick="cycleSeg('lad-asep')"/>
+          <!-- InfSeptal (lower-right, RCA) -->
           <path id="seg-psax-isep"  class="seg-path" d="M140,140 L266,140 A126,126 0 0,1 224,208 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
+          <!-- Inferior (bottom, RCA) -->
           <path id="seg-psax-inf"   class="seg-path" d="M140,140 L224,208 A126,126 0 0,1 140,266 Z" data-seg="rca-inf"  onclick="cycleSeg('rca-inf')"/>
+          <!-- InfLateral (lower-left, RCA/LCx) -->
           <path id="seg-psax-ilat"  class="seg-path" d="M140,140 L140,266 A126,126 0 0,1 56,208  Z" data-seg="rca-ilat" onclick="cycleSeg('rca-ilat')"/>
+          <!-- AntLateral (upper-left, LCx) -->
           <path id="seg-psax-alat"  class="seg-path" d="M140,140 L56,208  A126,126 0 0,1 14,140  Z" data-seg="lcx-lat"  onclick="cycleSeg('lcx-lat')"/>
+          <!-- Posterior (far left, LCx) -->
           <path id="seg-psax-post"  class="seg-path" d="M140,140 L14,140  A126,126 0 0,1 56,72   Z" data-seg="lcx-post" onclick="cycleSeg('lcx-post')"/>
+          <!-- PostLat (upper-far-left, LCx) -->
           <path id="seg-psax-plat"  class="seg-path" d="M140,140 L56,72   A126,126 0 0,1 140,14  Z" data-seg="lcx-plat" onclick="cycleSeg('lcx-plat')"/>
 
+          <!-- LV cavity -->
           <circle cx="140" cy="140" r="48" fill="#0a0d14" stroke="#253652" stroke-width="1.5"/>
           <text x="140" y="135" fill="#4a5a7a" font-size="10" font-family="monospace" text-anchor="middle">LV</text>
           <text x="140" y="148" fill="#2d3e5c" font-size="8"  font-family="monospace" text-anchor="middle">tap seg</text>
 
+          <!-- Segment labels -->
           <text class="seg-lbl" x="140" y="36"  text-anchor="middle">Ant</text>
           <text class="seg-lbl" x="212" y="82"  text-anchor="middle">AntSep</text>
           <text class="seg-lbl" x="232" y="162" text-anchor="middle">InfSep</text>
@@ -559,29 +471,43 @@
           <text class="seg-lbl" x="36"  y="118" text-anchor="middle">Post</text>
           <text class="seg-lbl" x="76"  y="46"  text-anchor="middle">PostLat</text>
 
+          <!-- Compass labels -->
           <text x="140" y="10" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">ANT</text>
           <text x="276" y="144" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">SEPT</text>
           <text x="140" y="278" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">INF</text>
           <text x="6"   y="144" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">LAT</text>
         </svg>
 
+        <!-- ── A4C ── -->
         <svg id="view-a4c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- LV outline -->
           <path d="M 95,30 Q 70,30 58,80 Q 46,140 140,290 Q 234,140 222,80 Q 210,30 185,30 Z" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
+          <!-- RV outline -->
           <path d="M 95,30 Q 50,32 36,80 Q 26,140 90,220 Q 110,190 105,140 Q 100,90 105,60 Q 100,42 95,30 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
           <path d="M 185,30 Q 230,32 244,80 Q 254,140 190,220 Q 170,190 175,140 Q 180,90 175,60 Q 180,42 185,30 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
           <text x="62"  y="120" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RV</text>
           <text x="218" y="120" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RA</text>
 
+          <!-- 4 LV wall segments, click to cycle -->
+          <!-- Basal Septal (right wall top, RCA) -->
           <path id="seg-a4c-bsep"  class="seg-path" d="M140,148 L185,30  Q200,60 196,100 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
+          <!-- Mid Septal (right wall mid, RCA) -->
           <path id="seg-a4c-msep"  class="seg-path" d="M140,148 L196,100 Q194,148 185,190 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
+          <!-- Apex Septal / Apex (tip, LAD) -->
           <path id="seg-a4c-apex"  class="seg-path" d="M140,148 L185,190 Q160,260 140,290 Q120,260 95,190 Z" data-seg="lad-apex" onclick="cycleSeg('lad-apex')"/>
+          <!-- Mid Lateral (left wall mid, LCx) -->
           <path id="seg-a4c-mlat"  class="seg-path" d="M140,148 L95,190  Q86,148 84,100 Z" data-seg="lcx-lat" onclick="cycleSeg('lcx-lat')"/>
+          <!-- Basal Lateral (left wall top, LCx) -->
           <path id="seg-a4c-blat"  class="seg-path" d="M140,148 L84,100  Q80,60 95,30   Z" data-seg="lcx-plat" onclick="cycleSeg('lcx-plat')"/>
+          <!-- Anterior Septal top region -->
           <path id="seg-a4c-ant"   class="seg-path" d="M140,148 L95,30 Q118,28 140,28 Q162,28 185,30 Z" data-seg="lad-asep" onclick="cycleSeg('lad-asep')"/>
 
+          <!-- MV line -->
           <line x1="95" y1="30" x2="185" y2="30" stroke="#253652" stroke-width="1" stroke-dasharray="3,3"/>
+          <!-- Center dot -->
           <circle cx="140" cy="148" r="3" fill="#253652"/>
 
+          <!-- Labels -->
           <text class="seg-lbl" x="170" y="56"  text-anchor="middle">BasSep</text>
           <text class="seg-lbl" x="176" y="130" text-anchor="middle">MidSep</text>
           <text class="seg-lbl" x="140" y="240" text-anchor="middle">Apex</text>
@@ -589,27 +515,35 @@
           <text class="seg-lbl" x="108" y="56"  text-anchor="middle">BasLat</text>
           <text class="seg-lbl" x="140" y="20"  text-anchor="middle">AntSep</text>
 
+          <!-- Orientation -->
           <text x="140" y="310" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">APEX ↓</text>
           <text x="14"  y="50"  fill="#253652" font-size="8" font-family="monospace">LATERAL</text>
           <text x="200" y="50"  fill="#253652" font-size="8" font-family="monospace">SEPTAL</text>
         </svg>
 
+        <!-- ── A2C ── -->
         <svg id="view-a2c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- LV outline -->
           <path d="M 85,30 Q 58,40 50,100 Q 44,170 140,290 Q 236,170 230,100 Q 222,40 195,30 Z" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
 
+          <!-- Anterior wall (left side = Ant, LAD) -->
           <path id="seg-a2c-bant"  class="seg-path" d="M140,150 L85,30  Q112,28 140,28 Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')"/>
           <path id="seg-a2c-mant"  class="seg-path" d="M140,150 L50,100 Q54,60 85,30  Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')"/>
           <path id="seg-a2c-aant"  class="seg-path" d="M140,150 L56,175 Q48,135 50,100 Z" data-seg="lad-alat" onclick="cycleSeg('lad-alat')"/>
 
+          <!-- Apex -->
           <path id="seg-a2c-apex"  class="seg-path" d="M140,150 L56,175 Q90,255 140,290 Q190,255 224,175 Z" data-seg="lad-apex" onclick="cycleSeg('lad-apex')"/>
 
+          <!-- Inferior wall (right side = Inf, RCA) -->
           <path id="seg-a2c-ainf"  class="seg-path" d="M140,150 L224,175 Q230,135 230,100 Z" data-seg="rca-inf" onclick="cycleSeg('rca-inf')"/>
           <path id="seg-a2c-minf"  class="seg-path" d="M140,150 L230,100 Q226,60 195,30 Z"  data-seg="rca-inf" onclick="cycleSeg('rca-inf')"/>
           <path id="seg-a2c-binf"  class="seg-path" d="M140,150 L195,30 Q168,28 140,28  Z"  data-seg="rca-ilat" onclick="cycleSeg('rca-ilat')"/>
 
+          <!-- MV -->
           <line x1="85" y1="30" x2="195" y2="30" stroke="#253652" stroke-width="1" stroke-dasharray="3,3"/>
           <circle cx="140" cy="150" r="3" fill="#253652"/>
 
+          <!-- Labels -->
           <text class="seg-lbl" x="96"  y="52"  text-anchor="middle">BasAnt</text>
           <text class="seg-lbl" x="78"  y="124" text-anchor="middle">MidAnt</text>
           <text class="seg-lbl" x="90"  y="184" text-anchor="middle">AntLat</text>
@@ -618,12 +552,15 @@
           <text class="seg-lbl" x="202" y="124" text-anchor="middle">MidInf</text>
           <text class="seg-lbl" x="184" y="52"  text-anchor="middle">BasInf</text>
 
+          <!-- Orientation -->
           <text x="140" y="310" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">APEX ↓</text>
           <text x="10"  y="50"  fill="#253652" font-size="8" font-family="monospace">ANTERIOR</text>
           <text x="192" y="50"  fill="#253652" font-size="8" font-family="monospace">INFERIOR</text>
         </svg>
 
+        <!-- ── Bull's Eye ── -->
         <svg id="view-bull" class="rwma-svg" style="display:none" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring (Basal) — 6 segments -->
           <path id="seg-bull-bant"  class="seg-path" d="M140,140 L140,12  A128,128 0 0,1 222,62  Z" data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
           <path id="seg-bull-basep" class="seg-path" d="M140,140 L222,62  A128,128 0 0,1 268,140 Z" data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
           <path id="seg-bull-bisep" class="seg-path" d="M140,140 L268,140 A128,128 0 0,1 222,218 Z" data-seg="rca-isep"  onclick="cycleSeg('rca-isep')"/>
@@ -633,6 +570,7 @@
           <path id="seg-bull-bpost" class="seg-path" d="M140,140 L12,140  A128,128 0 0,1 58,62   Z" data-seg="lcx-post"  onclick="cycleSeg('lcx-post')"/>
           <path id="seg-bull-balat" class="seg-path" d="M140,140 L58,62   A128,128 0 0,1 140,12  Z" data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
 
+          <!-- Mid ring — 6 segments (r=84) -->
           <path id="seg-bull-mant"  class="seg-path" d="M140,140 L140,56  A84,84 0 0,1 213,97  Z"   data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
           <path id="seg-bull-masep" class="seg-path" d="M140,140 L213,97  A84,84 0 0,1 224,140 Z"   data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
           <path id="seg-bull-misep" class="seg-path" d="M140,140 L224,140 A84,84 0 0,1 213,183 Z"   data-seg="rca-isep"  onclick="cycleSeg('rca-isep')"/>
@@ -642,41 +580,51 @@
           <path id="seg-bull-mpost" class="seg-path" d="M140,140 L56,140  A84,84 0 0,1 67,97   Z"   data-seg="lcx-post"  onclick="cycleSeg('lcx-post')"/>
           <path id="seg-bull-mplat" class="seg-path" d="M140,140 L67,97   A84,84 0 0,1 140,56  Z"   data-seg="lcx-plat"  onclick="cycleSeg('lcx-plat')"/>
 
+          <!-- Apical ring — 4 segments (r=44) -->
           <path id="seg-bull-aant"  class="seg-path" d="M140,140 L140,96  A44,44 0 0,1 184,140 Z"   data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
           <path id="seg-bull-asep"  class="seg-path" d="M140,140 L184,140 A44,44 0 0,1 140,184 Z"   data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
           <path id="seg-bull-ainf"  class="seg-path" d="M140,140 L140,184 A44,44 0 0,1 96,140  Z"   data-seg="rca-inf"   onclick="cycleSeg('rca-inf')"/>
           <path id="seg-bull-alat"  class="seg-path" d="M140,140 L96,140  A44,44 0 0,1 140,96  Z"   data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
 
+          <!-- Apex center -->
           <circle id="seg-bull-capex" class="seg-path" cx="140" cy="140" r="18" data-seg="lad-apex" onclick="cycleSeg('lad-apex')" style="cursor:pointer"/>
           <text x="140" y="144" fill="#6a7a9a" font-size="8" font-family="monospace" text-anchor="middle" style="pointer-events:none">Apex</text>
 
+          <!-- Ring dividers -->
           <circle cx="140" cy="140" r="44" fill="none" stroke="#1e2d4a" stroke-width="1.5"/>
           <circle cx="140" cy="140" r="84" fill="none" stroke="#1e2d4a" stroke-width="1.5"/>
           <circle cx="140" cy="140" r="128" fill="none" stroke="#253652" stroke-width="1.5"/>
 
+          <!-- Orientation labels -->
           <text x="140" y="9"   fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">ANT</text>
           <text x="272" y="144" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">SEP</text>
           <text x="140" y="278" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">INF</text>
           <text x="8"   y="144" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">LAT</text>
           <text x="140" y="278" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">INF</text>
 
+          <!-- Ring labels (outside) -->
           <text x="140" y="34"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">BASAL</text>
           <text x="140" y="74"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">MID</text>
           <text x="140" y="110" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">APICAL</text>
         </svg>
-      </div><div class="rwma-legend">
+      </div><!-- /diagram-wrap -->
+
+      <!-- Legend -->
+      <div class="rwma-legend">
         <div class="rwma-leg-item"><span class="rwma-leg-dot" style="background:#1e3a2e;border-color:#00e676"></span>Normal</div>
         <div class="rwma-leg-item"><span class="rwma-leg-dot" style="background:#3a2e0a;border-color:#ffd740"></span>Hypokinesia</div>
         <div class="rwma-leg-item"><span class="rwma-leg-dot" style="background:#3a0f16;border-color:#ff3d5a"></span>Akinesia</div>
         <div class="rwma-leg-item" style="margin-left:auto;font-size:9px;color:var(--text3)">탭해서 순환</div>
       </div>
 
+      <!-- Territory color key -->
       <div class="rwma-territory-key">
         <div class="rwma-terr"><span class="rwma-terr-dot" style="background:rgba(255,61,90,0.5)"></span>LAD</div>
         <div class="rwma-terr"><span class="rwma-terr-dot" style="background:rgba(255,107,53,0.5)"></span>RCA</div>
         <div class="rwma-terr"><span class="rwma-terr-dot" style="background:rgba(187,134,252,0.5)"></span>LCx</div>
       </div>
 
+      <!-- Summary table -->
       <div class="rwma-summary" id="rwmaSummaryTable">
         <div class="rwma-sum-row" id="sum-lad-ant">  <span class="rwma-sum-seg">Ant</span>      <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-ant">Normal</span></div>
         <div class="rwma-sum-row" id="sum-lad-asep"> <span class="rwma-sum-seg">AntSep</span>   <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-asep">Normal</span></div>
@@ -694,10 +642,11 @@
     </div>
   </div>
 
+  <!-- ═══ LUNG ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
-      <span class="section-title">Lung (8-Zone) <button class="tip-btn" onclick="showTip('lung')" style="margin-left:8px; border-color:rgba(255,255,255,0.2)">📐 측정법</button></span>
+      <span class="section-title">Lung (8-Zone)</span>
       <span class="section-toggle open" id="toggle-lung">▼</span>
     </div>
     <div class="section-body" id="body-lung">
@@ -790,6 +739,7 @@
     </div>
   </div>
 
+  <!-- ═══ VASCULAR / IVC ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
@@ -799,21 +749,21 @@
     <div class="section-body" id="body-vascular">
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">IVC Diameter <span class="unit">(cm)</span> <button class="tip-btn" onclick="showTip('ivc')">📐 측정법</button></div>
+          <div class="field-label">IVC Diameter <span class="unit">(cm)</span></div>
           <input type="number" id="ivc" min="0" max="5" step="0.1" placeholder="정상 1.5-2.1" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-label">Collapsibility <span class="unit">(%)</span> <button class="tip-btn" onclick="showTip('ivcc')">📐 측정법</button></div>
+          <div class="field-label">Collapsibility <span class="unit">(%)</span></div>
           <input type="number" id="ivcCollapse" min="0" max="100" placeholder="정상 ≥50%" oninput="update()">
         </div>
       </div>
 
+      <!-- Auto IVC Plethora status -->
       <div id="ivcStatusTag" class="ivc-status-tag incomplete">― IVC 수치 미입력</div>
 
       <div style="margin-top:8px">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-          <span>IVC Plethora <button class="tip-btn" onclick="showTip('plethora')">📐 측정법</button></span>
-          <button class="guide-btn" onclick="openGuide()">📐 가이드</button>
+          <span>IVC Plethora</span>
         </div>
         <div class="toggle-group">
           <button class="toggle-btn active-neg" id="ivcPlethora-neg" onclick="setToggle('ivcPlethora','neg')">정상 변동 (NEG)</button>
@@ -826,12 +776,13 @@
 
       <div class="divider"></div>
       <div class="field">
-        <div class="field-label">AAA <span class="unit">(cm)</span> <button class="tip-btn" onclick="showTip('aaa')">📐 측정법</button></div>
+        <div class="field-label">AAA <span class="unit">(cm)</span></div>
         <input type="number" id="aaa" min="0" max="15" step="0.1" placeholder="정상 &lt;3.0" oninput="update()">
       </div>
     </div>
   </div>
 
+  <!-- ═══ DVT ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('dvt')">
       <span class="section-icon">🦵</span>
@@ -843,7 +794,7 @@
         <div class="dvt-side-label">RIGHT</div>
         <div class="grid-2">
           <div class="field">
-            <div class="field-label">Femoral (Rt) <button class="tip-btn" onclick="showTip('dvt')">📐 측정법</button></div>
+            <div class="field-label">Femoral (Rt)</div>
             <div class="toggle-group">
               <button class="toggle-btn active-neg" id="dvt-rf-neg" onclick="setToggle('dvt-rf','neg')">NEG</button>
               <button class="toggle-btn" id="dvt-rf-pos" onclick="setToggle('dvt-rf','pos')">POS</button>
@@ -880,6 +831,7 @@
     </div>
   </div>
 
+  <!-- ═══ FAST ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('fast')">
       <span class="section-icon">🔬</span>
@@ -889,7 +841,7 @@
     <div class="section-body" id="body-fast">
       <div class="grid-3">
         <div class="field">
-          <div class="field-label">RUQ <button class="tip-btn" onclick="showTip('fast')">📐 측정법</button></div>
+          <div class="field-label">RUQ</div>
           <div class="toggle-group">
             <button class="toggle-btn active-neg" id="fast-ruq-neg" onclick="setToggle('fast-ruq','neg')">NEG</button>
             <button class="toggle-btn" id="fast-ruq-pos" onclick="setToggle('fast-ruq','pos')">POS</button>
@@ -913,101 +865,18 @@
     </div>
   </div>
 
+  <!-- Action Buttons -->
   <div class="action-bar">
     <button class="btn btn-copy" onclick="copyReport()">📋 의무기록 복사</button>
     <button class="btn btn-reset" onclick="resetAll()">↺ 초기화</button>
   </div>
   <div class="copy-success" id="copyMsg">✓ 클립보드에 복사되었습니다</div>
 
-</div><div class="modal-overlay" id="ivcGuideModal" onclick="closeGuideOutside(event)">
-  <div class="modal" id="ivcGuideModalBox">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title">🩸 IVC Plethora 측정법</span>
-      <button class="modal-close" onclick="closeGuide()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="guide-criteria-box" style="border-color:rgba(0,212,255,0.2);margin-bottom:12px">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--accent);margin-bottom:6px">DEFINITION</div>
-        <div style="font-size:12px;color:var(--text2);line-height:1.7">
-          IVC <strong>&gt;2.1cm</strong> + 흡기 시 직경 감소 <span class="red">&lt;12%</span> (자발호흡) 또는 &lt;50% (일반 기준)<br>
-          → 우심방압 상승 반영. Cardiac Tamponade 민감도 <span class="green">92%</span>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">1</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">프로브 & 자세</div>
-          <div class="guide-step-desc">프로브: <strong>Phased array / Curvilinear</strong><br>환자: <span class="green">앙와위(Supine)</span>, 자발 호흡 중<br>기계환기 환자: Collapsibility &lt;12% 기준 적용</div>
-          <div class="guide-probe-diagram">Subxiphoid — 마커 Head 방향(12시)<br>간(Liver)을 acoustic window로 활용<br><span style="color:var(--text3);font-size:9px">약간 우측으로 tilt</span></div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">2</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">측정 위치</div>
-          <div class="guide-step-desc">RA-IVC junction 확인 후,<br><strong>간정맥(hepatic vein) 합류부 1~2cm 원위부</strong>에 M-mode 커서 위치</div>
-          <div class="guide-probe-diagram" style="font-size:10px;line-height:2">
-            <span style="color:var(--text3)">RA ←</span><span style="color:var(--accent)"> ══[HV합류]══ ● ─── </span><span style="color:var(--text3)">→ dist</span><br>
-            <span style="color:var(--text3);font-size:9px">● = 측정점 (hepatic vein 원위 1-2cm)</span>
-          </div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">3</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">M-mode 측정 & 공식</div>
-          <div class="guide-step-desc"><strong>IVC<sub>max</sub></strong>: <span class="green">호기</span> 최대 직경<br><strong>IVC<sub>min</sub></strong>: <span class="cyan">흡기</span> 최소 직경</div>
-          <div class="guide-criteria-box">
-            <div style="font-family:var(--mono);font-size:13px;text-align:center;color:var(--accent);padding:6px 0">(IVC<sub>max</sub> − IVC<sub>min</sub>) ÷ IVC<sub>max</sub> × 100</div>
-          </div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">4</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">판독 기준 (이 앱 자동판정)</div>
-          <div class="guide-criteria-box">
-            <div class="criteria-row"><span class="criteria-key">IVC 직경</span><span class="criteria-val" style="color:var(--red)">&gt; 2.1 cm</span></div>
-            <div class="criteria-row"><span class="criteria-key">Collapsibility</span><span class="criteria-val" style="color:var(--red)">&lt; 12 %</span></div>
-            <div class="criteria-row"><span class="criteria-key">→ Plethora 자동 POS</span><span class="criteria-val" style="color:var(--orange)">✓ 자동 표시</span></div>
-          </div>
-          <div class="guide-criteria-box" style="margin-top:6px">
-            <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.12em;margin-bottom:6px">CVP 추정</div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">&lt;2.1cm + ≥50%</span><span class="criteria-val" style="color:var(--green);font-size:10px">~3 mmHg</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">&lt;2.1cm + &lt;50%</span><span class="criteria-val" style="color:var(--yellow);font-size:10px">~8 mmHg</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">&gt;2.1cm + &lt;50%</span><span class="criteria-val" style="color:var(--red);font-size:10px">~15 mmHg ⚠</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="guide-step">
-        <div class="guide-step-num">5</div>
-        <div class="guide-step-content">
-          <div class="guide-step-title">Tamponade 병합 소견</div>
-          <div class="guide-criteria-box">
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">Pericardial Effusion</span><span class="criteria-val" style="color:var(--yellow);font-size:10px">필수</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">RA systolic collapse</span><span class="criteria-val" style="color:var(--orange);font-size:10px">Apical 4-Ch</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">RV diastolic collapse</span><span class="criteria-val" style="color:var(--orange);font-size:10px">PLAX M-mode</span></div>
-            <div class="criteria-row"><span class="criteria-key" style="font-size:10px">Swinging heart</span><span class="criteria-val" style="color:var(--text3);font-size:10px">대량 effusion</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="guide-warning">저혈량증 동반 시 IVC가 작아 Plethora 없을 수 있음 (Low-pressure tamponade). 부재가 배제를 의미하지 않음.</div>
-    </div>
-  </div>
-</div>
+</div><!-- /container -->
 
-<div class="modal-overlay tip-modal" id="tipModal" onclick="closeTipOutside(event)">
-  <div class="modal" style="max-height:88vh">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title" id="tipTitle">—</span>
-      <button class="modal-close" onclick="closeTip()">✕</button>
-    </div>
-    <div class="modal-body tip-content" id="tipBody"></div>
-  </div>
-</div>
-
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
 <script>
 // ── STATE ──────────────────────────────────────────────────
 const state = {
@@ -1369,197 +1238,6 @@ function resetAll() {
   document.getElementById('efBar').style.width = '0%';
   update();
 }
-
-// ── IVC GUIDE MODAL ────────────────────────────────────────
-function openGuide() { document.getElementById('ivcGuideModal').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeGuide(){ document.getElementById('ivcGuideModal').classList.remove('open'); document.body.style.overflow=''; }
-function closeGuideOutside(e){ if(e.target===document.getElementById('ivcGuideModal')) closeGuide(); }
-
-// ── TOOLTIP DATA ───────────────────────────────────────────
-const TIPS = {
-  lung: { title: '🫁  Lung Ultrasound (BLUE Protocol)', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">A-line, B-line, Lung sliding을 확인하여 기흉, 폐부종, 폐렴 등을 감별.</div></div></div>
-<div class="gbox"><div class="gbox-t">판독 기준</div>
-<div class="gcr"><span class="gck">A-line + Sliding</span><span class="gcv" style="color:var(--green)">정상 폐 (건조)</span></div>
-<div class="gcr"><span class="gck">B-line (≥3개/시야)</span><span class="gcv" style="color:var(--red)">폐부종 / 간질성 증후군</span></div>
-<div class="gcr"><span class="gck">Sliding 소실 + A-line</span><span class="gcv" style="color:var(--accent)">기흉 (Lung point 확인)</span></div>
-<div class="gcr"><span class="gck">PLAPS 양성</span><span class="gcv" style="color:var(--yellow)">흉수 / 경화(Consolidation)</span></div></div>
-<div class="gtip">응급실에서 호흡곤란 감별 시 EF, IVC와 함께 평가하면 진단력 급상승!</div>` },
-
-  ef: { title: '❤️  EF — 좌심실 박출률', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">Ejection Fraction</div><div class="gd">좌심실 수축 기능의 핵심 지표. POCUS에서는 <strong>시각 추정(Eyeballing)</strong>이 가장 빠르며, 여러 view를 종합 판단.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">View 획득</div><div class="gd"><span class="c">PLAX</span>: 좌 3~5번 늑간, 흉골 좌연, 마커→우측 어깨<br><span class="c">PSAX</span>: PLAX에서 90° 반시계 회전<br><span class="c">A4C</span>: PMI(최대충격점), 마커→환자 좌측</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">시각 추정 기준</div><div class="gd"><span class="g">정상(≥55%)</span>: 벽 두껍게 수축, 내강 거의 닫힘<br><span style="color:var(--yellow)">경도감소(40–54%)</span>: 수축 있으나 내강 잔존<br><span class="r">중증(&lt;30%)</span>: 벽 거의 안 움직임, 내강 넓음</div></div></div>
-<div class="gs"><div class="gn">3</div><div class="gc"><div class="gtt">정량 측정 — Simpson Biplane</div><div class="gd">A4C + A2C에서 이완기/수축기 LV 윤곽 트레이싱 → EDV, ESV → EF 자동 계산</div></div></div>
-<div class="gbox"><div class="gbox-t">판독 기준</div>
-<div class="gcr"><span class="gck">정상</span><span class="gcv" style="color:var(--green)">≥55%</span></div>
-<div class="gcr"><span class="gck">경도 감소</span><span class="gcv" style="color:var(--yellow)">40–54%</span></div>
-<div class="gcr"><span class="gck">중등도 감소</span><span class="gcv" style="color:var(--orange)">30–39%</span></div>
-<div class="gcr"><span class="gck">중증 감소</span><span class="gcv" style="color:var(--red)">&lt;30% → Cardiogenic shock 주의</span></div></div>
-<div class="gwarn">AF·판막질환·LV비후 시 시각 추정 부정확. EPSS와 병행 평가.</div>` },
-
-  epss: { title: '📏  EPSS — E-Point Septal Separation', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">이완기에 전방 승모판엽(AML) E점이 심실중격에 얼마나 근접하는지 측정. EF 감소 시 승모판이 중격에서 멀어짐.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">View: PLAX</div><div class="gd">좌 3~5번 늑간, 흉골 좌연, 마커→우측 어깨<br>LV·승모판·대동맥이 모두 보이는 장축상 확보</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">M-mode 측정</div><div class="gd">M-mode 활성화 → 커서를 <strong>AML의 apical tip</strong>에 위치<br>파형은 "mountains over clouds" 형태<br>E점(최고점)과 심실중격 간 <strong>최단거리</strong> 측정</div>
-<div class="gdiag">심실중격 ─────────────────<br><span style="color:var(--accent)">↕ EPSS (mm)</span><br><span style="color:var(--yellow)">AML E점 /\\ /\\ (이완기)</span></div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">정상 EF</span><span class="gcv" style="color:var(--green)">&lt;7mm (중격에 근접·접촉)</span></div>
-<div class="gcr"><span class="gck">EF 감소 의심</span><span class="gcv" style="color:var(--yellow)">7–10mm</span></div>
-<div class="gcr"><span class="gck">EF ≤40%</span><span class="gcv" style="color:var(--red)">&gt;10mm (민감도 91%)</span></div></div>
-<div class="gwarn">승모판 협착·대동맥 역류·비정상 중격 운동 → 위양성. EF 직접 추정 병행.</div>` },
-
-  rvlv: { title: '🔀  RV/LV Ratio', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">RV 확장은 PE·폐고혈압·ARDS의 핵심 지표. A4C에서 이완기 말 직경 비교.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">View: A4C (Apical 4-Chamber)</div><div class="gd">PMI(좌 5번 늑간 쇄골중선), 마커→환자 좌측<br>4개 심방·심실이 모두 보이도록 각도 조정</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">측정법</div><div class="gd"><strong>이완기 말(End-diastole)</strong> 프레임에서<br><span class="c">RV</span>: 삼첨판 수준 RV 최대 내경<br><span class="c">LV</span>: 승모판 수준 LV 최대 내경<br>Ratio = RV ÷ LV</div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">정상</span><span class="gcv" style="color:var(--green)">&lt;0.6 (RV는 LV의 2/3 미만)</span></div>
-<div class="gcr"><span class="gck">경도 확장</span><span class="gcv" style="color:var(--yellow)">0.6–1.0</span></div>
-<div class="gcr"><span class="gck">PE/우심부전 의심</span><span class="gcv" style="color:var(--red)">&gt;1.0 (RV≥LV)</span></div></div>
-<div class="gtip">McConnell's sign: RV 자유벽 akinesia + 심첨부 정상 수축 → massive PE 특이도 ~94%</div>
-<div class="gwarn">PSAX D-sign(중격 좌측 밀림) 확인 시 RV overload 추가 증거.</div>` },
-
-  ea: { title: '🌊  E/A · Septal e\' · E/e\' — 이완 기능', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">이완 기능 (Diastology)</div><div class="gd">승모판 유입혈류(PW Doppler) + 판 환 TDI로 이완 기능 장애 및 좌심방 충만압 추정.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">E파, A파 — PW Doppler</div><div class="gd">A4C view → 승모판 판첨 사이에 PW 샘플 게이트<br><span class="c">E파</span>: 이완 초기 수동 유입 (조기 충만)<br><span class="c">A파</span>: 심방 수축에 의한 후기 유입</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">Septal e\' — TDI (Tissue Doppler)</div><div class="gd">A4C → <strong>Septal annulus</strong>에 TDI 샘플<br><span class="c">e\'</span>: 조기 이완기 승모판 환 속도<br>E/e\' = E ÷ e\' → 충만압 추정</div></div></div>
-<div class="gbox"><div class="gbox-t">판독 기준</div>
-<div class="gcr"><span class="gck">E/A 정상</span><span class="gcv" style="color:var(--green)">0.8–1.5</span></div>
-<div class="gcr"><span class="gck">E/A &lt;0.8 (이완 장애 Gr.1)</span><span class="gcv" style="color:var(--yellow)">충만압 정상</span></div>
-<div class="gcr"><span class="gck">E/A &gt;2.0 (제한성 Gr.3)</span><span class="gcv" style="color:var(--red)">충만압 심하게 상승</span></div>
-<div class="gcr"><span class="gck">Septal e\' 정상</span><span class="gcv" style="color:var(--green)">≥8 cm/s</span></div>
-<div class="gcr"><span class="gck">E/e\' &lt;8</span><span class="gcv" style="color:var(--green)">충만압 정상</span></div>
-<div class="gcr"><span class="gck">E/e\' &gt;14</span><span class="gcv" style="color:var(--red)">충만압 상승 (PCWP↑)</span></div></div>
-<div class="gwarn">AF·판막질환·고령·LBBB 시 해석 제한. E/e\' 단독 판단 지양.</div>` },
-
-  septale: { title: '📐  Septal e\' — Tissue Doppler', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">Septal e\' 측정법</div><div class="gd">승모판 중격 환상부(Septal annulus)에서 TDI로 측정한 조기 이완 속도. 이완 기능의 직접 지표.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">A4C view → TDI 모드</div><div class="gd">샘플 볼륨을 <strong>중격 환상부(Septal annulus)</strong>에 위치<br>PW Doppler가 아닌 TDI(Tissue Doppler Imaging) 모드 사용<br>필터: 낮음(Low), 게인: 감소</div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">정상</span><span class="gcv" style="color:var(--green)">≥8 cm/s</span></div>
-<div class="gcr"><span class="gck">이완 기능 저하</span><span class="gcv" style="color:var(--red)">&lt;8 cm/s</span></div></div>
-<div class="gtip">Lateral annulus e\'는 ≥10 cm/s가 정상. Septal과 Lateral 평균으로 E/e\' 계산 가능.</div>` },
-
-  ee: { title: '📊  E/e\' Ratio — 충만압 추정', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">E/e\' Ratio</div><div class="gd">E파 (PW Doppler 승모판 유입) ÷ e\'(Septal TDI). 좌심실 충만압(LV filling pressure) 추정.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">계산법</div><div class="gd">E파: A4C PW Doppler → 승모판 판첨<br>Septal e\': A4C TDI → Septal annulus<br>E/e\' = E 속도(cm/s) ÷ e\' 속도(cm/s)</div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">&lt;8</span><span class="gcv" style="color:var(--green)">충만압 정상</span></div>
-<div class="gcr"><span class="gck">8–14</span><span class="gcv" style="color:var(--yellow)">중간 영역 (다른 지표 병합)</span></div>
-<div class="gcr"><span class="gck">&gt;14</span><span class="gcv" style="color:var(--red)">충만압 상승 (PCWP↑) → Cardiogenic shock 시사</span></div></div>
-<div class="gwarn">단독으로 판단하지 말 것. EF·E/A·Septal e\'와 통합 해석.</div>` },
-
-  peri: { title: '💧  Pericardial Effusion 평가', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">심낭강 내 anechoic(무에코) 공간. 여러 view에서 관찰해야 정확도↑</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">주요 View</div><div class="gd"><span class="c">PLAX</span>: LV 후방 anechoic space — <strong>하행대동맥</strong>보다 전방이면 심낭액<br><span class="c">Subxiphoid</span>: RV 앞 공간 + RV collapse 동시 평가<br><span class="c">A4C</span>: RA systolic collapse 확인</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">크기 분류 (이완기 말 최대 두께)</div>
-<div class="gbox">
-<div class="gcr"><span class="gck">소량</span><span class="gcv" style="color:var(--green)">&lt;1cm</span></div>
-<div class="gcr"><span class="gck">중등량</span><span class="gcv" style="color:var(--yellow)">1–2cm</span></div>
-<div class="gcr"><span class="gck">대량</span><span class="gcv" style="color:var(--red)">&gt;2cm</span></div></div></div></div>
-<div class="gs"><div class="gn">3</div><div class="gc"><div class="gtt">Tamponade 부가 소견</div><div class="gd">
-<span class="r">RA systolic collapse</span>: A4C/Subcostal<br>
-<span class="r">RV diastolic collapse</span>: PLAX M-mode<br>
-<span class="r">IVC Plethora</span>: &gt;2cm + 변동 &lt;50%<br>
-<strong>Swinging heart</strong>: 대량 effusion</div></div></div>
-<div class="gwarn">하행대동맥은 PLAX LV 후방에 위치 — 심낭액과 혼동 주의. 대동맥은 박동·내부 혈류 확인.</div>` },
-
-  ivc: { title: '🩸  IVC 직경 측정법', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">IVC 직경 & 변동성</div><div class="gd">Subxiphoid창에서 M-mode로 호흡에 따른 직경 변화 측정. Volume status 추정.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">프로브 & 자세</div><div class="gd">Phased-array 또는 Curvilinear<br>검상돌기 하방, 마커→<span class="c">Head(12시)</span><br>환자 앙와위, 자발 호흡 중<br>간을 acoustic window로, 약간 우측 기울임</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">측정 지점</div><div class="gd">RA-IVC junction 추적 → <strong>간정맥(hepatic vein) 합류부 1~2cm 원위부</strong>에 M-mode 커서<br><span class="c">IVC_max</span>: 호기 최대 직경<br><span class="c">IVC_min</span>: 흡기 최소 직경</div>
-<div class="gdiag">RA ← ══[간정맥]══● 측정점 ══→ 원위부<br><span style="color:var(--text3);font-size:9px">RA-IVC junction에서 1-2cm distal</span></div></div></div>
-<div class="gbox"><div class="gbox-t">IVCCI = (IVC_max − IVC_min) ÷ IVC_max × 100%</div>
-<div class="gcr"><span class="gck">정상</span><span class="gcv" style="color:var(--green)">1.5–2.5cm</span></div>
-<div class="gcr"><span class="gck">저혈량증</span><span class="gcv" style="color:var(--yellow)">&lt;1.5cm + IVCCI &gt;50%</span></div>
-<div class="gcr"><span class="gck">과부하/고CVP</span><span class="gcv" style="color:var(--red)">&gt;2.5cm + IVCCI &lt;50%</span></div></div>
-<div class="gwarn">기계환기 환자: 기준 반대 적용. IVCCI &gt;12% → fluid responder 예측.</div>` },
-
-  ivcc: { title: '📉  IVC Collapsibility Index', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">공식</div><div class="gd">(IVC<sub>max</sub> − IVC<sub>min</sub>) ÷ IVC<sub>max</sub> × 100 (%)<br>IVC 항목 측정법과 동일한 방법으로 M-mode 획득.</div></div></div>
-<div class="gbox"><div class="gbox-t">자발호흡 기준</div>
-<div class="gcr"><span class="gck">정상 (CVP ~3mmHg)</span><span class="gcv" style="color:var(--green)">&gt;50%</span></div>
-<div class="gcr"><span class="gck">중간 (CVP ~8mmHg)</span><span class="gcv" style="color:var(--yellow)">21–50%</span></div>
-<div class="gcr"><span class="gck">상승 (CVP ~15mmHg)</span><span class="gcv" style="color:var(--red)">&lt;21% (Plethora 시 &lt;12%)</span></div></div>
-<div class="gwarn">기계환기: distensibility index 사용 권장 (흡기 시 팽창 &gt;12% → fluid responder).</div>` },
-
-  plethora: { title: '⚠️  IVC Plethora 측정법', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">IVC Plethora</div><div class="gd">IVC &gt;2.0cm + 흡기 감소 &lt;50%. Cardiac Tamponade 민감도 <span class="g">92%</span>. RAP 현저 상승 반영.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">측정법 (IVC와 동일)</div><div class="gd">Subxiphoid long-axis → M-mode → IVC_max/IVC_min 측정<br>IVCCI &lt;50% + 직경 &gt;2.0cm → <span class="r">Plethora POS</span></div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">Tamponade 병합 소견</div>
-<div class="gbox">
-<div class="gcr"><span class="gck">RA systolic collapse</span><span class="gcv" style="color:var(--red)">A4C / Subcostal</span></div>
-<div class="gcr"><span class="gck">RV diastolic collapse</span><span class="gcv" style="color:var(--red)">PLAX M-mode</span></div>
-<div class="gcr"><span class="gck">Mitral E파 변동 ≥30%</span><span class="gcv" style="color:var(--orange)">Pulsus paradoxus 대리</span></div>
-<div class="gcr"><span class="gck">Swinging heart</span><span class="gcv" style="color:var(--text3)">대량 effusion</span></div></div></div></div>
-<div class="gwarn">Low-pressure tamponade: 저혈량증 동반 시 IVC 작아 Plethora 없을 수 있음. 부재가 배제 불가.</div>` },
-
-  aaa: { title: '🔴  AAA — 복부대동맥류 측정', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">복부대동맥 최대 직경 ≥3.0cm. 외경(outer-to-outer) 기준 측정.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">프로브 & 위치</div><div class="gd">Curvilinear 또는 Phased-array<br>검상돌기~배꼽 사이 상복부 정중선<br>마커→<span class="c">환자 우측(횡단면)</span> 또는 Head(종단면)</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">횡단면(Short Axis) 스캔</div><div class="gd">배꼽 수준부터 흉골 방향으로 슬라이딩<br><strong>AP(전후) 및 좌우 직경 모두 측정</strong><br>혈전 있어도 <strong>외경 기준</strong></div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">정상</span><span class="gcv" style="color:var(--green)">&lt;3.0cm</span></div>
-<div class="gcr"><span class="gck">AAA (감시)</span><span class="gcv" style="color:var(--yellow)">3.0–5.4cm</span></div>
-<div class="gcr"><span class="gck">수술 고려</span><span class="gcv" style="color:var(--red)">≥5.5cm(남) / ≥5.0cm(여)</span></div>
-<div class="gcr"><span class="gck">파열 의심</span><span class="gcv" style="color:var(--red)">복통 + AAA → 즉각 처치</span></div></div>
-<div class="gtip">IVC는 압박 시 찌그러짐. 색도플러: 대동맥(하향혈류) vs IVC(상향혈류)로 구별.</div>` },
-
-  dvt: { title: '🦵  DVT 압박초음파', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">2-Point Compression Protocol</div><div class="gd">CFV(총대퇴정맥)와 Popliteal vein 2곳 압박. 민감도 92%, 특이도 97%.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">프로브 & 체위</div><div class="gd"><strong>Linear (고주파) 프로브</strong><br>서혜부: Supine, 무릎 약간 굴곡<br>슬와부: Prone 또는 앉아 무릎 90° 굴곡</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">서혜부 — CFV</div><div class="gd"><strong>횡단면(Short Axis)</strong>으로 스캔<br><span class="c">Mickey Mouse sign</span>: CFA + CFV + GSV 3개 원<br>CFV-GSV 합류부까지 1~2cm 간격 압박<br><span class="g">정상</span>: 내강 완전 허탈<br><span class="r">DVT</span>: 압박 후 내강 잔존</div></div></div>
-<div class="gs"><div class="gn">3</div><div class="gc"><div class="gtt">슬와부 — Popliteal Vein</div><div class="gd">슬와와 중앙, 슬와동맥 표면에 정맥 위치<br>동일하게 횡단 압박 → trifurcation까지 추적</div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">완전 허탈</span><span class="gcv" style="color:var(--green)">DVT NEG</span></div>
-<div class="gcr"><span class="gck">불완전 압박 / 에코 혈전</span><span class="gcv" style="color:var(--red)">DVT POS</span></div></div>
-<div class="gwarn">Wells score 높은 경우 음성이어도 48시간 내 재검. D-dimer 병행.</div>` },
-
-  fast: { title: '🔬  FAST — 외상 집중 초음파', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">정의</div><div class="gd">복강 내 유리액(혈복증) 탐색. 중력에 먼저 모이는 3개 구역을 순서대로 평가.</div></div></div>
-<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">RUQ — Morrison's Pouch</div><div class="gd">우측 액와중선, 10~12번 늑간, 마커→Head<br><strong>간-신장 경계면</strong> 확인<br><span class="r">양성</span>: 간과 신장 사이 anechoic fluid</div></div></div>
-<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">LUQ — Splenorenal Recess</div><div class="gd">좌측 후액와선, 9~11번 늑간, 마커→Head<br>비장-신장 경계면 + 횡격막하 공간<br><span class="c">Tip</span>: RUQ보다 더 후방·상방에 위치</div></div></div>
-<div class="gs"><div class="gn">3</div><div class="gc"><div class="gtt">Pelvis — Douglas Pouch</div><div class="gd">치골 상방 정중선, 마커→우측(횡단면) 먼저<br>방광을 acoustic window로<br>종단면 회전해 상하 방향도 스캔</div></div></div>
-<div class="gbox"><div class="gbox-t">판독</div>
-<div class="gcr"><span class="gck">NEG</span><span class="gcv" style="color:var(--green)">유리액 없음</span></div>
-<div class="gcr"><span class="gck">POS</span><span class="gcv" style="color:var(--red)">anechoic fluid → 외과 즉시 협진</span></div></div>
-<div class="gtip">방광 충만 시 골반 정확도↑ (도뇨 전 평가). eFAST: 추가로 양폐 기저부 흉수+PTX.</div>
-<div class="gwarn">FAST 음성이 복강 손상을 배제하지 않음. 혈역학 불안정+양성 → 즉각 수술실.</div>` },
-
-  lad: { title: '🔴  LAD Territory', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">LAD 지배 구역</div><div class="gd">전벽(Anterior), 전중격(Anteroseptal), 전외측(Anterolateral), 심첨부(Apex)</div></div></div>
-<div class="gbox"><div class="gbox-t">대표 뷰</div>
-<div class="gcr"><span class="gck">PSAX Papillary level</span><span class="gcv" style="font-size:9px">전벽·전중격</span></div>
-<div class="gcr"><span class="gck">A4C / A2C</span><span class="gcv" style="font-size:9px">전벽·심첨·전중격</span></div></div>
-<div class="gtip">전벽 MI → 수축기 anterior wall akinesia가 가장 흔한 패턴. Anterior STEMI와 연관.</div>` },
-
-  rca: { title: '🟠  RCA Territory', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">RCA 지배 구역</div><div class="gd">하벽(Inferior), 하중격(Inferoseptal), 하외측(Inferolateral), RV free wall</div></div></div>
-<div class="gbox"><div class="gbox-t">대표 뷰</div>
-<div class="gcr"><span class="gck">A4C</span><span class="gcv" style="font-size:9px">하중격·하외측</span></div>
-<div class="gcr"><span class="gck">Subcostal</span><span class="gcv" style="font-size:9px">RV 확인</span></div></div>
-<div class="gwarn">RCA 폐쇄 → RV infarction 동반 가능. 하벽 MI: II, III, aVF ST↑</div>` },
-
-  lcx: { title: '🟣  LCx Territory', html: `
-<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">LCx 지배 구역</div><div class="gd">외측벽(Lateral), 후외측(Posterolateral), 후벽(Posterior)</div></div></div>
-<div class="gbox"><div class="gbox-t">대표 뷰</div>
-<div class="gcr"><span class="gck">A4C</span><span class="gcv" style="font-size:9px">Lateral wall</span></div>
-<div class="gcr"><span class="gck">PLAX / PSAX</span><span class="gcv" style="font-size:9px">Posterior wall</span></div></div>
-<div class="gwarn">LCx 폐쇄는 ECG에서 놓치기 쉬움(silent territory). V1–V2 ST↓ + 후벽 akinesia → 확인 필요.</div>` }
-};
-
-
-function showTip(key) {
-  const tip = TIPS[key];
-  if (!tip) return;
-  document.getElementById('tipTitle').textContent = tip.title;
-  document.getElementById('tipBody').innerHTML = tip.html;
-  document.getElementById('tipModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeTip(){ document.getElementById('tipModal').classList.remove('open'); document.body.style.overflow=''; }
-function closeTipOutside(e){ if(e.target===document.getElementById('tipModal')) closeTip(); }
 
 // ── INIT ───────────────────────────────────────────────────
 renderAllSegs();
