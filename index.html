@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0a0d14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="POCUS">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="Point-of-Care Ultrasound 기록 및 자동 판독 보조">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>POCUS Report</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
@@ -446,7 +454,6 @@
 
 <div class="container">
 
-  <!-- ═══ IMPRESSION ═══ -->
   <div class="section" style="border-color:rgba(0,212,255,0.2)">
     <div class="section-header" onclick="toggleSection('impression')">
       <span class="section-icon">🔍</span>
@@ -462,7 +469,6 @@
     </div>
   </div>
 
-  <!-- ═══ CARDIAC ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('cardiac')">
       <span class="section-icon">❤️</span>
@@ -472,37 +478,37 @@
     <div class="section-body" id="body-cardiac">
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">EF <span class="unit">(%)</span> <button class="tip-btn" onclick="showTip(\'ef\')">📐 측정법</button></div>
+          <div class="field-label">EF <span class="unit">(%)</span> <button class="tip-btn" onclick="showTip('ef')">📐 측정법</button></div>
           <input type="number" id="ef" min="0" max="100" placeholder="정상 ≥55" oninput="update()">
           <div class="ef-visual"><div class="ef-bar" id="efBar"></div></div>
         </div>
         <div class="field">
-          <div class="field-label">EPSS <span class="unit">(mm)</span> <button class="tip-btn" onclick="showTip(\'epss\')">📐 측정법</button></div>
+          <div class="field-label">EPSS <span class="unit">(mm)</span> <button class="tip-btn" onclick="showTip('epss')">📐 측정법</button></div>
           <input type="number" id="epss" min="0" max="50" placeholder="정상 &lt;7" oninput="update()">
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">RV/LV Ratio <button class="tip-btn" onclick="showTip(\'rvlv\')">📐 측정법</button></div>
+          <div class="field-label">RV/LV Ratio <button class="tip-btn" onclick="showTip('rvlv')">📐 측정법</button></div>
           <input type="number" id="rvlv" min="0" max="3" step="0.1" placeholder="정상 &lt;1.0" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-label">E/A Ratio <button class="tip-btn" onclick="showTip(\'ea\')">📐 측정법</button></div>
+          <div class="field-label">E/A Ratio <button class="tip-btn" onclick="showTip('ea')">📐 측정법</button></div>
           <input type="number" id="ea" min="0" max="5" step="0.1" placeholder="정상 0.8-1.5" oninput="update()">
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">Septal e' <span class="unit">(cm/s)</span> <button class="tip-btn" onclick="showTip(\'septale\')">📐 측정법</button></div>
+          <div class="field-label">Septal e' <span class="unit">(cm/s)</span> <button class="tip-btn" onclick="showTip('septale')">📐 측정법</button></div>
           <input type="number" id="septale" min="0" max="30" step="0.1" placeholder="정상 ≥8" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-label">E/e' Ratio <button class="tip-btn" onclick="showTip(\'ee\')">📐 측정법</button></div>
+          <div class="field-label">E/e' Ratio <button class="tip-btn" onclick="showTip('ee')">📐 측정법</button></div>
           <input type="number" id="ee" min="0" max="50" step="0.1" placeholder="정상 &lt;14" oninput="update()">
         </div>
       </div>
       <div class="field">
-        <div class="field-label">Pericardial Effusion <button class="tip-btn" onclick="showTip(\'peri\')">📐 측정법</button></div>
+        <div class="field-label">Pericardial Effusion <button class="tip-btn" onclick="showTip('peri')">📐 측정법</button></div>
         <div class="toggle-group">
           <button class="toggle-btn active-neg" id="peri-neg" onclick="setToggle('peri','neg')">NEG</button>
           <button class="toggle-btn" id="peri-pos" onclick="setToggle('peri','pos')">POS</button>
@@ -511,7 +517,6 @@
     </div>
   </div>
 
-  <!-- ═══ RWMA ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('rwma')">
       <span class="section-icon">🫀</span>
@@ -520,7 +525,6 @@
     </div>
     <div class="section-body" id="body-rwma">
 
-      <!-- View Tabs -->
       <div class="rwma-tabs">
         <button class="rwma-tab active" id="tab-psax" onclick="switchView('psax')">PSAX</button>
         <button class="rwma-tab" id="tab-a4c"  onclick="switchView('a4c')">A4C</button>
@@ -529,41 +533,26 @@
       </div>
       <div class="rwma-view-label" id="rwmaViewLabel">Parasternal Short Axis — 탭 또는 구역을 터치하여 입력</div>
 
-      <!-- SVG Diagram Area -->
       <div class="rwma-diagram-wrap">
 
-        <!-- ── PSAX ── -->
         <svg id="view-psax" class="rwma-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-          <!-- Outer wall ring -->
           <circle cx="140" cy="140" r="128" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
-          <!-- RV crescent -->
           <path d="M 75 68 Q 20 140 75 212 Q 55 175 52 140 Q 52 105 75 68 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
           <text x="36" y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RV</text>
 
-          <!-- 6 LV segments — pie slices, clicking cycles norm→hypo→ak -->
-          <!-- Anterior (top, LAD) -->
           <path id="seg-psax-ant"   class="seg-path" d="M140,140 L140,14  A126,126 0 0,1 224,72  Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')" />
-          <!-- AntSeptal (upper-right, LAD) -->
           <path id="seg-psax-asep"  class="seg-path" d="M140,140 L224,72  A126,126 0 0,1 266,140 Z" data-seg="lad-asep" onclick="cycleSeg('lad-asep')"/>
-          <!-- InfSeptal (lower-right, RCA) -->
           <path id="seg-psax-isep"  class="seg-path" d="M140,140 L266,140 A126,126 0 0,1 224,208 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
-          <!-- Inferior (bottom, RCA) -->
           <path id="seg-psax-inf"   class="seg-path" d="M140,140 L224,208 A126,126 0 0,1 140,266 Z" data-seg="rca-inf"  onclick="cycleSeg('rca-inf')"/>
-          <!-- InfLateral (lower-left, RCA/LCx) -->
           <path id="seg-psax-ilat"  class="seg-path" d="M140,140 L140,266 A126,126 0 0,1 56,208  Z" data-seg="rca-ilat" onclick="cycleSeg('rca-ilat')"/>
-          <!-- AntLateral (upper-left, LCx) -->
           <path id="seg-psax-alat"  class="seg-path" d="M140,140 L56,208  A126,126 0 0,1 14,140  Z" data-seg="lcx-lat"  onclick="cycleSeg('lcx-lat')"/>
-          <!-- Posterior (far left, LCx) -->
           <path id="seg-psax-post"  class="seg-path" d="M140,140 L14,140  A126,126 0 0,1 56,72   Z" data-seg="lcx-post" onclick="cycleSeg('lcx-post')"/>
-          <!-- PostLat (upper-far-left, LCx) -->
           <path id="seg-psax-plat"  class="seg-path" d="M140,140 L56,72   A126,126 0 0,1 140,14  Z" data-seg="lcx-plat" onclick="cycleSeg('lcx-plat')"/>
 
-          <!-- LV cavity -->
           <circle cx="140" cy="140" r="48" fill="#0a0d14" stroke="#253652" stroke-width="1.5"/>
           <text x="140" y="135" fill="#4a5a7a" font-size="10" font-family="monospace" text-anchor="middle">LV</text>
           <text x="140" y="148" fill="#2d3e5c" font-size="8"  font-family="monospace" text-anchor="middle">tap seg</text>
 
-          <!-- Segment labels -->
           <text class="seg-lbl" x="140" y="36"  text-anchor="middle">Ant</text>
           <text class="seg-lbl" x="212" y="82"  text-anchor="middle">AntSep</text>
           <text class="seg-lbl" x="232" y="162" text-anchor="middle">InfSep</text>
@@ -573,43 +562,29 @@
           <text class="seg-lbl" x="36"  y="118" text-anchor="middle">Post</text>
           <text class="seg-lbl" x="76"  y="46"  text-anchor="middle">PostLat</text>
 
-          <!-- Compass labels -->
           <text x="140" y="10" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">ANT</text>
           <text x="276" y="144" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">SEPT</text>
           <text x="140" y="278" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">INF</text>
           <text x="6"   y="144" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">LAT</text>
         </svg>
 
-        <!-- ── A4C ── -->
         <svg id="view-a4c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
-          <!-- LV outline -->
           <path d="M 95,30 Q 70,30 58,80 Q 46,140 140,290 Q 234,140 222,80 Q 210,30 185,30 Z" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
-          <!-- RV outline -->
           <path d="M 95,30 Q 50,32 36,80 Q 26,140 90,220 Q 110,190 105,140 Q 100,90 105,60 Q 100,42 95,30 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
           <path d="M 185,30 Q 230,32 244,80 Q 254,140 190,220 Q 170,190 175,140 Q 180,90 175,60 Q 180,42 185,30 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
           <text x="62"  y="120" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RV</text>
           <text x="218" y="120" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RA</text>
 
-          <!-- 4 LV wall segments, click to cycle -->
-          <!-- Basal Septal (right wall top, RCA) -->
           <path id="seg-a4c-bsep"  class="seg-path" d="M140,148 L185,30  Q200,60 196,100 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
-          <!-- Mid Septal (right wall mid, RCA) -->
           <path id="seg-a4c-msep"  class="seg-path" d="M140,148 L196,100 Q194,148 185,190 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
-          <!-- Apex Septal / Apex (tip, LAD) -->
           <path id="seg-a4c-apex"  class="seg-path" d="M140,148 L185,190 Q160,260 140,290 Q120,260 95,190 Z" data-seg="lad-apex" onclick="cycleSeg('lad-apex')"/>
-          <!-- Mid Lateral (left wall mid, LCx) -->
           <path id="seg-a4c-mlat"  class="seg-path" d="M140,148 L95,190  Q86,148 84,100 Z" data-seg="lcx-lat" onclick="cycleSeg('lcx-lat')"/>
-          <!-- Basal Lateral (left wall top, LCx) -->
           <path id="seg-a4c-blat"  class="seg-path" d="M140,148 L84,100  Q80,60 95,30   Z" data-seg="lcx-plat" onclick="cycleSeg('lcx-plat')"/>
-          <!-- Anterior Septal top region -->
           <path id="seg-a4c-ant"   class="seg-path" d="M140,148 L95,30 Q118,28 140,28 Q162,28 185,30 Z" data-seg="lad-asep" onclick="cycleSeg('lad-asep')"/>
 
-          <!-- MV line -->
           <line x1="95" y1="30" x2="185" y2="30" stroke="#253652" stroke-width="1" stroke-dasharray="3,3"/>
-          <!-- Center dot -->
           <circle cx="140" cy="148" r="3" fill="#253652"/>
 
-          <!-- Labels -->
           <text class="seg-lbl" x="170" y="56"  text-anchor="middle">BasSep</text>
           <text class="seg-lbl" x="176" y="130" text-anchor="middle">MidSep</text>
           <text class="seg-lbl" x="140" y="240" text-anchor="middle">Apex</text>
@@ -617,35 +592,27 @@
           <text class="seg-lbl" x="108" y="56"  text-anchor="middle">BasLat</text>
           <text class="seg-lbl" x="140" y="20"  text-anchor="middle">AntSep</text>
 
-          <!-- Orientation -->
           <text x="140" y="310" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">APEX ↓</text>
           <text x="14"  y="50"  fill="#253652" font-size="8" font-family="monospace">LATERAL</text>
           <text x="200" y="50"  fill="#253652" font-size="8" font-family="monospace">SEPTAL</text>
         </svg>
 
-        <!-- ── A2C ── -->
         <svg id="view-a2c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
-          <!-- LV outline -->
           <path d="M 85,30 Q 58,40 50,100 Q 44,170 140,290 Q 236,170 230,100 Q 222,40 195,30 Z" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
 
-          <!-- Anterior wall (left side = Ant, LAD) -->
           <path id="seg-a2c-bant"  class="seg-path" d="M140,150 L85,30  Q112,28 140,28 Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')"/>
           <path id="seg-a2c-mant"  class="seg-path" d="M140,150 L50,100 Q54,60 85,30  Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')"/>
           <path id="seg-a2c-aant"  class="seg-path" d="M140,150 L56,175 Q48,135 50,100 Z" data-seg="lad-alat" onclick="cycleSeg('lad-alat')"/>
 
-          <!-- Apex -->
           <path id="seg-a2c-apex"  class="seg-path" d="M140,150 L56,175 Q90,255 140,290 Q190,255 224,175 Z" data-seg="lad-apex" onclick="cycleSeg('lad-apex')"/>
 
-          <!-- Inferior wall (right side = Inf, RCA) -->
           <path id="seg-a2c-ainf"  class="seg-path" d="M140,150 L224,175 Q230,135 230,100 Z" data-seg="rca-inf" onclick="cycleSeg('rca-inf')"/>
           <path id="seg-a2c-minf"  class="seg-path" d="M140,150 L230,100 Q226,60 195,30 Z"  data-seg="rca-inf" onclick="cycleSeg('rca-inf')"/>
           <path id="seg-a2c-binf"  class="seg-path" d="M140,150 L195,30 Q168,28 140,28  Z"  data-seg="rca-ilat" onclick="cycleSeg('rca-ilat')"/>
 
-          <!-- MV -->
           <line x1="85" y1="30" x2="195" y2="30" stroke="#253652" stroke-width="1" stroke-dasharray="3,3"/>
           <circle cx="140" cy="150" r="3" fill="#253652"/>
 
-          <!-- Labels -->
           <text class="seg-lbl" x="96"  y="52"  text-anchor="middle">BasAnt</text>
           <text class="seg-lbl" x="78"  y="124" text-anchor="middle">MidAnt</text>
           <text class="seg-lbl" x="90"  y="184" text-anchor="middle">AntLat</text>
@@ -654,35 +621,21 @@
           <text class="seg-lbl" x="202" y="124" text-anchor="middle">MidInf</text>
           <text class="seg-lbl" x="184" y="52"  text-anchor="middle">BasInf</text>
 
-          <!-- Orientation -->
           <text x="140" y="310" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">APEX ↓</text>
           <text x="10"  y="50"  fill="#253652" font-size="8" font-family="monospace">ANTERIOR</text>
           <text x="192" y="50"  fill="#253652" font-size="8" font-family="monospace">INFERIOR</text>
         </svg>
 
-        <!-- ── Bull's Eye ── -->
         <svg id="view-bull" class="rwma-svg" style="display:none" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-          <!-- 3 rings: basal(outer), mid, apical(inner) -->
-          <!-- Labels ring: 6 basal sectors -->
-          <!-- Outer ring (Basal) — 6 segments -->
-          <!-- Ant -->
           <path id="seg-bull-bant"  class="seg-path" d="M140,140 L140,12  A128,128 0 0,1 222,62  Z" data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
-          <!-- AntSep -->
           <path id="seg-bull-basep" class="seg-path" d="M140,140 L222,62  A128,128 0 0,1 268,140 Z" data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
-          <!-- InfSep -->
           <path id="seg-bull-bisep" class="seg-path" d="M140,140 L268,140 A128,128 0 0,1 222,218 Z" data-seg="rca-isep"  onclick="cycleSeg('rca-isep')"/>
-          <!-- Inf -->
           <path id="seg-bull-binf"  class="seg-path" d="M140,140 L222,218 A128,128 0 0,1 140,268 Z" data-seg="rca-inf"   onclick="cycleSeg('rca-inf')"/>
-          <!-- InfLat -->
           <path id="seg-bull-bilat" class="seg-path" d="M140,140 L140,268 A128,128 0 0,1 58,218  Z" data-seg="rca-ilat"  onclick="cycleSeg('rca-ilat')"/>
-          <!-- PostLat -->
           <path id="seg-bull-bplat" class="seg-path" d="M140,140 L58,218  A128,128 0 0,1 12,140  Z" data-seg="lcx-plat"  onclick="cycleSeg('lcx-plat')"/>
-          <!-- Post -->
           <path id="seg-bull-bpost" class="seg-path" d="M140,140 L12,140  A128,128 0 0,1 58,62   Z" data-seg="lcx-post"  onclick="cycleSeg('lcx-post')"/>
-          <!-- AntLat -->
           <path id="seg-bull-balat" class="seg-path" d="M140,140 L58,62   A128,128 0 0,1 140,12  Z" data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
 
-          <!-- Mid ring — 6 segments (r=84) -->
           <path id="seg-bull-mant"  class="seg-path" d="M140,140 L140,56  A84,84 0 0,1 213,97  Z"   data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
           <path id="seg-bull-masep" class="seg-path" d="M140,140 L213,97  A84,84 0 0,1 224,140 Z"   data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
           <path id="seg-bull-misep" class="seg-path" d="M140,140 L224,140 A84,84 0 0,1 213,183 Z"   data-seg="rca-isep"  onclick="cycleSeg('rca-isep')"/>
@@ -692,51 +645,41 @@
           <path id="seg-bull-mpost" class="seg-path" d="M140,140 L56,140  A84,84 0 0,1 67,97   Z"   data-seg="lcx-post"  onclick="cycleSeg('lcx-post')"/>
           <path id="seg-bull-mplat" class="seg-path" d="M140,140 L67,97   A84,84 0 0,1 140,56  Z"   data-seg="lcx-plat"  onclick="cycleSeg('lcx-plat')"/>
 
-          <!-- Apical ring — 4 segments (r=44) -->
           <path id="seg-bull-aant"  class="seg-path" d="M140,140 L140,96  A44,44 0 0,1 184,140 Z"   data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
           <path id="seg-bull-asep"  class="seg-path" d="M140,140 L184,140 A44,44 0 0,1 140,184 Z"   data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
           <path id="seg-bull-ainf"  class="seg-path" d="M140,140 L140,184 A44,44 0 0,1 96,140  Z"   data-seg="rca-inf"   onclick="cycleSeg('rca-inf')"/>
           <path id="seg-bull-alat"  class="seg-path" d="M140,140 L96,140  A44,44 0 0,1 140,96  Z"   data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
 
-          <!-- Apex center -->
           <circle id="seg-bull-capex" class="seg-path" cx="140" cy="140" r="18" data-seg="lad-apex" onclick="cycleSeg('lad-apex')" style="cursor:pointer"/>
           <text x="140" y="144" fill="#6a7a9a" font-size="8" font-family="monospace" text-anchor="middle" style="pointer-events:none">Apex</text>
 
-          <!-- Ring dividers -->
           <circle cx="140" cy="140" r="44" fill="none" stroke="#1e2d4a" stroke-width="1.5"/>
           <circle cx="140" cy="140" r="84" fill="none" stroke="#1e2d4a" stroke-width="1.5"/>
           <circle cx="140" cy="140" r="128" fill="none" stroke="#253652" stroke-width="1.5"/>
 
-          <!-- Orientation labels -->
           <text x="140" y="9"   fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">ANT</text>
           <text x="272" y="144" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">SEP</text>
           <text x="140" y="278" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">INF</text>
           <text x="8"   y="144" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">LAT</text>
           <text x="140" y="278" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">INF</text>
 
-          <!-- Ring labels (outside) -->
           <text x="140" y="34"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">BASAL</text>
           <text x="140" y="74"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">MID</text>
           <text x="140" y="110" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">APICAL</text>
         </svg>
-      </div><!-- /diagram-wrap -->
-
-      <!-- Legend -->
-      <div class="rwma-legend">
+      </div><div class="rwma-legend">
         <div class="rwma-leg-item"><span class="rwma-leg-dot" style="background:#1e3a2e;border-color:#00e676"></span>Normal</div>
         <div class="rwma-leg-item"><span class="rwma-leg-dot" style="background:#3a2e0a;border-color:#ffd740"></span>Hypokinesia</div>
         <div class="rwma-leg-item"><span class="rwma-leg-dot" style="background:#3a0f16;border-color:#ff3d5a"></span>Akinesia</div>
         <div class="rwma-leg-item" style="margin-left:auto;font-size:9px;color:var(--text3)">탭해서 순환</div>
       </div>
 
-      <!-- Territory color key -->
       <div class="rwma-territory-key">
         <div class="rwma-terr"><span class="rwma-terr-dot" style="background:rgba(255,61,90,0.5)"></span>LAD</div>
         <div class="rwma-terr"><span class="rwma-terr-dot" style="background:rgba(255,107,53,0.5)"></span>RCA</div>
         <div class="rwma-terr"><span class="rwma-terr-dot" style="background:rgba(187,134,252,0.5)"></span>LCx</div>
       </div>
 
-      <!-- Summary table -->
       <div class="rwma-summary" id="rwmaSummaryTable">
         <div class="rwma-sum-row" id="sum-lad-ant">  <span class="rwma-sum-seg">Ant</span>      <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-ant">Normal</span></div>
         <div class="rwma-sum-row" id="sum-lad-asep"> <span class="rwma-sum-seg">AntSep</span>   <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-asep">Normal</span></div>
@@ -754,7 +697,6 @@
     </div>
   </div>
 
-  <!-- ═══ LUNG ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
@@ -851,7 +793,6 @@
     </div>
   </div>
 
-  <!-- ═══ VASCULAR / IVC ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
@@ -861,21 +802,20 @@
     <div class="section-body" id="body-vascular">
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
-          <div class="field-label">IVC Diameter <span class="unit">(cm)</span> <button class="tip-btn" onclick="showTip(\'ivc\')">📐 측정법</button></div>
+          <div class="field-label">IVC Diameter <span class="unit">(cm)</span> <button class="tip-btn" onclick="showTip('ivc')">📐 측정법</button></div>
           <input type="number" id="ivc" min="0" max="5" step="0.1" placeholder="정상 1.5-2.1" oninput="update()">
         </div>
         <div class="field">
-          <div class="field-label">Collapsibility <span class="unit">(%)</span> <button class="tip-btn" onclick="showTip(\'ivcc\')">📐 측정법</button></div>
+          <div class="field-label">Collapsibility <span class="unit">(%)</span> <button class="tip-btn" onclick="showTip('ivcc')">📐 측정법</button></div>
           <input type="number" id="ivcCollapse" min="0" max="100" placeholder="정상 ≥50%" oninput="update()">
         </div>
       </div>
 
-      <!-- Auto IVC Plethora status -->
       <div id="ivcStatusTag" class="ivc-status-tag incomplete">― IVC 수치 미입력</div>
 
       <div style="margin-top:8px">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-          <span>IVC Plethora <button class="tip-btn" onclick="showTip(\'plethora\')">📐 측정법</button></span>
+          <span>IVC Plethora <button class="tip-btn" onclick="showTip('plethora')">📐 측정법</button></span>
           <button class="guide-btn" onclick="openGuide()">📐 측정법</button>
         </div>
         <div class="toggle-group">
@@ -889,13 +829,12 @@
 
       <div class="divider"></div>
       <div class="field">
-        <div class="field-label">AAA <span class="unit">(cm)</span> <button class="tip-btn" onclick="showTip(\'aaa\')">📐 측정법</button></div>
+        <div class="field-label">AAA <span class="unit">(cm)</span> <button class="tip-btn" onclick="showTip('aaa')">📐 측정법</button></div>
         <input type="number" id="aaa" min="0" max="15" step="0.1" placeholder="정상 &lt;3.0" oninput="update()">
       </div>
     </div>
   </div>
 
-  <!-- ═══ DVT ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('dvt')">
       <span class="section-icon">🦵</span>
@@ -907,7 +846,7 @@
         <div class="dvt-side-label">RIGHT</div>
         <div class="grid-2">
           <div class="field">
-            <div class="field-label">Femoral (Rt) <button class="tip-btn" onclick="showTip(\'dvt\')">📐 측정법</button></div>
+            <div class="field-label">Femoral (Rt) <button class="tip-btn" onclick="showTip('dvt')">📐 측정법</button></div>
             <div class="toggle-group">
               <button class="toggle-btn active-neg" id="dvt-rf-neg" onclick="setToggle('dvt-rf','neg')">NEG</button>
               <button class="toggle-btn" id="dvt-rf-pos" onclick="setToggle('dvt-rf','pos')">POS</button>
@@ -944,7 +883,6 @@
     </div>
   </div>
 
-  <!-- ═══ FAST ═══ -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('fast')">
       <span class="section-icon">🔬</span>
@@ -954,7 +892,7 @@
     <div class="section-body" id="body-fast">
       <div class="grid-3">
         <div class="field">
-          <div class="field-label">RUQ <button class="tip-btn" onclick="showTip(\'fast\')">📐 측정법</button></div>
+          <div class="field-label">RUQ <button class="tip-btn" onclick="showTip('fast')">📐 측정법</button></div>
           <div class="toggle-group">
             <button class="toggle-btn active-neg" id="fast-ruq-neg" onclick="setToggle('fast-ruq','neg')">NEG</button>
             <button class="toggle-btn" id="fast-ruq-pos" onclick="setToggle('fast-ruq','pos')">POS</button>
@@ -978,19 +916,13 @@
     </div>
   </div>
 
-  <!-- Action Buttons -->
   <div class="action-bar">
     <button class="btn btn-copy" onclick="copyReport()">📋 의무기록 복사</button>
     <button class="btn btn-reset" onclick="resetAll()">↺ 초기화</button>
   </div>
   <div class="copy-success" id="copyMsg">✓ 클립보드에 복사되었습니다</div>
 
-</div><!-- /container -->
-
-<!-- ═══════════════════════════════════════
-     IVC PLETHORA GUIDE MODAL
-═══════════════════════════════════════ -->
-<div class="modal-overlay" id="ivcGuideModal" onclick="closeGuideOutside(event)">
+</div><div class="modal-overlay" id="ivcGuideModal" onclick="closeGuideOutside(event)">
   <div class="modal" id="ivcGuideModalBox">
     <div class="modal-handle"></div>
     <div class="modal-header">
@@ -1068,9 +1000,6 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     TOOLTIP MODAL (generic)
-═══════════════════════════════════════ -->
 <div class="modal-overlay tip-modal" id="tipModal" onclick="closeTipOutside(event)">
   <div class="modal" style="max-height:88vh">
     <div class="modal-handle"></div>
@@ -1082,9 +1011,6 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════ -->
 <script>
 // ── STATE ──────────────────────────────────────────────────
 const state = {
@@ -1633,6 +1559,16 @@ function closeTipOutside(e){ if(e.target===document.getElementById('tipModal')) 
 renderAllSegs();
 updateSummaryTable();
 update();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(r => console.log('SW registered'))
+      .catch(e => console.log('SW failed:', e));
+  });
+}
 </script>
 </body>
 </html>
