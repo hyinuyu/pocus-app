@@ -297,6 +297,10 @@
   .ivc-status-tag.plethora { background: rgba(255,61,90,0.12); border: 1px solid rgba(255,61,90,0.35); color: var(--red); }
   .ivc-status-tag.normal   { background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2); color: var(--green); }
   .ivc-status-tag.incomplete { background: rgba(74,90,122,0.15); border: 1px solid var(--border); color: var(--text3); }
+.ivc-status-tag.severely-low { background: rgba(255,61,90,0.18); border: 1px solid rgba(255,61,90,0.5); color: var(--red); }
+.ivc-status-tag.low      { background: rgba(255,215,64,0.12); border: 1px solid rgba(255,215,64,0.4); color: var(--yellow); }
+.ivc-status-tag.high     { background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.4); color: var(--orange); }
+.ivc-status-tag.overload { background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.35); color: var(--accent); }
 
   /* ── DIVIDER ── */
   .divider { height: 1px; background: var(--border); margin: 10px 0; }
@@ -523,6 +527,16 @@
   .badge-lvdysfx   { background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.3); color: var(--orange); }
   .badge-overload  { background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.3); color: var(--accent); }
   .badge-dvt       { background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.3); color: var(--orange); }
+
+
+  .btn-share:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,212,255,0.3); }
+  
+  .btn-share-link {
+    background: rgba(0,212,255,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.3);
+  }
+  .btn-share-link:hover { background: rgba(0,212,255,0.15); }
 
 </style>
 </head>
@@ -930,7 +944,7 @@
       </div>
 
       <!-- Auto IVC Plethora status -->
-      <div id="ivcStatusTag" class="ivc-status-tag incomplete">― IVC 수치 미입력</div>
+      <div id="ivcStatusTag" class="ivc-status-tag incomplete">― IVC 수치를 입력하면 자동 분석됩니다 (수동으로도 선택 가능)</div>
 
       <div style="margin-top:8px">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -1063,6 +1077,7 @@
     <button class="btn btn-copy" onclick="copyReport()">📋 의무기록 복사</button>
     <button class="btn btn-reset" onclick="resetAll()">↺ 초기화</button>
   </div>
+  <button class="btn btn-share-link" onclick="copyShareLink()" style="width:100%;margin-top:8px">🔗 앱 링크 복사 (동료에게 공유)</button>
   <div class="copy-success" id="copyMsg">✓ 클립보드에 복사되었습니다</div>
 
 </div><!-- /container -->
@@ -1100,6 +1115,7 @@ const state = {
     'lcx-lat':'norm','lcx-plat':'norm','lcx-post':'norm'
   },
   ivcPlethoraAuto: false,
+  ivcCategory: null,
   impressionManuallyEdited: false
 };
 
@@ -1297,31 +1313,80 @@ function update() {
     document.getElementById('efBar').style.width = '0%';
   }
 
-  // ── Auto IVC Plethora logic ──────────────────────────────
+  // ── Auto IVC Status Classification (4 stages) ──
   const tag = document.getElementById('ivcStatusTag');
-  if (ivc !== null && ivcC !== null) {
-    const isPlethora = ivc > 2.1 && ivcC < 12;
+  // Plethora 자동 토글이 이미 켜져있는지 추적
+  const wasAutoPlethora = state.ivcPlethoraAuto;
+
+  if (ivc !== null) {
+    // CVP 추정 표 기반 4단계 분류 (자발호흡)
+    let ivcCategory, ivcMsg, cvpEst;
+    const hasCI = ivcC !== null;
+
+    if (ivc < 1.0) {
+      ivcCategory = 'severely-low';
+      cvpEst = '0–5';
+      ivcMsg = `🔻 심한 저혈량 — IVC ${ivc}cm` + (hasCI ? ` / CI ${ivcC}%` : '') + ` (CVP ~${cvpEst}mmHg)`;
+    } else if (ivc < 1.5) {
+      ivcCategory = 'low';
+      cvpEst = (hasCI && ivcC > 50) ? '0–5' : '5–10';
+      ivcMsg = `🟡 저혈량 시사 — IVC ${ivc}cm` + (hasCI ? ` / CI ${ivcC}%` : '') + ` (CVP ~${cvpEst}mmHg)`;
+    } else if (ivc <= 2.1) {
+      // 정상 범위 — collapsibility로 세분화
+      if (hasCI) {
+        if (ivcC > 50) {
+          ivcCategory = 'normal';
+          ivcMsg = `✓ 정상 — IVC ${ivc}cm / CI ${ivcC}% (CVP ~5–10mmHg)`;
+        } else if (ivcC < 12) {
+          ivcCategory = 'high';
+          ivcMsg = `🟠 충만압 상승 의심 — IVC ${ivc}cm / CI ${ivcC}% (CVP ~10–15mmHg)`;
+        } else {
+          ivcCategory = 'normal';
+          ivcMsg = `✓ 정상 — IVC ${ivc}cm / CI ${ivcC}%`;
+        }
+      } else {
+        ivcCategory = 'normal';
+        ivcMsg = `✓ 정상 범위 — IVC ${ivc}cm`;
+      }
+    } else {
+      // ivc > 2.1
+      if (hasCI && ivcC < 12) {
+        ivcCategory = 'plethora';
+        ivcMsg = `⚠ Plethora — IVC ${ivc}cm / CI ${ivcC}% (CVP >15mmHg, RAP↑)`;
+      } else if (hasCI && ivcC < 50) {
+        ivcCategory = 'overload';
+        ivcMsg = `🔵 용적 과부하 — IVC ${ivc}cm / CI ${ivcC}% (CVP ~10–15mmHg)`;
+      } else if (!hasCI) {
+        ivcCategory = 'overload';
+        ivcMsg = `🔵 IVC 확장 — ${ivc}cm (CI 입력 필요)`;
+      } else {
+        ivcCategory = 'normal';
+        ivcMsg = `IVC ${ivc}cm / CI ${ivcC}%`;
+      }
+    }
+
+    state.ivcCategory = ivcCategory;
+    tag.className = 'ivc-status-tag ' + ivcCategory;
+    tag.textContent = ivcMsg;
+
+    // Plethora 자동 토글 동기화
+    const isPlethora = (ivcCategory === 'plethora');
     state.ivcPlethoraAuto = isPlethora;
-    // Auto-drive the manual toggle too
     if (isPlethora) {
       state.toggles['ivcPlethora'] = 'pos';
       document.getElementById('ivcPlethora-neg').className = 'toggle-btn';
       document.getElementById('ivcPlethora-pos').className = 'toggle-btn active-pos';
-      tag.className = 'ivc-status-tag plethora';
-      tag.textContent = `⚠ Plethora — IVC ${ivc}cm / CI ${ivcC}%`;
-    } else {
-      if (state.ivcPlethoraAuto) { // was auto-set, now auto-clear
-        state.toggles['ivcPlethora'] = 'neg';
-        document.getElementById('ivcPlethora-neg').className = 'toggle-btn active-neg';
-        document.getElementById('ivcPlethora-pos').className = 'toggle-btn';
-      }
-      tag.className = 'ivc-status-tag normal';
-      tag.textContent = `✓ 정상 — IVC ${ivc}cm / CI ${ivcC}%`;
+    } else if (wasAutoPlethora) {
+      // 이전에 자동으로 켜져있었으면 끔
+      state.toggles['ivcPlethora'] = 'neg';
+      document.getElementById('ivcPlethora-neg').className = 'toggle-btn active-neg';
+      document.getElementById('ivcPlethora-pos').className = 'toggle-btn';
     }
   } else {
+    state.ivcCategory = null;
     state.ivcPlethoraAuto = false;
     tag.className  = 'ivc-status-tag incomplete';
-    tag.textContent = '― IVC 수치 미입력 (수동 선택 가능)';
+    tag.textContent = '― IVC 수치를 입력하면 자동 분석됩니다 (수동 선택 가능)';
   }
 
   // ── AUTO IMPRESSION LOGIC (skip-aware, multi-protocol) ──
@@ -1335,10 +1400,15 @@ function update() {
     imps.push({ label:'🚨 Cardiogenic Shock', cls:'badge-cardiogenic' });
   }
 
-  // 2. Hypovolemic Shock — IVC↓ + 정상 EF + A-line
+  // 2. Hypovolemic Shock — IVC↓↓ + 정상 EF + A-line
   if (!sk.cardiac && !sk.lung && !sk.vascular &&
       ivc!==null && ivc<1.5 && allALines() && ef!==null && ef>=50) {
     imps.push({ label:'💧 Hypovolemic Shock', cls:'badge-hypovolemic' });
+  } else if (!sk.vascular && state.ivcCategory === 'severely-low') {
+    imps.push({ label:'💧 심한 저혈량 (Severe Hypovolemia)', cls:'badge-hypovolemic' });
+  } else if (!sk.vascular && state.ivcCategory === 'low' &&
+             !imps.some(i=>i.label.includes('Hypovolemic'))) {
+    imps.push({ label:'💧 저혈량 시사 (Hypovolemia)', cls:'badge-hypovolemic' });
   }
 
   // 3. Distributive Shock (Sepsis) — IVC↓ + 정상~hyperdynamic EF + A-line + FAST(-)
@@ -1541,6 +1611,8 @@ function buildConclusion() {
     }
     if (cardiacBits.length > 0) {
       lines.push('심장은 ' + cardiacBits.join(', ') + '.');
+    } else {
+      lines.push('심장 평가에서 측정값이 입력되지 않았습니다.');
     }
   }
 
@@ -1580,7 +1652,9 @@ function buildConclusion() {
       if (hasNS) lungBits.push('<span class="crit">Lung sliding 소실</span> (기흉 의심)');
       if (hasC) lungBits.push('<span class="abn">consolidation</span> 관찰');
       if (hasEff) lungBits.push('<span class="abn">흉수</span> 확인');
-      if (lungBits.length > 0) lines.push('폐에서 ' + lungBits.join(', ') + '되었습니다.');
+      if (lungBits.length > 0) {
+        lines.push('폐에서 ' + lungBits.join(', ') + '되었습니다.');
+      }
     }
   }
 
@@ -1590,14 +1664,18 @@ function buildConclusion() {
   } else {
     const vBits = [];
     if (ivc !== null) {
-      let ivcDesc = `IVC 직경 ${ivc}cm`;
-      if (ivcC !== null) ivcDesc += ` (변동성 ${ivcC}%)`;
-      if (state.toggles['ivcPlethora'] === 'pos') {
-        vBits.push(`<span class="crit">${ivcDesc}으로 plethora</span>`);
-      } else if (ivc < 1.5) {
+      const ivcDesc = `IVC 직경 ${ivc}cm` + (ivcC !== null ? ` (변동성 ${ivcC}%)` : '');
+      const cat = state.ivcCategory;
+      if (cat === 'severely-low') {
+        vBits.push(`<span class="crit">${ivcDesc}으로 심한 저혈량</span>`);
+      } else if (cat === 'low') {
         vBits.push(`<span class="abn">${ivcDesc}으로 저혈량 시사</span>`);
-      } else if (ivc > 2.5) {
-        vBits.push(`<span class="abn">${ivcDesc}으로 확장</span>`);
+      } else if (cat === 'plethora') {
+        vBits.push(`<span class="crit">${ivcDesc}으로 plethora (RAP 상승)</span>`);
+      } else if (cat === 'overload') {
+        vBits.push(`<span class="abn">${ivcDesc}으로 용적 과부하 시사</span>`);
+      } else if (cat === 'high') {
+        vBits.push(`<span class="abn">${ivcDesc}으로 충만압 상승 의심</span>`);
       } else {
         vBits.push(`<span class="key">${ivcDesc}로 정상 범위</span>`);
       }
@@ -1607,7 +1685,11 @@ function buildConclusion() {
       else if (aaa >= 3.0) vBits.push(`복부대동맥 <span class="abn">${aaa}cm (AAA)</span>`);
       else                 vBits.push(`복부대동맥 ${aaa}cm는 정상`);
     }
-    if (vBits.length > 0) lines.push(vBits.join(', ') + '.');
+    if (vBits.length > 0) {
+      lines.push(vBits.join(', ') + '.');
+    } else {
+      lines.push('IVC/대동맥 평가에서 측정값이 입력되지 않았습니다.');
+    }
   }
 
   // ─ DVT ─
@@ -2066,6 +2148,38 @@ function showTip(key) {
 }
 function closeTip(){ document.getElementById('tipModal').classList.remove('open'); document.body.style.overflow=''; }
 function closeTipOutside(e){ if(e.target===document.getElementById('tipModal')) closeTip(); }
+
+
+
+// ── SHARE FUNCTIONS ────────────────────────────────────────
+
+function copyShareLink() {
+  // 현재 페이지 URL을 클립보드에 복사
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('🔗 앱 링크가 복사됨');
+  }).catch(() => {
+    showToast('복사 실패');
+  });
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('shareToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'shareToast';
+    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--accent);color:var(--text);padding:10px 18px;border-radius:8px;font-family:var(--mono);font-size:11px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.4);transition:opacity .2s;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  toast.style.display = 'block';
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => { toast.style.display = 'none'; }, 200);
+  }, 2200);
+}
+
 
 // ── INIT ───────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
