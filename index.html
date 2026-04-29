@@ -938,8 +938,6 @@ function setLung(zone, val) {
 }
 
 // ── RWMA ───────────────────────────────────────────────────
-// seg → which segments map to which canonical key
-// Multiple SVG paths may share the same state key (multi-view)
 const SEG_VESSEL = {
   'lad-ant':'lad','lad-asep':'lad','lad-alat':'lad','lad-apex':'lad',
   'rca-inf':'rca','rca-isep':'rca','rca-ilat':'rca','rca-rv':'rca',
@@ -974,45 +972,22 @@ function cycleSeg(segKey) {
   update();
 }
 
-// Segment fill colors per state
 const SEG_FILLS = {
   norm: { fill:'#0d2018', stroke:'#1e4030' },
   hypo: { fill:'#2a2000', stroke:'#7a6000' },
   ak:   { fill:'#2a0810', stroke:'#9a1828' }
 };
 
-// Territory overlay tints (added to stroke)
-const TERR_STROKE = {
-  lad: { norm:'#1e4030', hypo:'#7a6000', ak:'#cc1828' },
-  rca: { norm:'#1e4030', hypo:'#7a6000', ak:'#cc1828' },
-  lcx: { norm:'#1e4030', hypo:'#7a6000', ak:'#cc1828' }
-};
-
-// Territory base overlay (subtle)
-const TERR_BASE = {
-  lad: 'rgba(255,61,90,0.06)',
-  rca: 'rgba(255,107,53,0.06)',
-  lcx: 'rgba(187,134,252,0.06)'
-};
-
 function renderAllSegs() {
-  // For each SVG path with data-seg, update fill/stroke based on state
   document.querySelectorAll('.seg-path[data-seg]').forEach(el => {
     const key = el.getAttribute('data-seg');
     if (!key || !(key in state.rwma)) return;
     const stateVal = state.rwma[key];
-    const vessel = SEG_VESSEL[key] || 'lad';
 
-    // Remove old state classes
     el.classList.remove('state-norm','state-hypo','state-ak');
     el.classList.add('state-'+stateVal);
 
     const f = SEG_FILLS[stateVal];
-    // Blend territory tint into fill
-    const terrR = vessel==='lad'?'255,61,90' : vessel==='rca'?'255,107,53':'187,134,252';
-    const terrAlpha = stateVal==='norm' ? 0.08 : stateVal==='hypo' ? 0.18 : 0.3;
-
-    // Use CSS class coloring (cleaner)
     el.style.fill = f.fill;
     el.style.stroke = f.stroke;
   });
@@ -1102,7 +1077,6 @@ function update() {
   if (ivc !== null && ivcC !== null) {
     const isPlethora = ivc > 2.1 && ivcC < 12;
     state.ivcPlethoraAuto = isPlethora;
-    // Auto-drive the manual toggle too
     if (isPlethora) {
       state.toggles['ivcPlethora'] = 'pos';
       document.getElementById('ivcPlethora-neg').className = 'toggle-btn';
@@ -1110,7 +1084,7 @@ function update() {
       tag.className = 'ivc-status-tag plethora';
       tag.textContent = `⚠ Plethora — IVC ${ivc}cm / CI ${ivcC}%`;
     } else {
-      if (state.ivcPlethoraAuto) { // was auto-set, now auto-clear
+      if (state.ivcPlethoraAuto) {
         state.toggles['ivcPlethora'] = 'neg';
         document.getElementById('ivcPlethora-neg').className = 'toggle-btn active-neg';
         document.getElementById('ivcPlethora-pos').className = 'toggle-btn';
@@ -1127,27 +1101,21 @@ function update() {
   // ── AUTO IMPRESSION LOGIC ────────────────────────────────
   const imps = [];
 
-  // 1. Cardiogenic Shock
   if (ef!==null && ef<30 && ee!==null && ee>14 && hasBLines())
     imps.push({ label:'🚨 Cardiogenic Shock', cls:'badge-cardiogenic' });
 
-  // 2. Hypovolemic Shock
   if (ivc!==null && ivc<1.5 && allALines() && ef!==null && ef>=50)
     imps.push({ label:'💧 Hypovolemic Shock', cls:'badge-hypovolemic' });
 
-  // 3. Pulmonary Embolism
   if (rvlv!==null && rvlv>1.0 && dvtPos() && allALines())
     imps.push({ label:'⚠️ Pulmonary Embolism', cls:'badge-pe' });
 
-  // 4. Pneumothorax
   if (hasNSliding() && hasALines())
     imps.push({ label:'💨 Pneumothorax', cls:'badge-ptx' });
 
-  // 5. Rule out Cardiac Tamponade (IVC Plethora + Pericardial Effusion)
   if (state.toggles['ivcPlethora']==='pos' && state.toggles['peri']==='pos')
     imps.push({ label:'🫀 R/O Cardiac Tamponade', cls:'badge-tamponade' });
 
-  // 6. RWMA → Acute MI suggestion
   const rwmaFindings = getRwmaSummary();
   for (const f of rwmaFindings) {
     if (f.hasAk) {
@@ -1157,7 +1125,6 @@ function update() {
     }
   }
 
-  // Update badges
   const bc = document.getElementById('impressionBadges');
   bc.innerHTML = imps.length === 0
     ? '<span class="badge badge-normal">이상 소견 없음 / 데이터 입력 중</span>'
