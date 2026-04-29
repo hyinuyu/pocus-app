@@ -1,4 +1,4 @@
-const CACHE = 'pocus-v1';
+const CACHE = 'pocus-v999';
 const FILES = [
   './',
   './index.html'
