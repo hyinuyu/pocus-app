@@ -236,6 +236,15 @@
     background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
     overflow: hidden;
   }
+  
+  .rwma-sum-ring-label {
+    font-family: var(--mono); font-size: 8px; font-weight: 700;
+    letter-spacing: 0.18em; color: var(--accent);
+    padding: 5px 10px 3px; opacity: 0.7;
+    background: rgba(0,212,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
   .rwma-sum-row {
     display: flex; align-items: center; gap: 0;
     padding: 5px 10px; border-bottom: 1px solid rgba(255,255,255,0.04);
@@ -616,7 +625,8 @@
 
       <!-- View Tabs -->
       <div class="rwma-tabs">
-        <button class="rwma-tab active" id="tab-psax" onclick="switchView('psax')">PSAX</button>
+        <button class="rwma-tab active" id="tab-plax" onclick="switchView('plax')">PLAX</button>
+        <button class="rwma-tab" id="tab-psax" onclick="switchView('psax')">PSAX</button>
         <button class="rwma-tab" id="tab-a4c"  onclick="switchView('a4c')">A4C</button>
         <button class="rwma-tab" id="tab-a2c"  onclick="switchView('a2c')">A2C</button>
         <button class="rwma-tab" id="tab-bull" onclick="switchView('bull')">Bull</button>
@@ -626,182 +636,218 @@
       <!-- SVG Diagram Area -->
       <div class="rwma-diagram-wrap">
 
-        <!-- ── PSAX ── -->
+        <!-- ── PLAX ── -->
+        <svg id="view-plax" class="rwma-svg" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- LV outline (apex pointing left, AV/MV on right) -->
+          <path d="M 60,120 Q 80,40 200,40 L 240,40 L 240,80 L 280,90 L 280,150 L 240,160 L 240,200 L 200,200 Q 80,200 60,120 Z"
+                fill="#0a0d14" stroke="#253652" stroke-width="1.5"/>
+          
+          <!-- Top wall: Anteroseptal (Basal: right portion, Mid: middle) -->
+          <!-- Mid Anteroseptal -->
+          <path id="seg-plax-m-asep" class="seg-path" 
+                d="M 80,75 L 80,108 L 165,108 L 165,40 Q 110,40 80,75 Z" 
+                data-seg="m-asep" onclick="cycleSeg('m-asep')"/>
+          <!-- Basal Anteroseptal -->
+          <path id="seg-plax-b-asep" class="seg-path" 
+                d="M 165,40 L 165,108 L 240,108 L 240,40 Z" 
+                data-seg="b-asep" onclick="cycleSeg('b-asep')"/>
+          
+          <!-- Bottom wall: Inferolateral -->
+          <!-- Mid Inferolateral -->
+          <path id="seg-plax-m-ilat" class="seg-path" 
+                d="M 80,165 L 80,132 L 165,132 L 165,200 Q 110,200 80,165 Z" 
+                data-seg="m-ilat" onclick="cycleSeg('m-ilat')"/>
+          <!-- Basal Inferolateral -->
+          <path id="seg-plax-b-ilat" class="seg-path" 
+                d="M 165,200 L 165,132 L 240,132 L 240,200 Z" 
+                data-seg="b-ilat" onclick="cycleSeg('b-ilat')"/>
+          
+          <!-- LV cavity outline -->
+          <path d="M 80,108 L 240,108 L 240,132 L 80,132 Q 70,120 80,108 Z" 
+                fill="none" stroke="#253652" stroke-width="1" stroke-dasharray="3,2"/>
+          
+          <!-- LA (right top) - 표시만 -->
+          <path d="M 240,40 L 280,30 L 285,80 L 240,80 Z" fill="#0f1520" stroke="#1e2d4a" stroke-width="1"/>
+          <text x="262" y="60" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">LA</text>
+          
+          <!-- Ao -->
+          <path d="M 240,80 L 280,90 L 280,150 L 240,160 Z" fill="#0f1520" stroke="#1e2d4a" stroke-width="1"/>
+          <text x="262" y="125" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">Ao</text>
+          
+          <!-- Labels -->
+          <text x="160" y="22" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">ANTEROSEPTAL</text>
+          <text x="160" y="222" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">INFEROLATERAL</text>
+          <text x="50" y="124" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="end">apex →</text>
+          
+          <!-- Level labels -->
+          <text x="120" y="76" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">mid</text>
+          <text x="200" y="76" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">basal</text>
+        </svg>
+
+        <!-- ── PSAX (Mid level / Papillary muscle) ── -->
         <svg id="view-psax" class="rwma-svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-          <!-- Outer wall ring -->
-          <circle cx="140" cy="140" r="128" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
-          <!-- RV crescent -->
-          <path d="M 75 68 Q 20 140 75 212 Q 55 175 52 140 Q 52 105 75 68 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
-          <text x="36" y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RV</text>
-
-          <!-- 6 LV segments — pie slices, clicking cycles norm→hypo→ak -->
-          <!-- Anterior (top, LAD) -->
-          <path id="seg-psax-ant"   class="seg-path" d="M140,140 L140,14  A126,126 0 0,1 224,72  Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')" />
-          <!-- AntSeptal (upper-right, LAD) -->
-          <path id="seg-psax-asep"  class="seg-path" d="M140,140 L224,72  A126,126 0 0,1 266,140 Z" data-seg="lad-asep" onclick="cycleSeg('lad-asep')"/>
-          <!-- InfSeptal (lower-right, RCA) -->
-          <path id="seg-psax-isep"  class="seg-path" d="M140,140 L266,140 A126,126 0 0,1 224,208 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
-          <!-- Inferior (bottom, RCA) -->
-          <path id="seg-psax-inf"   class="seg-path" d="M140,140 L224,208 A126,126 0 0,1 140,266 Z" data-seg="rca-inf"  onclick="cycleSeg('rca-inf')"/>
-          <!-- InfLateral (lower-left, RCA/LCx) -->
-          <path id="seg-psax-ilat"  class="seg-path" d="M140,140 L140,266 A126,126 0 0,1 56,208  Z" data-seg="rca-ilat" onclick="cycleSeg('rca-ilat')"/>
-          <!-- AntLateral (upper-left, LCx) -->
-          <path id="seg-psax-alat"  class="seg-path" d="M140,140 L56,208  A126,126 0 0,1 14,140  Z" data-seg="lcx-lat"  onclick="cycleSeg('lcx-lat')"/>
-          <!-- Posterior (far left, LCx) -->
-          <path id="seg-psax-post"  class="seg-path" d="M140,140 L14,140  A126,126 0 0,1 56,72   Z" data-seg="lcx-post" onclick="cycleSeg('lcx-post')"/>
-          <!-- PostLat (upper-far-left, LCx) -->
-          <path id="seg-psax-plat"  class="seg-path" d="M140,140 L56,72   A126,126 0 0,1 140,14  Z" data-seg="lcx-plat" onclick="cycleSeg('lcx-plat')"/>
-
-          <!-- LV cavity -->
-          <circle cx="140" cy="140" r="48" fill="#0a0d14" stroke="#253652" stroke-width="1.5"/>
-          <text x="140" y="135" fill="#4a5a7a" font-size="10" font-family="monospace" text-anchor="middle">LV</text>
-          <text x="140" y="148" fill="#2d3e5c" font-size="8"  font-family="monospace" text-anchor="middle">tap seg</text>
-
-          <!-- Segment labels -->
-          <text class="seg-lbl" x="140" y="36"  text-anchor="middle">Ant</text>
-          <text class="seg-lbl" x="212" y="82"  text-anchor="middle">AntSep</text>
-          <text class="seg-lbl" x="232" y="162" text-anchor="middle">InfSep</text>
-          <text class="seg-lbl" x="198" y="236" text-anchor="middle">Inf</text>
-          <text class="seg-lbl" x="94"  y="236" text-anchor="middle">InfLat</text>
-          <text class="seg-lbl" x="42"  y="186" text-anchor="middle">Lat</text>
-          <text class="seg-lbl" x="36"  y="118" text-anchor="middle">Post</text>
-          <text class="seg-lbl" x="76"  y="46"  text-anchor="middle">PostLat</text>
-
-          <!-- Compass labels -->
-          <text x="140" y="10" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">ANT</text>
-          <text x="276" y="144" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">SEPT</text>
-          <text x="140" y="278" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">INF</text>
-          <text x="6"   y="144" fill="#253652" font-size="9" font-family="monospace" text-anchor="middle">LAT</text>
-        </svg>
-
-        <!-- ── A4C ── -->
-        <svg id="view-a4c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
-          <!-- LV outline -->
-          <path d="M 95,30 Q 70,30 58,80 Q 46,140 140,290 Q 234,140 222,80 Q 210,30 185,30 Z" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
-          <!-- RV outline -->
-          <path d="M 95,30 Q 50,32 36,80 Q 26,140 90,220 Q 110,190 105,140 Q 100,90 105,60 Q 100,42 95,30 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
-          <path d="M 185,30 Q 230,32 244,80 Q 254,140 190,220 Q 170,190 175,140 Q 180,90 175,60 Q 180,42 185,30 Z" fill="#1a2035" stroke="#253652" stroke-width="1"/>
-          <text x="62"  y="120" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RV</text>
-          <text x="218" y="120" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RA</text>
-
-          <!-- 4 LV wall segments, click to cycle -->
-          <!-- Basal Septal (right wall top, RCA) -->
-          <path id="seg-a4c-bsep"  class="seg-path" d="M140,148 L185,30  Q200,60 196,100 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
-          <!-- Mid Septal (right wall mid, RCA) -->
-          <path id="seg-a4c-msep"  class="seg-path" d="M140,148 L196,100 Q194,148 185,190 Z" data-seg="rca-isep" onclick="cycleSeg('rca-isep')"/>
-          <!-- Apex Septal / Apex (tip, LAD) -->
-          <path id="seg-a4c-apex"  class="seg-path" d="M140,148 L185,190 Q160,260 140,290 Q120,260 95,190 Z" data-seg="lad-apex" onclick="cycleSeg('lad-apex')"/>
-          <!-- Mid Lateral (left wall mid, LCx) -->
-          <path id="seg-a4c-mlat"  class="seg-path" d="M140,148 L95,190  Q86,148 84,100 Z" data-seg="lcx-lat" onclick="cycleSeg('lcx-lat')"/>
-          <!-- Basal Lateral (left wall top, LCx) -->
-          <path id="seg-a4c-blat"  class="seg-path" d="M140,148 L84,100  Q80,60 95,30   Z" data-seg="lcx-plat" onclick="cycleSeg('lcx-plat')"/>
-          <!-- Anterior Septal top region -->
-          <path id="seg-a4c-ant"   class="seg-path" d="M140,148 L95,30 Q118,28 140,28 Q162,28 185,30 Z" data-seg="lad-asep" onclick="cycleSeg('lad-asep')"/>
-
-          <!-- MV line -->
-          <line x1="95" y1="30" x2="185" y2="30" stroke="#253652" stroke-width="1" stroke-dasharray="3,3"/>
-          <!-- Center dot -->
-          <circle cx="140" cy="148" r="3" fill="#253652"/>
-
-          <!-- Labels -->
-          <text class="seg-lbl" x="170" y="56"  text-anchor="middle">BasSep</text>
-          <text class="seg-lbl" x="176" y="130" text-anchor="middle">MidSep</text>
-          <text class="seg-lbl" x="140" y="240" text-anchor="middle">Apex</text>
-          <text class="seg-lbl" x="104" y="130" text-anchor="middle">MidLat</text>
-          <text class="seg-lbl" x="108" y="56"  text-anchor="middle">BasLat</text>
-          <text class="seg-lbl" x="140" y="20"  text-anchor="middle">AntSep</text>
-
-          <!-- Orientation -->
-          <text x="140" y="310" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">APEX ↓</text>
-          <text x="14"  y="50"  fill="#253652" font-size="8" font-family="monospace">LATERAL</text>
-          <text x="200" y="50"  fill="#253652" font-size="8" font-family="monospace">SEPTAL</text>
-        </svg>
-
-        <!-- ── A2C ── -->
-        <svg id="view-a2c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
-          <!-- LV outline -->
-          <path d="M 85,30 Q 58,40 50,100 Q 44,170 140,290 Q 236,170 230,100 Q 222,40 195,30 Z" fill="#0f1520" stroke="#253652" stroke-width="1.5"/>
-
-          <!-- Anterior wall (left side = Ant, LAD) -->
-          <path id="seg-a2c-bant"  class="seg-path" d="M140,150 L85,30  Q112,28 140,28 Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')"/>
-          <path id="seg-a2c-mant"  class="seg-path" d="M140,150 L50,100 Q54,60 85,30  Z" data-seg="lad-ant"  onclick="cycleSeg('lad-ant')"/>
-          <path id="seg-a2c-aant"  class="seg-path" d="M140,150 L56,175 Q48,135 50,100 Z" data-seg="lad-alat" onclick="cycleSeg('lad-alat')"/>
-
-          <!-- Apex -->
-          <path id="seg-a2c-apex"  class="seg-path" d="M140,150 L56,175 Q90,255 140,290 Q190,255 224,175 Z" data-seg="lad-apex" onclick="cycleSeg('lad-apex')"/>
-
-          <!-- Inferior wall (right side = Inf, RCA) -->
-          <path id="seg-a2c-ainf"  class="seg-path" d="M140,150 L224,175 Q230,135 230,100 Z" data-seg="rca-inf" onclick="cycleSeg('rca-inf')"/>
-          <path id="seg-a2c-minf"  class="seg-path" d="M140,150 L230,100 Q226,60 195,30 Z"  data-seg="rca-inf" onclick="cycleSeg('rca-inf')"/>
-          <path id="seg-a2c-binf"  class="seg-path" d="M140,150 L195,30 Q168,28 140,28  Z"  data-seg="rca-ilat" onclick="cycleSeg('rca-ilat')"/>
-
-          <!-- MV -->
-          <line x1="85" y1="30" x2="195" y2="30" stroke="#253652" stroke-width="1" stroke-dasharray="3,3"/>
-          <circle cx="140" cy="150" r="3" fill="#253652"/>
-
-          <!-- Labels -->
-          <text class="seg-lbl" x="96"  y="52"  text-anchor="middle">BasAnt</text>
-          <text class="seg-lbl" x="78"  y="124" text-anchor="middle">MidAnt</text>
-          <text class="seg-lbl" x="90"  y="184" text-anchor="middle">AntLat</text>
-          <text class="seg-lbl" x="140" y="242" text-anchor="middle">Apex</text>
-          <text class="seg-lbl" x="192" y="184" text-anchor="middle">InfLat</text>
-          <text class="seg-lbl" x="202" y="124" text-anchor="middle">MidInf</text>
-          <text class="seg-lbl" x="184" y="52"  text-anchor="middle">BasInf</text>
-
-          <!-- Orientation -->
-          <text x="140" y="310" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">APEX ↓</text>
-          <text x="10"  y="50"  fill="#253652" font-size="8" font-family="monospace">ANTERIOR</text>
-          <text x="192" y="50"  fill="#253652" font-size="8" font-family="monospace">INFERIOR</text>
-        </svg>
-
-        <!-- ── Bull's Eye ── -->
-        <svg id="view-bull" class="rwma-svg" style="display:none" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-          <!-- Outer ring (Basal) — 6 segments -->
-          <path id="seg-bull-bant"  class="seg-path" d="M140,140 L140,12  A128,128 0 0,1 222,62  Z" data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
-          <path id="seg-bull-basep" class="seg-path" d="M140,140 L222,62  A128,128 0 0,1 268,140 Z" data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
-          <path id="seg-bull-bisep" class="seg-path" d="M140,140 L268,140 A128,128 0 0,1 222,218 Z" data-seg="rca-isep"  onclick="cycleSeg('rca-isep')"/>
-          <path id="seg-bull-binf"  class="seg-path" d="M140,140 L222,218 A128,128 0 0,1 140,268 Z" data-seg="rca-inf"   onclick="cycleSeg('rca-inf')"/>
-          <path id="seg-bull-bilat" class="seg-path" d="M140,140 L140,268 A128,128 0 0,1 58,218  Z" data-seg="rca-ilat"  onclick="cycleSeg('rca-ilat')"/>
-          <path id="seg-bull-bplat" class="seg-path" d="M140,140 L58,218  A128,128 0 0,1 12,140  Z" data-seg="lcx-plat"  onclick="cycleSeg('lcx-plat')"/>
-          <path id="seg-bull-bpost" class="seg-path" d="M140,140 L12,140  A128,128 0 0,1 58,62   Z" data-seg="lcx-post"  onclick="cycleSeg('lcx-post')"/>
-          <path id="seg-bull-balat" class="seg-path" d="M140,140 L58,62   A128,128 0 0,1 140,12  Z" data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
-
-          <!-- Mid ring — 6 segments (r=84) -->
-          <path id="seg-bull-mant"  class="seg-path" d="M140,140 L140,56  A84,84 0 0,1 213,97  Z"   data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
-          <path id="seg-bull-masep" class="seg-path" d="M140,140 L213,97  A84,84 0 0,1 224,140 Z"   data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
-          <path id="seg-bull-misep" class="seg-path" d="M140,140 L224,140 A84,84 0 0,1 213,183 Z"   data-seg="rca-isep"  onclick="cycleSeg('rca-isep')"/>
-          <path id="seg-bull-minf"  class="seg-path" d="M140,140 L213,183 A84,84 0 0,1 140,224 Z"   data-seg="rca-inf"   onclick="cycleSeg('rca-inf')"/>
-          <path id="seg-bull-milat" class="seg-path" d="M140,140 L140,224 A84,84 0 0,1 67,183  Z"   data-seg="rca-ilat"  onclick="cycleSeg('rca-ilat')"/>
-          <path id="seg-bull-mlat"  class="seg-path" d="M140,140 L67,183  A84,84 0 0,1 56,140  Z"   data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
-          <path id="seg-bull-mpost" class="seg-path" d="M140,140 L56,140  A84,84 0 0,1 67,97   Z"   data-seg="lcx-post"  onclick="cycleSeg('lcx-post')"/>
-          <path id="seg-bull-mplat" class="seg-path" d="M140,140 L67,97   A84,84 0 0,1 140,56  Z"   data-seg="lcx-plat"  onclick="cycleSeg('lcx-plat')"/>
-
-          <!-- Apical ring — 4 segments (r=44) -->
-          <path id="seg-bull-aant"  class="seg-path" d="M140,140 L140,96  A44,44 0 0,1 184,140 Z"   data-seg="lad-ant"   onclick="cycleSeg('lad-ant')"/>
-          <path id="seg-bull-asep"  class="seg-path" d="M140,140 L184,140 A44,44 0 0,1 140,184 Z"   data-seg="lad-asep"  onclick="cycleSeg('lad-asep')"/>
-          <path id="seg-bull-ainf"  class="seg-path" d="M140,140 L140,184 A44,44 0 0,1 96,140  Z"   data-seg="rca-inf"   onclick="cycleSeg('rca-inf')"/>
-          <path id="seg-bull-alat"  class="seg-path" d="M140,140 L96,140  A44,44 0 0,1 140,96  Z"   data-seg="lcx-lat"   onclick="cycleSeg('lcx-lat')"/>
-
-          <!-- Apex center -->
-          <circle id="seg-bull-capex" class="seg-path" cx="140" cy="140" r="18" data-seg="lad-apex" onclick="cycleSeg('lad-apex')" style="cursor:pointer"/>
-          <text x="140" y="144" fill="#6a7a9a" font-size="8" font-family="monospace" text-anchor="middle" style="pointer-events:none">Apex</text>
-
-          <!-- Ring dividers -->
-          <circle cx="140" cy="140" r="44" fill="none" stroke="#1e2d4a" stroke-width="1.5"/>
-          <circle cx="140" cy="140" r="84" fill="none" stroke="#1e2d4a" stroke-width="1.5"/>
+          <circle cx="140" cy="140" r="50" fill="#0a0d14" stroke="#253652" stroke-width="1"/>
+          <text x="140" y="138" fill="#4a5a7a" font-size="8" font-family="monospace" text-anchor="middle">LV</text>
+          <text x="140" y="150" fill="#4a5a7a" font-size="7" font-family="monospace" text-anchor="middle">cavity</text>
+          <path id="seg-psax-m-ant" class="seg-path" d="M 115.0,96.7 L 76.0,29.1 A 128,128 0 0,1 204.0,29.1 L 165.0,96.7 A 50,50 0 0,0 115.0,96.7 Z" data-seg="m-ant" onclick="cycleSeg('m-ant')"/>
+          <path id="seg-psax-m-alat" class="seg-path" d="M 165.0,96.7 L 204.0,29.1 A 128,128 0 0,1 268.0,140.0 L 190.0,140.0 A 50,50 0 0,0 165.0,96.7 Z" data-seg="m-alat" onclick="cycleSeg('m-alat')"/>
+          <path id="seg-psax-m-ilat" class="seg-path" d="M 190.0,140.0 L 268.0,140.0 A 128,128 0 0,1 204.0,250.9 L 165.0,183.3 A 50,50 0 0,0 190.0,140.0 Z" data-seg="m-ilat" onclick="cycleSeg('m-ilat')"/>
+          <path id="seg-psax-m-inf" class="seg-path" d="M 165.0,183.3 L 204.0,250.9 A 128,128 0 0,1 76.0,250.9 L 115.0,183.3 A 50,50 0 0,0 165.0,183.3 Z" data-seg="m-inf" onclick="cycleSeg('m-inf')"/>
+          <path id="seg-psax-m-isep" class="seg-path" d="M 115.0,183.3 L 76.0,250.9 A 128,128 0 0,1 12.0,140.0 L 90.0,140.0 A 50,50 0 0,0 115.0,183.3 Z" data-seg="m-isep" onclick="cycleSeg('m-isep')"/>
+          <path id="seg-psax-m-asep" class="seg-path" d="M 90.0,140.0 L 12.0,140.0 A 128,128 0 0,1 76.0,29.1 L 115.0,96.7 A 50,50 0 0,0 90.0,140.0 Z" data-seg="m-asep" onclick="cycleSeg('m-asep')"/>
           <circle cx="140" cy="140" r="128" fill="none" stroke="#253652" stroke-width="1.5"/>
+          <text x="140" y="9"   fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">ANT</text>
+          <text x="272" y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">LAT</text>
+          <text x="140" y="278" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">INF</text>
+          <text x="8"   y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">SEP</text>
+          <text x="35"  y="100" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">RV</text>
+        </svg>
 
-          <!-- Orientation labels -->
-          <text x="140" y="9"   fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">ANT</text>
-          <text x="272" y="144" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">SEP</text>
-          <text x="140" y="278" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">INF</text>
-          <text x="8"   y="144" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">LAT</text>
-          <text x="140" y="278" fill="#253652" font-size="8" font-family="monospace" text-anchor="middle">INF</text>
+                <!-- ── A4C (apex at top) ── -->
+        <svg id="view-a4c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- LV chamber outline (apex at TOP) -->
+          <path d="M 140,25 Q 90,30 75,90 L 75,200 L 100,210 L 180,210 L 205,200 L 205,90 Q 190,30 140,25 Z"
+                fill="#0a0d14" stroke="#253652" stroke-width="1.5"/>
+          
+          <!-- LEFT side (Septal walls) - viewer's left -->
+          <!-- Apical Septal (a-sep) -->
+          <path id="seg-a4c-a-sep" class="seg-path"
+                d="M 140,25 Q 90,30 75,90 L 105,90 Q 115,40 140,40 Z"
+                data-seg="a-sep" onclick="cycleSeg('a-sep')"/>
+          <!-- Mid Inferoseptal (4-chamber view shows inferoseptum on viewer left) -->
+          <path id="seg-a4c-m-isep" class="seg-path"
+                d="M 75,90 L 75,150 L 105,150 L 105,90 Z"
+                data-seg="m-isep" onclick="cycleSeg('m-isep')"/>
+          <!-- Basal Inferoseptal -->
+          <path id="seg-a4c-b-isep" class="seg-path"
+                d="M 75,150 L 75,200 L 100,210 L 105,200 L 105,150 Z"
+                data-seg="b-isep" onclick="cycleSeg('b-isep')"/>
+          
+          <!-- RIGHT side (Lateral walls) - viewer's right -->
+          <!-- Apical Lateral -->
+          <path id="seg-a4c-a-lat" class="seg-path"
+                d="M 140,25 Q 190,30 205,90 L 175,90 Q 165,40 140,40 Z"
+                data-seg="a-lat" onclick="cycleSeg('a-lat')"/>
+          <!-- Mid Lateral (= Mid Anterolateral) -->
+          <path id="seg-a4c-m-alat" class="seg-path"
+                d="M 205,90 L 205,150 L 175,150 L 175,90 Z"
+                data-seg="m-alat" onclick="cycleSeg('m-alat')"/>
+          <!-- Basal Lateral -->
+          <path id="seg-a4c-b-alat" class="seg-path"
+                d="M 205,150 L 205,200 L 180,210 L 175,200 L 175,150 Z"
+                data-seg="b-alat" onclick="cycleSeg('b-alat')"/>
+          
+          <!-- Apex (true apex cap) -->
+          <path id="seg-a4c-apex" class="seg-path"
+                d="M 105,90 Q 115,40 140,40 Q 165,40 175,90 L 175,75 Q 158,55 140,55 Q 122,55 105,75 Z"
+                data-seg="apex" onclick="cycleSeg('apex')"/>
+          
+          <!-- LV cavity outline -->
+          <path d="M 105,75 Q 122,55 140,55 Q 158,55 175,75 L 175,200 L 105,200 Z"
+                fill="none" stroke="#253652" stroke-width="1" stroke-dasharray="3,2"/>
+          
+          <!-- LA/RA box at bottom -->
+          <path d="M 100,210 L 75,215 L 65,290 L 215,290 L 205,215 L 180,210 Z"
+                fill="#0f1520" stroke="#1e2d4a" stroke-width="1"/>
+          <line x1="140" y1="210" x2="140" y2="290" stroke="#1e2d4a" stroke-width="1"/>
+          <text x="105" y="255" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">RA</text>
+          <text x="175" y="255" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">LA</text>
+          
+          <!-- Labels -->
+          <text x="140" y="14" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">↑ APEX</text>
+          <text x="50" y="124" fill="#4a5a7a" font-size="8" font-family="monospace" text-anchor="middle">SEPTUM</text>
+          <text x="232" y="124" fill="#4a5a7a" font-size="8" font-family="monospace" text-anchor="middle">LATERAL</text>
+          <text x="140" y="308" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">ATRIA</text>
+          
+          <!-- Level labels -->
+          <text x="50" y="65"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">apical</text>
+          <text x="50" y="124" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">mid</text>
+          <text x="50" y="178" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">basal</text>
+        </svg>
 
-          <!-- Ring labels (outside) -->
-          <text x="140" y="34"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">BASAL</text>
-          <text x="140" y="74"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">MID</text>
-          <text x="140" y="110" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">APICAL</text>
+        <!-- ── A2C (apex at top) ── -->
+        <svg id="view-a2c" class="rwma-svg" style="display:none" viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- LV chamber (apex at TOP) -->
+          <path d="M 140,25 Q 90,30 75,90 L 75,200 L 100,210 L 180,210 L 205,200 L 205,90 Q 190,30 140,25 Z"
+                fill="#0a0d14" stroke="#253652" stroke-width="1.5"/>
+          
+          <!-- LEFT side (Inferior walls) -->
+          <path id="seg-a2c-a-inf" class="seg-path"
+                d="M 140,25 Q 90,30 75,90 L 105,90 Q 115,40 140,40 Z"
+                data-seg="a-inf" onclick="cycleSeg('a-inf')"/>
+          <path id="seg-a2c-m-inf" class="seg-path"
+                d="M 75,90 L 75,150 L 105,150 L 105,90 Z"
+                data-seg="m-inf" onclick="cycleSeg('m-inf')"/>
+          <path id="seg-a2c-b-inf" class="seg-path"
+                d="M 75,150 L 75,200 L 100,210 L 105,200 L 105,150 Z"
+                data-seg="b-inf" onclick="cycleSeg('b-inf')"/>
+          
+          <!-- RIGHT side (Anterior walls) -->
+          <path id="seg-a2c-a-ant" class="seg-path"
+                d="M 140,25 Q 190,30 205,90 L 175,90 Q 165,40 140,40 Z"
+                data-seg="a-ant" onclick="cycleSeg('a-ant')"/>
+          <path id="seg-a2c-m-ant" class="seg-path"
+                d="M 205,90 L 205,150 L 175,150 L 175,90 Z"
+                data-seg="m-ant" onclick="cycleSeg('m-ant')"/>
+          <path id="seg-a2c-b-ant" class="seg-path"
+                d="M 205,150 L 205,200 L 180,210 L 175,200 L 175,150 Z"
+                data-seg="b-ant" onclick="cycleSeg('b-ant')"/>
+          
+          <!-- Apex -->
+          <path id="seg-a2c-apex" class="seg-path"
+                d="M 105,90 Q 115,40 140,40 Q 165,40 175,90 L 175,75 Q 158,55 140,55 Q 122,55 105,75 Z"
+                data-seg="apex" onclick="cycleSeg('apex')"/>
+          
+          <!-- LV cavity outline -->
+          <path d="M 105,75 Q 122,55 140,55 Q 158,55 175,75 L 175,200 L 105,200 Z"
+                fill="none" stroke="#253652" stroke-width="1" stroke-dasharray="3,2"/>
+          
+          <!-- LA -->
+          <path d="M 100,210 L 75,215 L 75,290 L 205,290 L 205,215 L 180,210 Z"
+                fill="#0f1520" stroke="#1e2d4a" stroke-width="1"/>
+          <text x="140" y="255" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">LA</text>
+          
+          <!-- Labels -->
+          <text x="140" y="14" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">↑ APEX</text>
+          <text x="50" y="124" fill="#4a5a7a" font-size="8" font-family="monospace" text-anchor="middle">INFERIOR</text>
+          <text x="232" y="124" fill="#4a5a7a" font-size="8" font-family="monospace" text-anchor="middle">ANTERIOR</text>
+          
+          <text x="50" y="65"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">apical</text>
+          <text x="50" y="124" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">mid</text>
+          <text x="50" y="178" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">basal</text>
+        </svg>
+
+        <!-- ── BULL'S-EYE ── -->
+        <svg id="view-bull" class="rwma-svg" style="display:none" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+          <path id="seg-bull-b-ant" class="seg-path" d="M 95.0,62.1 L 75.0,27.4 A 130,130 0 0,1 205.0,27.4 L 185.0,62.1 A 90,90 0 0,0 95.0,62.1 Z" data-seg="b-ant" onclick="cycleSeg('b-ant')"/>
+          <path id="seg-bull-b-asep" class="seg-path" d="M 185.0,62.1 L 205.0,27.4 A 130,130 0 0,1 270.0,140.0 L 230.0,140.0 A 90,90 0 0,0 185.0,62.1 Z" data-seg="b-asep" onclick="cycleSeg('b-asep')"/>
+          <path id="seg-bull-b-isep" class="seg-path" d="M 230.0,140.0 L 270.0,140.0 A 130,130 0 0,1 205.0,252.6 L 185.0,217.9 A 90,90 0 0,0 230.0,140.0 Z" data-seg="b-isep" onclick="cycleSeg('b-isep')"/>
+          <path id="seg-bull-b-inf" class="seg-path" d="M 185.0,217.9 L 205.0,252.6 A 130,130 0 0,1 75.0,252.6 L 95.0,217.9 A 90,90 0 0,0 185.0,217.9 Z" data-seg="b-inf" onclick="cycleSeg('b-inf')"/>
+          <path id="seg-bull-b-ilat" class="seg-path" d="M 95.0,217.9 L 75.0,252.6 A 130,130 0 0,1 10.0,140.0 L 50.0,140.0 A 90,90 0 0,0 95.0,217.9 Z" data-seg="b-ilat" onclick="cycleSeg('b-ilat')"/>
+          <path id="seg-bull-b-alat" class="seg-path" d="M 50.0,140.0 L 10.0,140.0 A 130,130 0 0,1 75.0,27.4 L 95.0,62.1 A 90,90 0 0,0 50.0,140.0 Z" data-seg="b-alat" onclick="cycleSeg('b-alat')"/>
+          <path id="seg-bull-m-ant" class="seg-path" d="M 115.0,96.7 L 95.0,62.1 A 90,90 0 0,1 185.0,62.1 L 165.0,96.7 A 50,50 0 0,0 115.0,96.7 Z" data-seg="m-ant" onclick="cycleSeg('m-ant')"/>
+          <path id="seg-bull-m-asep" class="seg-path" d="M 165.0,96.7 L 185.0,62.1 A 90,90 0 0,1 230.0,140.0 L 190.0,140.0 A 50,50 0 0,0 165.0,96.7 Z" data-seg="m-asep" onclick="cycleSeg('m-asep')"/>
+          <path id="seg-bull-m-isep" class="seg-path" d="M 190.0,140.0 L 230.0,140.0 A 90,90 0 0,1 185.0,217.9 L 165.0,183.3 A 50,50 0 0,0 190.0,140.0 Z" data-seg="m-isep" onclick="cycleSeg('m-isep')"/>
+          <path id="seg-bull-m-inf" class="seg-path" d="M 165.0,183.3 L 185.0,217.9 A 90,90 0 0,1 95.0,217.9 L 115.0,183.3 A 50,50 0 0,0 165.0,183.3 Z" data-seg="m-inf" onclick="cycleSeg('m-inf')"/>
+          <path id="seg-bull-m-ilat" class="seg-path" d="M 115.0,183.3 L 95.0,217.9 A 90,90 0 0,1 50.0,140.0 L 90.0,140.0 A 50,50 0 0,0 115.0,183.3 Z" data-seg="m-ilat" onclick="cycleSeg('m-ilat')"/>
+          <path id="seg-bull-m-alat" class="seg-path" d="M 90.0,140.0 L 50.0,140.0 A 90,90 0 0,1 95.0,62.1 L 115.0,96.7 A 50,50 0 0,0 90.0,140.0 Z" data-seg="m-alat" onclick="cycleSeg('m-alat')"/>
+          <path id="seg-bull-a-ant" class="seg-path" d="M 127.3,127.3 L 104.6,104.6 A 50,50 0 0,1 175.4,104.6 L 152.7,127.3 A 18,18 0 0,0 127.3,127.3 Z" data-seg="a-ant" onclick="cycleSeg('a-ant')"/>
+          <path id="seg-bull-a-sep" class="seg-path" d="M 152.7,127.3 L 175.4,104.6 A 50,50 0 0,1 175.4,175.4 L 152.7,152.7 A 18,18 0 0,0 152.7,127.3 Z" data-seg="a-sep" onclick="cycleSeg('a-sep')"/>
+          <path id="seg-bull-a-inf" class="seg-path" d="M 152.7,152.7 L 175.4,175.4 A 50,50 0 0,1 104.6,175.4 L 127.3,152.7 A 18,18 0 0,0 152.7,152.7 Z" data-seg="a-inf" onclick="cycleSeg('a-inf')"/>
+          <path id="seg-bull-a-lat" class="seg-path" d="M 127.3,152.7 L 104.6,175.4 A 50,50 0 0,1 104.6,104.6 L 127.3,127.3 A 18,18 0 0,0 127.3,152.7 Z" data-seg="a-lat" onclick="cycleSeg('a-lat')"/>
+          <circle id="seg-bull-apex" class="seg-path" cx="140" cy="140" r="16" data-seg="apex" onclick="cycleSeg('apex')" style="cursor:pointer"/>
+          <text x="140" y="143" fill="#6a7a9a" font-size="7" font-family="monospace" text-anchor="middle" style="pointer-events:none">17</text>
+          <circle cx="140" cy="140" r="18" fill="none" stroke="#1e2d4a" stroke-width="1"/>
+          <circle cx="140" cy="140" r="50" fill="none" stroke="#1e2d4a" stroke-width="1"/>
+          <circle cx="140" cy="140" r="90" fill="none" stroke="#1e2d4a" stroke-width="1"/>
+          <circle cx="140" cy="140" r="130" fill="none" stroke="#1e2d4a" stroke-width="1"/>
+          <text x="140" y="9"   fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">ANT</text>
+          <text x="272" y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">SEP</text>
+          <text x="140" y="278" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">INF</text>
+          <text x="8"   y="144" fill="#4a5a7a" font-size="9" font-family="monospace" text-anchor="middle">LAT</text>
+          <text x="140" y="35"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">basal</text>
+          <text x="140" y="75"  fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">mid</text>
+          <text x="140" y="113" fill="#2d3e5c" font-size="7" font-family="monospace" text-anchor="middle">api</text>
         </svg>
       </div><!-- /diagram-wrap -->
 
@@ -822,16 +868,27 @@
 
       <!-- Summary table -->
       <div class="rwma-summary" id="rwmaSummaryTable">
-        <div class="rwma-sum-row" id="sum-lad-ant">  <span class="rwma-sum-seg">Ant</span>      <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-ant">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-lad-asep"> <span class="rwma-sum-seg">AntSep</span>   <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-asep">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-lad-alat"> <span class="rwma-sum-seg">AntLat</span>   <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-alat">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-lad-apex"> <span class="rwma-sum-seg">Apex</span>     <span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-lad-apex">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-rca-inf">  <span class="rwma-sum-seg">Inf</span>      <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-inf">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-rca-isep"> <span class="rwma-sum-seg">InfSep</span>   <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-isep">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-rca-ilat"> <span class="rwma-sum-seg">InfLat</span>   <span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-rca-ilat">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-lcx-lat">  <span class="rwma-sum-seg">Lat</span>      <span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-lcx-lat">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-lcx-plat"> <span class="rwma-sum-seg">PostLat</span>  <span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-lcx-plat">Normal</span></div>
-        <div class="rwma-sum-row" id="sum-lcx-post"> <span class="rwma-sum-seg">Post</span>     <span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-lcx-post">Normal</span></div>
+        <div class="rwma-sum-ring-label">BASAL</div>
+        <div class="rwma-sum-row" id="sum-b-ant"><span class="rwma-sum-seg">B-Anterior</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-b-ant">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-b-asep"><span class="rwma-sum-seg">B-AntSeptal</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-b-asep">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-b-isep"><span class="rwma-sum-seg">B-InfSeptal</span><span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-b-isep">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-b-inf"><span class="rwma-sum-seg">B-Inferior</span><span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-b-inf">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-b-ilat"><span class="rwma-sum-seg">B-InfLateral</span><span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-b-ilat">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-b-alat"><span class="rwma-sum-seg">B-AntLateral</span><span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-b-alat">Normal</span></div>
+        <div class="rwma-sum-ring-label">MID</div>
+        <div class="rwma-sum-row" id="sum-m-ant"><span class="rwma-sum-seg">M-Anterior</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-m-ant">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-m-asep"><span class="rwma-sum-seg">M-AntSeptal</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-m-asep">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-m-isep"><span class="rwma-sum-seg">M-InfSeptal</span><span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-m-isep">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-m-inf"><span class="rwma-sum-seg">M-Inferior</span><span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-m-inf">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-m-ilat"><span class="rwma-sum-seg">M-InfLateral</span><span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-m-ilat">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-m-alat"><span class="rwma-sum-seg">M-AntLateral</span><span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-m-alat">Normal</span></div>
+        <div class="rwma-sum-ring-label">APICAL</div>
+        <div class="rwma-sum-row" id="sum-a-ant"><span class="rwma-sum-seg">Apical-Ant</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-a-ant">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-a-sep"><span class="rwma-sum-seg">Apical-Septal</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-a-sep">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-a-inf"><span class="rwma-sum-seg">Apical-Inf</span><span class="rwma-sum-vessel rca-c">RCA</span><span class="rwma-sum-val" id="sval-a-inf">Normal</span></div>
+        <div class="rwma-sum-row" id="sum-a-lat"><span class="rwma-sum-seg">Apical-Lat</span><span class="rwma-sum-vessel lcx-c">LCx</span><span class="rwma-sum-val" id="sval-a-lat">Normal</span></div>
+        <div class="rwma-sum-ring-label">APEX</div>
+        <div class="rwma-sum-row" id="sum-apex"><span class="rwma-sum-seg">Apex (cap)</span><span class="rwma-sum-vessel lad-c">LAD</span><span class="rwma-sum-val" id="sval-apex">Normal</span></div>
       </div>
 
     </div>
@@ -1110,9 +1167,14 @@ const state = {
     'fast-ruq':'neg','fast-luq':'neg','fast-pelvis':'neg'
   },
   rwma: {
-    'lad-ant':'norm','lad-asep':'norm','lad-alat':'norm','lad-apex':'norm',
-    'rca-inf':'norm','rca-isep':'norm','rca-ilat':'norm',
-    'lcx-lat':'norm','lcx-plat':'norm','lcx-post':'norm'
+    // BASAL (6)
+    'b-ant':'norm','b-asep':'norm','b-isep':'norm','b-inf':'norm','b-ilat':'norm','b-alat':'norm',
+    // MID (6)
+    'm-ant':'norm','m-asep':'norm','m-isep':'norm','m-inf':'norm','m-ilat':'norm','m-alat':'norm',
+    // APICAL (4)
+    'a-ant':'norm','a-sep':'norm','a-inf':'norm','a-lat':'norm',
+    // APEX (1)
+    'apex':'norm'
   },
   ivcPlethoraAuto: false,
   ivcCategory: null,
@@ -1121,9 +1183,9 @@ const state = {
 
 // RWMA vessel map
 const RWMA_VESSELS = {
-  lad: ['lad-ant','lad-asep','lad-alat','lad-apex'],
-  rca: ['rca-inf','rca-isep','rca-ilat'],
-  lcx: ['lcx-lat','lcx-plat','lcx-post']
+  lad: ['b-ant','b-asep','m-ant','m-asep','a-ant','a-sep','apex'],
+  rca: ['b-isep','b-inf','m-isep','m-inf','a-inf'],
+  lcx: ['b-ilat','b-alat','m-ilat','m-alat','a-lat']
 };
 
 // ── TIME ───────────────────────────────────────────────────
@@ -1157,22 +1219,36 @@ function setToggle(name, val) {
 // seg → which segments map to which canonical key
 // Multiple SVG paths may share the same state key (multi-view)
 const SEG_VESSEL = {
-  'lad-ant':'lad','lad-asep':'lad','lad-alat':'lad','lad-apex':'lad',
-  'rca-inf':'rca','rca-isep':'rca','rca-ilat':'rca',
-  'lcx-lat':'lcx','lcx-plat':'lcx','lcx-post':'lcx'
+  // ── BASAL ──
+  'b-ant':'lad','b-asep':'lad','b-isep':'rca','b-inf':'rca','b-ilat':'lcx','b-alat':'lcx',
+  // ── MID ──
+  'm-ant':'lad','m-asep':'lad','m-isep':'rca','m-inf':'rca','m-ilat':'lcx','m-alat':'lcx',
+  // ── APICAL ── (apex 4 segments — LAD dominant; inf/lat sometimes RCA/LCx)
+  'a-ant':'lad','a-sep':'lad','a-inf':'rca','a-lat':'lcx',
+  // ── APEX ──
+  'apex':'lad'
+};
+const SEG_LABELS = {
+  'b-ant':'Basal Anterior','b-asep':'Basal Anteroseptal','b-isep':'Basal Inferoseptal',
+  'b-inf':'Basal Inferior','b-ilat':'Basal Inferolateral','b-alat':'Basal Anterolateral',
+  'm-ant':'Mid Anterior','m-asep':'Mid Anteroseptal','m-isep':'Mid Inferoseptal',
+  'm-inf':'Mid Inferior','m-ilat':'Mid Inferolateral','m-alat':'Mid Anterolateral',
+  'a-ant':'Apical Anterior','a-sep':'Apical Septal','a-inf':'Apical Inferior','a-lat':'Apical Lateral',
+  'apex':'Apex'
 };
 
 const VIEW_LABELS = {
-  psax: 'Parasternal Short Axis — 탭 또는 구역을 터치하여 입력',
-  a4c:  'Apical 4-Chamber — 구역을 터치하여 입력',
-  a2c:  'Apical 2-Chamber — 구역을 터치하여 입력',
-  bull: "Bull's Eye (17-seg) — 바깥=Basal · 중간=Mid · 안=Apical"
+  plax: 'Parasternal Long Axis — Anteroseptal & Inferolateral walls (apex ←)',
+  psax: 'Parasternal Short Axis — Mid level (papillary muscle, 6 segments)',
+  a4c:  'Apical 4-Chamber — Septal & Lateral walls (apex ↑)',
+  a2c:  'Apical 2-Chamber — Inferior & Anterior walls (apex ↑)',
+  bull: 'ASE 17-segment Bull\'s-eye polar map'
 };
 
 let currentView = 'psax';
 
 function switchView(v) {
-  ['psax','a4c','a2c','bull'].forEach(id => {
+  ['plax','psax','a4c','a2c','bull'].forEach(id => {
     document.getElementById('view-'+id).style.display = id===v ? 'block' : 'none';
     document.getElementById('tab-'+id).className = 'rwma-tab' + (id===v ? ' active' : '');
   });
@@ -1738,18 +1814,18 @@ function getLungSummary() {
 
 function getRwmaText() {
   const lines = [];
-  const labels = {
-    'lad-ant':'Ant','lad-asep':'AntSep','lad-alat':'AntLat','lad-apex':'Apex',
-    'rca-inf':'Inf','rca-isep':'InfSep','rca-ilat':'InfLat',
-    'lcx-lat':'Lat','lcx-plat':'PostLat','lcx-post':'Post'
+  const SHORT = {
+    'b-ant':'B-Ant','b-asep':'B-AntSep','b-isep':'B-InfSep','b-inf':'B-Inf','b-ilat':'B-InfLat','b-alat':'B-AntLat',
+    'm-ant':'M-Ant','m-asep':'M-AntSep','m-isep':'M-InfSep','m-inf':'M-Inf','m-ilat':'M-InfLat','m-alat':'M-AntLat',
+    'a-ant':'A-Ant','a-sep':'A-Sep','a-inf':'A-Inf','a-lat':'A-Lat','apex':'Apex'
   };
   for (const [vessel, segs] of Object.entries(RWMA_VESSELS)) {
-    const parts = segs.map(s=>{
+    const parts = segs.map(s => {
       const v = state.rwma[s];
-      if(v==='norm') return null;
-      return `${labels[s]}:${v==='hypo'?'Hypo':'Ak'}`;
+      if (v === 'norm') return null;
+      return `${SHORT[s] || s}:${v === 'hypo' ? 'Hypo' : 'Ak'}`;
     }).filter(Boolean);
-    if(parts.length) lines.push(`${vessel.toUpperCase()}[${parts.join(',')}]`);
+    if (parts.length) lines.push(`${vessel.toUpperCase()}[${parts.join(',')}]`);
   }
   return lines.length ? lines.join('; ') : 'No RWMA';
 }
