@@ -673,9 +673,9 @@
     <div class="section-header" onclick="toggleSection('cardiac')">
       <span class="section-icon">❤️</span>
       <span class="section-title">Cardiac</span>
-      <button class="skip-toggle" id="skip-cardiac" onclick="event.stopPropagation(); toggleSkip('cardiac')">안봤음</button><span class="section-toggle open" id="toggle-cardiac">▼</span>
+      <button class="skip-toggle" id="skip-cardiac" onclick="event.stopPropagation(); toggleSkip('cardiac')">안봤음</button><span class="section-toggle" id="toggle-cardiac">▼</span>
     </div>
-    <div class="section-body" id="body-cardiac">
+    <div class="section-body collapsed" id="body-cardiac">
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
           <div class="field-label">EF <span class="unit">(%)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('ef')">📐 측정법</button></div>
@@ -722,9 +722,9 @@
     <div class="section-header" onclick="toggleSection('rwma')">
       <span class="section-icon">🫀</span>
       <span class="section-title">RWMA</span>
-      <button class="skip-toggle" id="skip-rwma" onclick="event.stopPropagation(); toggleSkip('rwma')">안봤음</button><span class="section-toggle open" id="toggle-rwma">▼</span>
+      <button class="skip-toggle" id="skip-rwma" onclick="event.stopPropagation(); toggleSkip('rwma')">안봤음</button><span class="section-toggle" id="toggle-rwma">▼</span>
     </div>
-    <div class="section-body" id="body-rwma">
+    <div class="section-body collapsed" id="body-rwma">
 
       <!-- View Tabs -->
       <div class="rwma-tabs">
@@ -1002,9 +1002,9 @@
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
       <span class="section-title">Lung — BLUE Protocol</span>
-      <button class="skip-toggle" id="skip-lung" onclick="event.stopPropagation(); toggleSkip('lung')">안봤음</button><span class="section-toggle open" id="toggle-lung">▼</span>
+      <button class="skip-toggle" id="skip-lung" onclick="event.stopPropagation(); toggleSkip('lung')">안봤음</button><span class="section-toggle" id="toggle-lung">▼</span>
     </div>
-    <div class="section-body" id="body-lung">
+    <div class="section-body collapsed" id="body-lung">
       <!-- Legend + guide -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
         <div style="display:flex;gap:4px;flex-wrap:wrap">
@@ -1089,9 +1089,9 @@
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
       <span class="section-title">Vascular / IVC</span>
-      <button class="skip-toggle" id="skip-vascular" onclick="event.stopPropagation(); toggleSkip('vascular')">안봤음</button><span class="section-toggle open" id="toggle-vascular">▼</span>
+      <button class="skip-toggle" id="skip-vascular" onclick="event.stopPropagation(); toggleSkip('vascular')">안봤음</button><span class="section-toggle" id="toggle-vascular">▼</span>
     </div>
-    <div class="section-body" id="body-vascular">
+    <div class="section-body collapsed" id="body-vascular">
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
           <div class="field-label">IVC Diameter <span class="unit">(cm)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('ivc')">📐 측정법</button></div>
@@ -1133,9 +1133,9 @@
     <div class="section-header" onclick="toggleSection('dvt')">
       <span class="section-icon">🦵</span>
       <span class="section-title">DVT Scan</span>
-      <button class="skip-toggle" id="skip-dvt" onclick="event.stopPropagation(); toggleSkip('dvt')">안봤음</button><span class="section-toggle open" id="toggle-dvt">▼</span>
+      <button class="skip-toggle" id="skip-dvt" onclick="event.stopPropagation(); toggleSkip('dvt')">안봤음</button><span class="section-toggle" id="toggle-dvt">▼</span>
     </div>
-    <div class="section-body" id="body-dvt">
+    <div class="section-body collapsed" id="body-dvt">
       <div style="margin-bottom:10px">
         <div class="dvt-side-label">RIGHT</div>
         <div class="grid-2">
@@ -1182,9 +1182,9 @@
     <div class="section-header" onclick="toggleSection('fast')">
       <span class="section-icon">🔬</span>
       <span class="section-title">FAST</span>
-      <button class="skip-toggle" id="skip-fast" onclick="event.stopPropagation(); toggleSkip('fast')">안봤음</button><span class="section-toggle open" id="toggle-fast">▼</span>
+      <button class="skip-toggle" id="skip-fast" onclick="event.stopPropagation(); toggleSkip('fast')">안봤음</button><span class="section-toggle" id="toggle-fast">▼</span>
     </div>
-    <div class="section-body" id="body-fast">
+    <div class="section-body collapsed" id="body-fast">
       <div class="grid-3">
         <div class="field">
           <div class="field-label">RUQ <button class="tip-btn" onclick="event.stopPropagation(); showTip('fast')">📐 측정법</button></div>
@@ -2217,6 +2217,15 @@ function resetAll() {
   state.impressionManuallyEdited = false;
   document.getElementById('impressionText').value = '';
   document.getElementById('efBar').style.width = '0%';
+
+  // 진단 섹션들을 다시 접힌 상태로 (Impression/Procedure는 그대로)
+  ['cardiac','rwma','lung','vascular','dvt','fast'].forEach(sec => {
+    const body = document.getElementById('body-' + sec);
+    const toggle = document.getElementById('toggle-' + sec);
+    if (body) body.classList.add('collapsed');
+    if (toggle) toggle.classList.remove('open');
+  });
+
   update();
 }
 
