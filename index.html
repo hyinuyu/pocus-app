@@ -1394,6 +1394,7 @@
 // ── STATE ──────────────────────────────────────────────────
 const state = {
   skipped: { cardiac:false, rwma:false, lung:false, vascular:false, dvt:false, fast:false },
+  assessed: { cardiac:false, rwma:false, lung:false, vascular:false, dvt:false, fast:false },
   toggles: {
     'peri':'neg','ivcPlethora':'neg',
     'dvt-rf':'neg','dvt-rp':'neg','dvt-lf':'neg','dvt-lp':'neg',
@@ -1430,8 +1431,14 @@ updateTime(); setInterval(updateTime, 30000);
 
 // ── SECTION TOGGLE ─────────────────────────────────────────
 function toggleSection(id) {
-  document.getElementById('body-'+id).classList.toggle('collapsed');
+  const body = document.getElementById('body-'+id);
+  body.classList.toggle('collapsed');
   document.getElementById('toggle-'+id).classList.toggle('open');
+  // 한 번이라도 열린 섹션은 평가한 것으로 표시
+  if (state.assessed && id in state.assessed && !body.classList.contains('collapsed')) {
+    state.assessed[id] = true;
+    update();
+  }
 }
 
 // ── TOGGLE BUTTONS ─────────────────────────────────────────
@@ -1890,8 +1897,8 @@ function buildConclusion() {
   const lines = [];
 
   // ─ Cardiac ─
-  if (sk.cardiac) {
-    lines.push('<span class="skip">심장 초음파는 시행하지 않았습니다.</span>');
+  if (sk.cardiac || !state.assessed.cardiac) {
+    // 평가 안함 - 출력 생략
   } else {
     const cardiacBits = [];
     if (ef !== null) {
@@ -1926,8 +1933,8 @@ function buildConclusion() {
   }
 
   // ─ RWMA ─
-  if (sk.rwma) {
-    lines.push('<span class="skip">국소벽운동은 평가하지 않았습니다.</span>');
+  if (sk.rwma || !state.assessed.rwma) {
+    // 생략
   } else {
     const rwmaSum = getRwmaSummary();
     if (rwmaSum.length === 0) {
@@ -1942,8 +1949,8 @@ function buildConclusion() {
   }
 
   // ─ Lung (BLUE) ─
-  if (sk.lung) {
-    lines.push('<span class="skip">폐 초음파는 시행하지 않았습니다.</span>');
+  if (sk.lung || !state.assessed.lung) {
+    // 생략
   } else {
     const z = blueState;
     const ant = [z['r-upper'],z['r-lower'],z['l-upper'],z['l-lower']];
@@ -1968,8 +1975,8 @@ function buildConclusion() {
   }
 
   // ─ IVC / Vascular ─
-  if (sk.vascular) {
-    lines.push('<span class="skip">IVC/대동맥은 평가하지 않았습니다.</span>');
+  if (sk.vascular || !state.assessed.vascular) {
+    // 생략
   } else {
     const vBits = [];
     if (ivc !== null) {
@@ -2002,8 +2009,8 @@ function buildConclusion() {
   }
 
   // ─ DVT ─
-  if (sk.dvt) {
-    lines.push('<span class="skip">DVT 평가는 시행하지 않았습니다.</span>');
+  if (sk.dvt || !state.assessed.dvt) {
+    // 생략
   } else {
     const dvtSites = [];
     if (state.toggles['dvt-rf']==='pos') dvtSites.push('우측 대퇴정맥');
@@ -2018,8 +2025,8 @@ function buildConclusion() {
   }
 
   // ─ FAST ─
-  if (sk.fast) {
-    lines.push('<span class="skip">FAST는 시행하지 않았습니다.</span>');
+  if (sk.fast || !state.assessed.fast) {
+    // 생략
   } else {
     const fastPos = [];
     if (state.toggles['fast-ruq']==='pos') fastPos.push('RUQ');
@@ -2032,6 +2039,9 @@ function buildConclusion() {
     }
   }
 
+  if (lines.length === 0) {
+    return '평가한 항목이 없습니다. 위 섹션을 펼쳐 입력해주세요.';
+  }
   return lines.join(' ');
 }
 
@@ -2096,48 +2106,36 @@ function copyReport() {
   const lines = ['[POCUS Report]'];
 
   // Cardiac
-  if (sk.cardiac) {
-    lines.push('- Cardiac: 평가 안함 (Not assessed)');
-  } else {
+  if (!sk.cardiac && state.assessed.cardiac) {
     lines.push(`- Cardiac: EF ${g('ef')}%, EPSS ${g('epss')}mm, RV/LV ${g('rvlv')}, E/e' ${g('ee')}, Pericardial Effusion: ${state.toggles['peri'].toUpperCase()}`);
   }
 
   // RWMA
-  if (sk.rwma) {
-    lines.push('- RWMA: 평가 안함');
-  } else {
+  if (!sk.rwma && state.assessed.rwma) {
     lines.push(`- RWMA: ${getRwmaText()}`);
   }
 
   // Vascular / IVC
-  if (sk.vascular) {
-    lines.push('- Hemodynamics: 평가 안함');
-  } else {
+  if (!sk.vascular && state.assessed.vascular) {
     const ivcPl = state.toggles['ivcPlethora']==='pos' ? 'Plethora(+)' : 'Plethora(-)';
     lines.push(`- Hemodynamics: IVC ${g('ivc')}cm (Collapsibility ${g('ivcCollapse')}%) ${ivcPl}`);
     lines.push(`- AAA: ${g('aaa')}cm`);
   }
 
   // Lung
-  if (sk.lung) {
-    lines.push('- Lung: 평가 안함');
-  } else {
+  if (!sk.lung && state.assessed.lung) {
     const lung = getLungSummary();
     lines.push(`- Lung (BLUE): Rt [${lung.rt}], Lt [${lung.lt}]`);
   }
 
   // FAST
-  if (sk.fast) {
-    lines.push('- FAST: 평가 안함');
-  } else {
+  if (!sk.fast && state.assessed.fast) {
     const fast = `RUQ:${state.toggles['fast-ruq'].toUpperCase()}, LUQ:${state.toggles['fast-luq'].toUpperCase()}, Pelvis:${state.toggles['fast-pelvis'].toUpperCase()}`;
     lines.push(`- FAST: ${fast}`);
   }
 
   // DVT
-  if (sk.dvt) {
-    lines.push('- DVT: 평가 안함');
-  } else {
+  if (!sk.dvt && state.assessed.dvt) {
     lines.push(`- DVT: Rt(F:${state.toggles['dvt-rf'].toUpperCase()}, P:${state.toggles['dvt-rp'].toUpperCase()}), Lt(F:${state.toggles['dvt-lf'].toUpperCase()}, P:${state.toggles['dvt-lp'].toUpperCase()})`);
   }
 
@@ -2224,6 +2222,7 @@ function resetAll() {
     const toggle = document.getElementById('toggle-' + sec);
     if (body) body.classList.add('collapsed');
     if (toggle) toggle.classList.remove('open');
+    state.assessed[sec] = false;  // 평가 기록도 초기화
   });
 
   update();
