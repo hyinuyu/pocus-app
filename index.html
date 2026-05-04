@@ -547,6 +547,104 @@
   }
   .btn-share-link:hover { background: rgba(0,212,255,0.15); }
 
+
+  /* ── PROCEDURE SECTION ── */
+  .proc-type-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    margin-top: 4px;
+  }
+  .proc-type-btn {
+    padding: 12px 8px; border: 1px solid var(--border);
+    border-radius: 7px; background: var(--bg2);
+    color: var(--text2); font-family: var(--mono);
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s; text-align: center;
+  }
+  .proc-type-btn:hover { border-color: var(--border2); color: var(--text); }
+  .proc-type-btn.active {
+    background: rgba(0,212,255,.12);
+    border-color: rgba(0,212,255,.5);
+    color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(0,212,255,.2) inset;
+  }
+
+  .proc-subsection {
+    background: rgba(0,0,0,.15);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 11px;
+    margin-bottom: 8px;
+  }
+  .proc-sub-label {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.13em; color: var(--accent);
+    margin-bottom: 7px; font-weight: 700;
+  }
+
+  .proc-checklist {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .proc-check {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 7px; border-radius: 5px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.13s;
+    font-size: 11px; color: var(--text2);
+  }
+  .proc-check:hover { border-color: var(--border2); }
+  .proc-check input[type="checkbox"] {
+    width: 14px; height: 14px; accent-color: var(--accent);
+    cursor: pointer; flex-shrink: 0;
+  }
+  .proc-check input:checked + span { color: var(--green); }
+  .proc-check:has(input:checked) {
+    background: rgba(0,230,118,.06);
+    border-color: rgba(0,230,118,.3);
+  }
+
+  .proc-report-preview {
+    background: linear-gradient(135deg, rgba(0,212,255,.04), rgba(0,212,255,.01));
+    border: 1px solid rgba(0,212,255,.25);
+    border-radius: 7px;
+    padding: 11px 13px;
+    margin-top: 10px;
+  }
+  .proc-preview-label {
+    font-family: var(--mono); font-size: 9px;
+    letter-spacing: 0.13em; color: var(--accent);
+    font-weight: 700; margin-bottom: 7px;
+  }
+
+
+  /* ── MODE TOGGLE ── */
+  .mode-toggle {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    margin-bottom: 12px;
+    background: rgba(0,0,0,.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+  }
+  .mode-btn {
+    padding: 11px 8px; border: none; border-radius: 6px;
+    background: transparent; color: var(--text3);
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.05em; cursor: pointer;
+    transition: all 0.18s; text-align: center;
+  }
+  .mode-btn:hover { color: var(--text2); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, rgba(0,212,255,.15), rgba(0,212,255,.08));
+    color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(0,212,255,.3) inset, 0 2px 8px rgba(0,212,255,.12);
+  }
+
+  /* Mode-based visibility */
+  .mode-proc { display: none; }
+  body.proc-mode .mode-diag { display: none; }
+  body.proc-mode .mode-proc { display: block; }
+
 </style>
 </head>
 <body>
@@ -564,9 +662,14 @@
 
 <div class="container">
 
-  
+  <!-- ═══ MODE TOGGLE ═══ -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="mode-diag" onclick="setMode('diag')">📊 Diagnostic POCUS</button>
+    <button class="mode-btn" id="mode-proc" onclick="setMode('proc')">🩹 Procedure</button>
+  </div>
+
   <!-- ═══ CARDIAC ═══ -->
-  <div class="section">
+  <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('cardiac')">
       <span class="section-icon">❤️</span>
       <span class="section-title">Cardiac</span>
@@ -615,7 +718,7 @@
   </div>
 
   <!-- ═══ RWMA ═══ -->
-  <div class="section">
+  <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('rwma')">
       <span class="section-icon">🫀</span>
       <span class="section-title">RWMA</span>
@@ -895,7 +998,7 @@
   </div>
 
   <!-- ═══ LUNG — BLUE Protocol ═══ -->
-  <div class="section">
+  <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
       <span class="section-title">Lung — BLUE Protocol</span>
@@ -982,7 +1085,7 @@
   </div>
 
 <!-- ═══ VASCULAR / IVC ═══ -->
-  <div class="section">
+  <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
       <span class="section-title">Vascular / IVC</span>
@@ -1026,7 +1129,7 @@
   </div>
 
   <!-- ═══ DVT ═══ -->
-  <div class="section">
+  <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('dvt')">
       <span class="section-icon">🦵</span>
       <span class="section-title">DVT Scan</span>
@@ -1075,7 +1178,7 @@
   </div>
 
   <!-- ═══ FAST ═══ -->
-  <div class="section">
+  <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('fast')">
       <span class="section-icon">🔬</span>
       <span class="section-title">FAST</span>
@@ -1108,8 +1211,138 @@
     </div>
   </div>
 
-<!-- ═══ IMPRESSION ═══ -->
-  <div class="section" style="border-color:rgba(0,212,255,0.2)">
+<!-- ═══ PROCEDURES (Sono-guided) ═══ -->
+  <div class="section mode-proc">
+    <div class="section-header" onclick="toggleSection('proc')">
+      <span class="section-icon">🩹</span>
+      <span class="section-title">Procedures (Sono-guided)</span>
+      <span class="section-toggle open" id="toggle-proc">▼</span>
+    </div>
+    <div class="section-body" id="body-proc">
+
+      <!-- Procedure type selector -->
+      <div class="field" style="margin-bottom:10px">
+        <div class="field-label" style="display:flex;align-items:center;justify-content:space-between">
+          <span>Procedure Type</span>
+          <button class="tip-btn" onclick="event.stopPropagation(); showTip('procGuide')">📐 시술 가이드</button>
+        </div>
+        <div class="proc-type-grid">
+          <button class="proc-type-btn" id="ptype-cline"   onclick="setProcType('cline')">💉 C-line</button>
+          <button class="proc-type-btn" id="ptype-thora"   onclick="setProcType('thora')">🫁 Thoracentesis</button>
+          <button class="proc-type-btn" id="ptype-para"    onclick="setProcType('para')">💧 Paracentesis</button>
+          <button class="proc-type-btn" id="ptype-peri"    onclick="setProcType('peri')">🫀 Pericardiocentesis</button>
+        </div>
+      </div>
+
+      <!-- Common: Site & Anesthetic -->
+      <div class="proc-content" id="proc-content" style="display:none">
+
+        <!-- Site -->
+        <div class="grid-2" style="margin-bottom:8px">
+          <div class="field">
+            <div class="field-label">Site (Side)</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active-neg" id="proc-side-rt" onclick="setProcSide('rt')">Right</button>
+              <button class="toggle-btn" id="proc-side-lt" onclick="setProcSide('lt')">Left</button>
+            </div>
+          </div>
+          <div class="field" id="proc-approach-field">
+            <div class="field-label" id="proc-approach-label">Approach</div>
+            <select id="proc-approach" onchange="updateProcReport()">
+              <option value="">-- 선택 --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pre-procedure scan -->
+        <div class="proc-subsection">
+          <div class="proc-sub-label">📍 Pre-Procedure</div>
+          <div class="grid-2" style="margin-bottom:6px">
+            <div class="field" id="proc-vessel-depth-field">
+              <div class="field-label">Vessel/Fluid Depth (cm)</div>
+              <input type="number" id="proc-depth" min="0" max="20" step="0.1" placeholder="2.5" oninput="updateProcReport()">
+            </div>
+            <div class="field" id="proc-fluid-amt-field">
+              <div class="field-label">Fluid Pocket Size (cm)</div>
+              <input type="number" id="proc-pocket" min="0" max="30" step="0.1" placeholder="3.0" oninput="updateProcReport()">
+            </div>
+          </div>
+          <div class="proc-checklist">
+            <label class="proc-check"><input type="checkbox" id="pc-prep" onchange="updateProcReport()"><span>Sterile prep & drape (chlorhexidine)</span></label>
+            <label class="proc-check"><input type="checkbox" id="pc-sheath" onchange="updateProcReport()"><span>Sterile probe cover applied</span></label>
+            <label class="proc-check"><input type="checkbox" id="pc-anesth" onchange="updateProcReport()"><span>Local anesthesia (lidocaine 1–2%)</span></label>
+            <label class="proc-check"><input type="checkbox" id="pc-timeout" onchange="updateProcReport()"><span>Time-out / consent confirmed</span></label>
+          </div>
+        </div>
+
+        <!-- Intra-procedure -->
+        <div class="proc-subsection">
+          <div class="proc-sub-label">🎯 Intra-Procedure</div>
+          <div class="proc-checklist">
+            <label class="proc-check"><input type="checkbox" id="pc-realtime" onchange="updateProcReport()"><span>Real-time US guidance (visualized needle tip)</span></label>
+            <label class="proc-check"><input type="checkbox" id="pc-firstpass" onchange="updateProcReport()"><span>First-pass success</span></label>
+            <label class="proc-check" id="pc-wire-row"><input type="checkbox" id="pc-wire" onchange="updateProcReport()"><span>Wire confirmed in vessel (US visualization)</span></label>
+            <label class="proc-check" id="pc-fluid-row"><input type="checkbox" id="pc-fluid" onchange="updateProcReport()"><span>Fluid aspiration successful</span></label>
+          </div>
+          <div class="grid-2" style="margin-top:6px">
+            <div class="field">
+              <div class="field-label">Attempts</div>
+              <input type="number" id="proc-attempts" min="1" max="10" value="1" oninput="updateProcReport()">
+            </div>
+            <div class="field" id="proc-removed-field" style="display:none">
+              <div class="field-label">Fluid Removed (mL)</div>
+              <input type="number" id="proc-removed" min="0" max="10000" placeholder="500" oninput="updateProcReport()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-procedure -->
+        <div class="proc-subsection">
+          <div class="proc-sub-label">✅ Post-Procedure</div>
+          <div class="proc-checklist">
+            <label class="proc-check" id="pc-cline-confirm"><input type="checkbox" id="pc-cathconfirm" onchange="updateProcReport()"><span>Catheter position confirmed (US/X-ray)</span></label>
+            <label class="proc-check" id="pc-ptx-row"><input type="checkbox" id="pc-noptx" onchange="updateProcReport()"><span>Post-procedure lung sliding (+) — PTX 배제</span></label>
+            <label class="proc-check"><input type="checkbox" id="pc-nocomp" onchange="updateProcReport()"><span>No immediate complications</span></label>
+            <label class="proc-check"><input type="checkbox" id="pc-sample" onchange="updateProcReport()"><span>Sample sent (lab/culture)</span></label>
+          </div>
+
+          <!-- Complications -->
+          <div class="field" style="margin-top:8px">
+            <div class="field-label">Complications</div>
+            <select id="proc-complication" onchange="updateProcReport()">
+              <option value="none">None</option>
+              <option value="bleeding">Bleeding / Hematoma</option>
+              <option value="ptx">Pneumothorax</option>
+              <option value="art">Arterial puncture</option>
+              <option value="vasovagal">Vasovagal</option>
+              <option value="other">Other (note)</option>
+            </select>
+          </div>
+
+          <div class="field" style="margin-top:6px">
+            <div class="field-label">Additional Note</div>
+            <textarea id="proc-note" placeholder="추가 기록 (선택사항)" rows="2" oninput="updateProcReport()"></textarea>
+          </div>
+        </div>
+
+        <!-- Auto-generated report preview -->
+        <div class="proc-report-preview" id="procReportPreview">
+          <div class="proc-preview-label">📋 PROCEDURE NOTE</div>
+          <div id="procReportText" style="font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--text2)">— 항목을 선택하면 자동 생성됩니다</div>
+        </div>
+
+      </div>
+
+      <!-- 미선택 안내 -->
+      <div id="proc-empty-msg" style="font-family:var(--mono);font-size:10px;color:var(--text3);text-align:center;padding:12px">
+        시술 종류를 선택하세요 (위 버튼)
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ IMPRESSION ═══ -->
+  <div class="section mode-diag" style="border-color:rgba(0,212,255,0.2)">
     <div class="section-header" onclick="toggleSection('impression')">
       <span class="section-icon">🔍</span>
       <span class="section-title">Impression</span>
@@ -1833,6 +2066,33 @@ function getRwmaText() {
 function copyReport() {
   const g = id => document.getElementById(id).value || '___';
   const sk = state.skipped;
+  // Mode-aware report generation
+  if (currentMode === 'proc') {
+    // Procedure-only report
+    const lines = [];
+    if (procState.type) {
+      const procText = document.getElementById('procReportText').textContent.trim();
+      if (procText && !procText.startsWith('—')) {
+        lines.push('[Procedure Note]');
+        lines.push(procText);
+      } else {
+        lines.push('[Procedure Note]');
+        lines.push('시술 정보가 입력되지 않았습니다.');
+      }
+    } else {
+      lines.push('[Procedure Note]');
+      lines.push('시술 종류를 선택하세요.');
+    }
+    const report = lines.join('\n');
+    navigator.clipboard.writeText(report).then(() => {
+      const msg = document.getElementById('copyMsg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display='none', 2000);
+    });
+    return;
+  }
+
+  // Diagnostic mode report
   const lines = ['[POCUS Report]'];
 
   // Cardiac
@@ -1915,6 +2175,45 @@ function resetAll() {
   Object.keys(state.rwma).forEach(seg => { state.rwma[seg] = 'norm'; });
   renderAllSegs();
   updateSummaryTable();
+
+  // Reset skip toggles
+  Object.keys(state.skipped).forEach(k => {
+    state.skipped[k] = false;
+    const btn = document.getElementById('skip-' + k);
+    if (btn) {
+      btn.classList.remove('skipped');
+      const sec = btn.closest('.section');
+      if (sec) sec.classList.remove('skipped');
+    }
+  });
+
+  // Reset Procedure section
+  procState.type = null;
+  procState.side = null;
+  ['cline','thora','para','peri'].forEach(t => {
+    const btn = document.getElementById('ptype-' + t);
+    if (btn) btn.classList.remove('active');
+  });
+  document.getElementById('proc-content').style.display = 'none';
+  document.getElementById('proc-empty-msg').style.display = 'block';
+  document.getElementById('proc-side-rt').className = 'toggle-btn active-neg';
+  document.getElementById('proc-side-lt').className = 'toggle-btn';
+  ['proc-depth','proc-pocket','proc-attempts','proc-removed','proc-note'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = id === 'proc-attempts' ? '1' : '';
+  });
+  ['pc-prep','pc-sheath','pc-anesth','pc-timeout','pc-realtime','pc-firstpass',
+   'pc-wire','pc-fluid','pc-cathconfirm','pc-noptx','pc-nocomp','pc-sample'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
+  const procApp = document.getElementById('proc-approach');
+  if (procApp) procApp.innerHTML = '<option value="">-- 선택 --</option>';
+  const procComp = document.getElementById('proc-complication');
+  if (procComp) procComp.value = 'none';
+  const procRpt = document.getElementById('procReportText');
+  if (procRpt) procRpt.textContent = '— 항목을 선택하면 자동 생성됩니다';
+
   state.impressionManuallyEdited = false;
   document.getElementById('impressionText').value = '';
   document.getElementById('efBar').style.width = '0%';
@@ -2191,6 +2490,54 @@ const TIPS = {
 <div class="gtip">방광 충만 시 골반 정확도↑ (도뇨 전 평가). eFAST: 추가로 양폐 기저부 흉수+PTX.</div>
 <div class="gwarn">FAST 음성이 복강 손상을 배제하지 않음. 혈역학 불안정+양성 → 즉각 수술실.</div>` },
 
+  procGuide: { title: '🩹  시술 가이드 (Sono-guided procedures)', html: `
+<div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">초음파 유도 시술 — 표준 워크플로우</div><div class="gd">CIMUS 2024 consensus & SCCM 2024 guideline 기반. <strong>Real-time US guidance</strong>는 합병증을 현저히 감소시킵니다 (PTX 4× 감소, IJV 시 동맥천자 80% 감소).</div></div></div>
+
+<div class="gs"><div class="gn">1</div><div class="gc"><div class="gtt">💉 C-line (중심정맥관)</div><div class="gd">
+<span class="c">Pre</span>: Linear probe로 vein/artery 구별 (vein은 압박 시 collapse, artery는 박동) → 적절한 깊이/각도 측정<br>
+<span class="c">Intra</span>: <strong>Short-axis out-of-plane</strong> 또는 <strong>Long-axis in-plane</strong><br>
+&nbsp;&nbsp;바늘 끝(tip)을 항상 ultrasound 평면에 위치시킴 (slide-shine technique)<br>
+<span class="c">Post</span>: ① Wire가 vein 안에 있는지 단·장축으로 확인 (artery 배제)<br>
+&nbsp;&nbsp;② IJV/SCV → <span class="r">post-procedure CXR</span>로 PTX & 카테터 위치 확인<br>
+&nbsp;&nbsp;③ Lung sliding (+) 양측 확인
+</div></div></div>
+
+<div class="gs"><div class="gn">2</div><div class="gc"><div class="gtt">🫁 Thoracentesis (흉강천자)</div><div class="gd">
+<span class="c">Pre</span>: 환자 좌위, Phased-array/Curvilinear로 흉수 확인<br>
+&nbsp;&nbsp;<strong>최저 늑간(diaphragm 위)</strong> 위치 → mid 또는 posterior axillary line<br>
+&nbsp;&nbsp;Effusion depth 측정 (≥1.5cm 권고)<br>
+<span class="c">Intra</span>: 늑골 <strong>상연(superior margin)</strong> 위로 천자 (intercostal vessel 회피)<br>
+&nbsp;&nbsp;Real-time 또는 mark-and-puncture 모두 가능 (real-time이 PTX 더 적음)<br>
+<span class="c">Post</span>: <span class="r">Lung sliding (+)</span> 확인 → PTX 배제. 1L 이상 배액 시 re-expansion pulm. edema 주의
+</div></div></div>
+
+<div class="gs"><div class="gn">3</div><div class="gc"><div class="gtt">💧 Paracentesis (복강천자)</div><div class="gd">
+<span class="c">Pre</span>: Curvilinear probe로 ascites pocket 확인 (≥3cm 권장)<br>
+&nbsp;&nbsp;선호 site: <strong>LLQ (좌하사분역)</strong> — McBurney 반대점, ASIS에서 내측·상방 2cm<br>
+&nbsp;&nbsp;Bowel/bladder 회피, vessels (epigastric a.) 회피<br>
+<span class="c">Intra</span>: Real-time guidance로 needle 진입<br>
+<span class="c">Post</span>: 5L 이상 배액 시 albumin 25% 8g/L 보충 고려
+</div></div></div>
+
+<div class="gs"><div class="gn">4</div><div class="gc"><div class="gtt">🫀 Pericardiocentesis (심낭천자)</div><div class="gd">
+<span class="c">Pre</span>: 응급(tamponade) — Phased-array<br>
+&nbsp;&nbsp;Effusion 위치 확인: subxiphoid (전통적) vs apical (가장 안전·접근 좋음)<br>
+&nbsp;&nbsp;<strong>Apical approach가 PTX·간 손상 위험 낮음</strong><br>
+<span class="c">Intra</span>: Real-time US guidance — needle을 effusion 가장 가까운 곳으로<br>
+&nbsp;&nbsp;Bubble study로 needle 위치 확인 가능 (saline injection 후 RV에 안 보이면 = 심낭 안)<br>
+<span class="c">Post</span>: Hemodynamics 즉시 호전 확인 / drainage cath 거치 (대량 시)
+</div></div></div>
+
+<div class="gbox" style="border-color:rgba(255,61,90,.3);background:rgba(255,61,90,.05)">
+<div class="gbox-t" style="color:var(--red)">⚠ 합병증 모니터링</div>
+<div class="gcr"><span class="gck">C-line</span><span class="gcv" style="font-size:9px">PTX, 동맥천자, 혈종, 카테터 부정 위치</span></div>
+<div class="gcr"><span class="gck">Thora</span><span class="gcv" style="font-size:9px">PTX, 폐출혈, re-expansion edema</span></div>
+<div class="gcr"><span class="gck">Para</span><span class="gcv" style="font-size:9px">출혈, bowel injury, post-para hypotension</span></div>
+<div class="gcr"><span class="gck">Peri</span><span class="gcv" style="font-size:9px">RV laceration, PTX, 부정맥, 관상동맥 손상</span></div></div>
+
+<div class="gtip">모든 시술 전 <strong>Time-out</strong> (환자 확인, side, consent) 필수. 시술 후 <strong>lung sliding 양측 확인</strong>이 PTX 배제의 가장 빠른 방법.</div>
+` },
+
   lad: { title: '🔴  LAD Territory', html: `
 <div class="gs"><div class="gn">🎯</div><div class="gc"><div class="gtt">LAD 지배 구역</div><div class="gd">전벽(Anterior), 전중격(Anteroseptal), 전외측(Anterolateral), 심첨부(Apex)</div></div></div>
 <div class="gbox"><div class="gbox-t">대표 뷰</div>
@@ -2213,6 +2560,208 @@ const TIPS = {
 <div class="gwarn">LCx 폐쇄는 ECG에서 놓치기 쉬움(silent territory). V1–V2 ST↓ + 후벽 akinesia → 확인 필요.</div>` }
 };
 
+
+
+
+// ── MODE TOGGLE (Diagnostic vs Procedure) ──────────────────
+let currentMode = 'diag';
+function setMode(mode) {
+  currentMode = mode;
+  document.body.classList.toggle('proc-mode', mode === 'proc');
+  document.getElementById('mode-diag').classList.toggle('active', mode === 'diag');
+  document.getElementById('mode-proc').classList.toggle('active', mode === 'proc');
+}
+
+// ── PROCEDURE STATE ─────────────────────────────────────────
+const procState = {
+  type: null,  // 'cline' | 'thora' | 'para' | 'peri'
+  side: null,  // 'rt' | 'lt'
+  approach: ''
+};
+
+// Approach options per procedure type
+const PROC_APPROACHES = {
+  cline: [
+    {v:'IJV',  l:'Internal Jugular Vein (IJV)'},
+    {v:'SCV',  l:'Subclavian Vein (SCV)'},
+    {v:'FV',   l:'Femoral Vein (FV)'},
+    {v:'PICC', l:'PICC (Basilic/Cephalic)'}
+  ],
+  thora: [
+    {v:'post-axillary', l:'Posterior axillary line'},
+    {v:'mid-axillary',  l:'Mid-axillary line'},
+    {v:'post-scapular', l:'Posterior scapular line'}
+  ],
+  para: [
+    {v:'LLQ', l:'Left Lower Quadrant (LLQ)'},
+    {v:'RLQ', l:'Right Lower Quadrant (RLQ)'},
+    {v:'midline', l:'Midline (infraumbilical)'}
+  ],
+  peri: [
+    {v:'subxiphoid', l:'Subxiphoid'},
+    {v:'apical',     l:'Apical'},
+    {v:'parasternal', l:'Parasternal'}
+  ]
+};
+
+const PROC_NAMES = {
+  cline: 'Ultrasound-Guided Central Venous Catheterization',
+  thora: 'Ultrasound-Guided Thoracentesis',
+  para:  'Ultrasound-Guided Paracentesis',
+  peri:  'Ultrasound-Guided Pericardiocentesis'
+};
+
+const PROC_NAMES_KO = {
+  cline: '초음파 유도 중심정맥관 삽입술',
+  thora: '초음파 유도 흉강천자',
+  para:  '초음파 유도 복강천자',
+  peri:  '초음파 유도 심낭천자'
+};
+
+function setProcType(type) {
+  procState.type = type;
+  // Update buttons
+  ['cline','thora','para','peri'].forEach(t => {
+    const btn = document.getElementById('ptype-' + t);
+    if (btn) btn.classList.toggle('active', t === type);
+  });
+  // Update approach options
+  const sel = document.getElementById('proc-approach');
+  sel.innerHTML = '<option value="">-- 선택 --</option>';
+  (PROC_APPROACHES[type] || []).forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.v; o.textContent = opt.l;
+    sel.appendChild(o);
+  });
+  // Show content, hide empty msg
+  document.getElementById('proc-content').style.display = 'block';
+  document.getElementById('proc-empty-msg').style.display = 'none';
+
+  // Tweak field labels per procedure
+  const depthField = document.getElementById('proc-vessel-depth-field');
+  const pocketField = document.getElementById('proc-fluid-amt-field');
+  const wireRow = document.getElementById('pc-wire-row');
+  const fluidRow = document.getElementById('pc-fluid-row');
+  const removedField = document.getElementById('proc-removed-field');
+  const ptxRow = document.getElementById('pc-ptx-row');
+  const clineConfirmRow = document.getElementById('pc-cline-confirm');
+
+  if (type === 'cline') {
+    depthField.querySelector('.field-label').textContent = 'Vein Depth (cm)';
+    pocketField.style.display = 'none';
+    wireRow.style.display = '';
+    fluidRow.style.display = 'none';
+    removedField.style.display = 'none';
+    ptxRow.style.display = '';  // SCV/IJV → PTX risk
+    clineConfirmRow.querySelector('span').textContent = 'Catheter tip position (CXR/US 확인)';
+  } else if (type === 'thora') {
+    depthField.querySelector('.field-label').textContent = 'Pleura-to-skin (cm)';
+    pocketField.style.display = '';
+    pocketField.querySelector('.field-label').textContent = 'Effusion Depth (cm)';
+    wireRow.style.display = 'none';
+    fluidRow.style.display = '';
+    removedField.style.display = '';
+    ptxRow.style.display = '';  // Always check post-thora PTX
+    clineConfirmRow.querySelector('span').textContent = 'Lung re-expansion 확인';
+  } else if (type === 'para') {
+    depthField.querySelector('.field-label').textContent = 'Skin-to-fluid (cm)';
+    pocketField.style.display = '';
+    pocketField.querySelector('.field-label').textContent = 'Ascites Pocket (cm)';
+    wireRow.style.display = 'none';
+    fluidRow.style.display = '';
+    removedField.style.display = '';
+    ptxRow.style.display = 'none';  // No PTX risk
+    clineConfirmRow.querySelector('span').textContent = 'No bowel injury 확인';
+  } else if (type === 'peri') {
+    depthField.querySelector('.field-label').textContent = 'Skin-to-pericardium (cm)';
+    pocketField.style.display = '';
+    pocketField.querySelector('.field-label').textContent = 'Effusion Size (cm)';
+    wireRow.style.display = 'none';
+    fluidRow.style.display = '';
+    removedField.style.display = '';
+    ptxRow.style.display = '';  // PTX possible esp. apical approach
+    clineConfirmRow.querySelector('span').textContent = 'Hemodynamic improvement 확인';
+  }
+  updateProcReport();
+}
+
+function setProcSide(side) {
+  procState.side = side;
+  document.getElementById('proc-side-rt').className = 'toggle-btn' + (side==='rt' ? ' active-neg' : '');
+  document.getElementById('proc-side-lt').className = 'toggle-btn' + (side==='lt' ? ' active-neg' : '');
+  updateProcReport();
+}
+
+function updateProcReport() {
+  if (!procState.type) {
+    document.getElementById('procReportText').textContent = '— 항목을 선택하면 자동 생성됩니다';
+    return;
+  }
+
+  const lines = [];
+  const procName = PROC_NAMES_KO[procState.type] + ' (' + PROC_NAMES[procState.type] + ')';
+  lines.push('▷ ' + procName);
+
+  // Site
+  const sideText = procState.side === 'rt' ? 'Right' : procState.side === 'lt' ? 'Left' : '';
+  const approachVal = document.getElementById('proc-approach').value;
+  const approachLabel = approachVal ? (PROC_APPROACHES[procState.type].find(a=>a.v===approachVal)?.l || approachVal) : '';
+  if (sideText || approachLabel) {
+    lines.push('• Site: ' + [sideText, approachLabel].filter(Boolean).join(' '));
+  }
+
+  // Pre-procedure
+  const preItems = [];
+  const depth = document.getElementById('proc-depth').value;
+  const pocket = document.getElementById('proc-pocket').value;
+  if (depth) preItems.push('depth ' + depth + 'cm');
+  if (pocket && document.getElementById('proc-fluid-amt-field').style.display !== 'none')
+    preItems.push('pocket ' + pocket + 'cm');
+  const preChecks = [
+    ['pc-prep', 'sterile prep'],
+    ['pc-sheath', 'probe sheath'],
+    ['pc-anesth', 'local anesthesia'],
+    ['pc-timeout', 'time-out']
+  ].filter(([id]) => document.getElementById(id)?.checked).map(([,l]) => l);
+  if (preItems.length || preChecks.length) {
+    lines.push('• Pre-procedure: ' + [...preItems, ...preChecks].join(', '));
+  }
+
+  // Intra
+  const intraChecks = [];
+  if (document.getElementById('pc-realtime')?.checked) intraChecks.push('real-time US guidance');
+  if (document.getElementById('pc-firstpass')?.checked) intraChecks.push('first-pass success');
+  if (document.getElementById('pc-wire')?.checked && document.getElementById('pc-wire-row').style.display !== 'none')
+    intraChecks.push('wire confirmed by US');
+  if (document.getElementById('pc-fluid')?.checked && document.getElementById('pc-fluid-row').style.display !== 'none')
+    intraChecks.push('fluid aspirated');
+  const attempts = document.getElementById('proc-attempts').value || '1';
+  intraChecks.push(attempts + ' attempt(s)');
+  const removed = document.getElementById('proc-removed').value;
+  if (removed && document.getElementById('proc-removed-field').style.display !== 'none')
+    intraChecks.push(removed + ' mL removed');
+  if (intraChecks.length) lines.push('• Intra-procedure: ' + intraChecks.join(', '));
+
+  // Post
+  const postChecks = [];
+  if (document.getElementById('pc-cathconfirm')?.checked)
+    postChecks.push(document.getElementById('pc-cline-confirm').querySelector('span').textContent);
+  if (document.getElementById('pc-noptx')?.checked && document.getElementById('pc-ptx-row').style.display !== 'none')
+    postChecks.push('lung sliding (+) — PTX 배제');
+  if (document.getElementById('pc-nocomp')?.checked) postChecks.push('no immediate complications');
+  if (document.getElementById('pc-sample')?.checked) postChecks.push('sample sent');
+  const compVal = document.getElementById('proc-complication').value;
+  if (compVal && compVal !== 'none') {
+    const compLabels = {bleeding:'bleeding/hematoma', ptx:'pneumothorax', art:'arterial puncture', vasovagal:'vasovagal', other:'other'};
+    postChecks.push('Complication: ' + (compLabels[compVal] || compVal));
+  }
+  if (postChecks.length) lines.push('• Post-procedure: ' + postChecks.join(', '));
+
+  const note = document.getElementById('proc-note').value.trim();
+  if (note) lines.push('• Note: ' + note);
+
+  document.getElementById('procReportText').textContent = lines.join('\n');
+}
 
 function showTip(key) {
   const tip = TIPS[key];
