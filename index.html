@@ -679,32 +679,32 @@
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
           <div class="field-label">EF <span class="unit">(%)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('ef')">📐 측정법</button></div>
-          <input type="number" id="ef" min="0" max="100" placeholder="정상 ≥55" oninput="update()">
+          <input type="number" id="ef" min="0" max="100" placeholder="정상 ≥55" oninput="markAssessed('cardiac'); update()">
           <div class="ef-visual"><div class="ef-bar" id="efBar"></div></div>
         </div>
         <div class="field">
           <div class="field-label">EPSS <span class="unit">(mm)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('epss')">📐 측정법</button></div>
-          <input type="number" id="epss" min="0" max="50" placeholder="정상 &lt;7" oninput="update()">
+          <input type="number" id="epss" min="0" max="50" placeholder="정상 &lt;7" oninput="markAssessed('cardiac'); update()">
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
           <div class="field-label">RV/LV Ratio <button class="tip-btn" onclick="event.stopPropagation(); showTip('rvlv')">📐 측정법</button></div>
-          <input type="number" id="rvlv" min="0" max="3" step="0.1" placeholder="정상 &lt;1.0" oninput="update()">
+          <input type="number" id="rvlv" min="0" max="3" step="0.1" placeholder="정상 &lt;1.0" oninput="markAssessed('cardiac'); update()">
         </div>
         <div class="field">
           <div class="field-label">E/A Ratio <button class="tip-btn" onclick="event.stopPropagation(); showTip('ea')">📐 측정법</button></div>
-          <input type="number" id="ea" min="0" max="5" step="0.1" placeholder="정상 0.8-1.5" oninput="update()">
+          <input type="number" id="ea" min="0" max="5" step="0.1" placeholder="정상 0.8-1.5" oninput="markAssessed('cardiac'); update()">
         </div>
       </div>
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
           <div class="field-label">Septal e' <span class="unit">(cm/s)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('septale')">📐 측정법</button></div>
-          <input type="number" id="septale" min="0" max="30" step="0.1" placeholder="정상 ≥8" oninput="update()">
+          <input type="number" id="septale" min="0" max="30" step="0.1" placeholder="정상 ≥8" oninput="markAssessed('cardiac'); update()">
         </div>
         <div class="field">
           <div class="field-label">E/e' Ratio <button class="tip-btn" onclick="event.stopPropagation(); showTip('ee')">📐 측정법</button></div>
-          <input type="number" id="ee" min="0" max="50" step="0.1" placeholder="정상 &lt;14" oninput="update()">
+          <input type="number" id="ee" min="0" max="50" step="0.1" placeholder="정상 &lt;14" oninput="markAssessed('cardiac'); update()">
         </div>
       </div>
       <div class="field">
@@ -1095,11 +1095,11 @@
       <div class="grid-2" style="margin-bottom:8px">
         <div class="field">
           <div class="field-label">IVC Diameter <span class="unit">(cm)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('ivc')">📐 측정법</button></div>
-          <input type="number" id="ivc" min="0" max="5" step="0.1" placeholder="정상 1.5-2.1" oninput="update()">
+          <input type="number" id="ivc" min="0" max="5" step="0.1" placeholder="정상 1.5-2.1" oninput="markAssessed('vascular'); update()">
         </div>
         <div class="field">
           <div class="field-label">Collapsibility <span class="unit">(%)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('ivcc')">📐 측정법</button></div>
-          <input type="number" id="ivcCollapse" min="0" max="100" placeholder="정상 ≥50%" oninput="update()">
+          <input type="number" id="ivcCollapse" min="0" max="100" placeholder="정상 ≥50%" oninput="markAssessed('vascular'); update()">
         </div>
       </div>
 
@@ -1123,7 +1123,7 @@
       <div class="divider"></div>
       <div class="field">
         <div class="field-label">AAA <span class="unit">(cm)</span> <button class="tip-btn" onclick="event.stopPropagation(); showTip('aaa')">📐 측정법</button></div>
-        <input type="number" id="aaa" min="0" max="15" step="0.1" placeholder="정상 &lt;3.0" oninput="update()">
+        <input type="number" id="aaa" min="0" max="15" step="0.1" placeholder="정상 &lt;3.0" oninput="markAssessed('vascular'); update()">
       </div>
     </div>
   </div>
@@ -1434,16 +1434,18 @@ function toggleSection(id) {
   const body = document.getElementById('body-'+id);
   body.classList.toggle('collapsed');
   document.getElementById('toggle-'+id).classList.toggle('open');
-  // 한 번이라도 열린 섹션은 평가한 것으로 표시
-  if (state.assessed && id in state.assessed && !body.classList.contains('collapsed')) {
-    state.assessed[id] = true;
-    update();
-  }
 }
 
 // ── TOGGLE BUTTONS ─────────────────────────────────────────
 function setToggle(name, val) {
   state.toggles[name] = val;
+  // 어느 섹션의 토글인지 매핑
+  if (state.assessed) {
+    if (name === 'peri') state.assessed.cardiac = true;
+    else if (name === 'ivcPlethora') state.assessed.vascular = true;
+    else if (name.startsWith('dvt-')) state.assessed.dvt = true;
+    else if (name.startsWith('fast-')) state.assessed.fast = true;
+  }
   const neg = document.getElementById(name+'-neg');
   const pos = document.getElementById(name+'-pos');
   if (neg && pos) {
@@ -1498,6 +1500,7 @@ function switchView(v) {
 }
 
 function cycleSeg(segKey) {
+  if (state.assessed) state.assessed.rwma = true;
   const cur = state.rwma[segKey];
   const next = cur==='norm' ? 'hypo' : cur==='hypo' ? 'ak' : 'norm';
   state.rwma[segKey] = next;
@@ -1596,6 +1599,13 @@ function allALines()  { return Object.values(blueState).every(v=>v==='A'); }
 function hasALines()  { return Object.values(blueState).some(v=>v==='A'); }
 function hasNSliding(){ return Object.values(blueState).some(v=>v==='NS'); }
 function dvtPos()     { return ['dvt-rf','dvt-rp','dvt-lf','dvt-lp'].some(k=>state.toggles[k]==='pos'); }
+
+
+function markAssessed(section) {
+  if (state.assessed && section in state.assessed) {
+    state.assessed[section] = true;
+  }
+}
 
 // ── MAIN UPDATE ────────────────────────────────────────────
 function update() {
@@ -1964,12 +1974,22 @@ function buildConclusion() {
       lines.push('폐는 양측 모두 <span class="key">A-line 패턴</span>으로 BLUE A-profile에 해당합니다.');
     } else {
       const lungBits = [];
-      if (hasB >= 2) lungBits.push(`전방에 <span class="abn">B-line ${hasB}구역</span> (간질액 시사)`);
+      if (hasB >= 2) {
+        lungBits.push(`전방에 <span class="abn">B-line ${hasB}구역</span> (양측 다발성, 간질액 시사)`);
+      } else if (hasB === 1) {
+        // 한 구역만 — focal interstitial pattern
+        const bLoc = ant.indexOf('B');
+        const locLabel = ['우측 상부','우측 하부','좌측 상부','좌측 하부'][bLoc] || '';
+        lungBits.push(`${locLabel}에 <span class="abn">국소 B-line</span> 관찰`);
+      }
       if (hasNS) lungBits.push('<span class="crit">Lung sliding 소실</span> (기흉 의심)');
       if (hasC) lungBits.push('<span class="abn">consolidation</span> 관찰');
       if (hasEff) lungBits.push('<span class="abn">흉수</span> 확인');
       if (lungBits.length > 0) {
         lines.push('폐에서 ' + lungBits.join(', ') + '되었습니다.');
+      } else {
+        // 평가했지만 특이소견 없음
+        lines.push('폐 초음파에서 특이소견은 없었습니다.');
       }
     }
   }
@@ -2242,6 +2262,7 @@ const BLUE_CLASS = { A:'active-ba', B:'active-bb', C:'active-bc', Eff:'active-be
 
 function setBlue(zone, val) {
   blueState[zone] = val;
+  if (state.assessed) state.assessed.lung = true;
   const grp = document.getElementById('bz-' + zone);
   if (!grp) return;
   grp.querySelectorAll('.bbtn').forEach((btn, i) => {
