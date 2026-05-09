@@ -645,6 +645,21 @@
   body.proc-mode .mode-diag { display: none; }
   body.proc-mode .mode-proc { display: block; }
 
+
+  /* ── BLUE Step (Lichtenstein decision tree) ── */
+  .blue-step {
+    background: rgba(0,0,0,.15);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 11px;
+    margin-bottom: 8px;
+  }
+  .blue-step-label {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.07em; color: var(--accent);
+    margin-bottom: 8px; font-weight: 700;
+  }
+
 </style>
 </head>
 <body>
@@ -997,7 +1012,7 @@
     </div>
   </div>
 
-  <!-- ═══ LUNG — BLUE Protocol ═══ -->
+  <!-- ═══ LUNG — BLUE Protocol (Lichtenstein decision tree) ═══ -->
   <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('lung')">
       <span class="section-icon">🫁</span>
@@ -1005,86 +1020,107 @@
       <button class="skip-toggle" id="skip-lung" onclick="event.stopPropagation(); toggleSkip('lung')">안봤음</button><span class="section-toggle" id="toggle-lung">▼</span>
     </div>
     <div class="section-body collapsed" id="body-lung">
-      <!-- Legend + guide -->
+
+      <!-- Header -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          <span class="blue-tag tag-a">A</span>
-          <span class="blue-tag tag-b">B</span>
-          <span class="blue-tag tag-c">C</span>
-          <span class="blue-tag tag-eff">Eff</span>
-          <span class="blue-tag tag-ns">NS</span>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.13em;color:var(--accent);font-weight:700">
+          STEP-BY-STEP (Lichtenstein 2008)
         </div>
         <button class="tip-btn" onclick="event.stopPropagation(); showTip('lung')">📐 BLUE 가이드</button>
       </div>
 
-      <!-- RIGHT -->
-      <div class="blue-side-label">RIGHT</div>
-      <div class="grid-3" style="margin-bottom:10px">
-        <div class="field"><div class="field-label">Upper BLUE (Rt)</div>
-          <div class="blue-grp" id="bz-r-upper">
-            <button class="bbtn active-ba" onclick="setBlue('r-upper','A')">A</button>
-            <button class="bbtn" onclick="setBlue('r-upper','B')">B</button>
-            <button class="bbtn" onclick="setBlue('r-upper','C')">C</button>
-            <button class="bbtn" onclick="setBlue('r-upper','Eff')">Eff</button>
-            <button class="bbtn" onclick="setBlue('r-upper','NS')">NS</button>
-          </div></div>
-        <div class="field"><div class="field-label">Lower BLUE (Rt)</div>
-          <div class="blue-grp" id="bz-r-lower">
-            <button class="bbtn active-ba" onclick="setBlue('r-lower','A')">A</button>
-            <button class="bbtn" onclick="setBlue('r-lower','B')">B</button>
-            <button class="bbtn" onclick="setBlue('r-lower','C')">C</button>
-            <button class="bbtn" onclick="setBlue('r-lower','Eff')">Eff</button>
-            <button class="bbtn" onclick="setBlue('r-lower','NS')">NS</button>
-          </div></div>
-        <div class="field"><div class="field-label">PLAPS (Rt)</div>
-          <div class="blue-grp" id="bz-r-plaps">
-            <button class="bbtn active-ba" onclick="setBlue('r-plaps','A')">A</button>
-            <button class="bbtn" onclick="setBlue('r-plaps','B')">B</button>
-            <button class="bbtn" onclick="setBlue('r-plaps','C')">C</button>
-            <button class="bbtn" onclick="setBlue('r-plaps','Eff')">Eff</button>
-            <button class="bbtn" onclick="setBlue('r-plaps','NS')">NS</button>
-          </div></div>
+      <!-- ═══ STEP 1: Lung Sliding ═══ -->
+      <div class="blue-step">
+        <div class="blue-step-label">① 먼저 Lung Sliding 확인</div>
+        <div class="grid-2">
+          <div class="field">
+            <div class="field-label">Right Sliding</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active-pos" id="slide-rt-yes" onclick="setSliding('rt','yes')">있음 (+)</button>
+              <button class="toggle-btn" id="slide-rt-no" onclick="setSliding('rt','no')">소실 (NS)</button>
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-label">Left Sliding</div>
+            <div class="toggle-group">
+              <button class="toggle-btn active-pos" id="slide-lt-yes" onclick="setSliding('lt','yes')">있음 (+)</button>
+              <button class="toggle-btn" id="slide-lt-no" onclick="setSliding('lt','no')">소실 (NS)</button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- LEFT -->
-      <div class="blue-side-label">LEFT</div>
-      <div class="grid-3" style="margin-bottom:10px">
-        <div class="field"><div class="field-label">Upper BLUE (Lt)</div>
-          <div class="blue-grp" id="bz-l-upper">
-            <button class="bbtn active-ba" onclick="setBlue('l-upper','A')">A</button>
-            <button class="bbtn" onclick="setBlue('l-upper','B')">B</button>
-            <button class="bbtn" onclick="setBlue('l-upper','C')">C</button>
-            <button class="bbtn" onclick="setBlue('l-upper','Eff')">Eff</button>
-            <button class="bbtn" onclick="setBlue('l-upper','NS')">NS</button>
-          </div></div>
-        <div class="field"><div class="field-label">Lower BLUE (Lt)</div>
-          <div class="blue-grp" id="bz-l-lower">
-            <button class="bbtn active-ba" onclick="setBlue('l-lower','A')">A</button>
-            <button class="bbtn" onclick="setBlue('l-lower','B')">B</button>
-            <button class="bbtn" onclick="setBlue('l-lower','C')">C</button>
-            <button class="bbtn" onclick="setBlue('l-lower','Eff')">Eff</button>
-            <button class="bbtn" onclick="setBlue('l-lower','NS')">NS</button>
-          </div></div>
-        <div class="field"><div class="field-label">PLAPS (Lt)</div>
-          <div class="blue-grp" id="bz-l-plaps">
-            <button class="bbtn active-ba" onclick="setBlue('l-plaps','A')">A</button>
-            <button class="bbtn" onclick="setBlue('l-plaps','B')">B</button>
-            <button class="bbtn" onclick="setBlue('l-plaps','C')">C</button>
-            <button class="bbtn" onclick="setBlue('l-plaps','Eff')">Eff</button>
-            <button class="bbtn" onclick="setBlue('l-plaps','NS')">NS</button>
-          </div></div>
+      <!-- ═══ STEP 2: Anterior pattern ═══ -->
+      <div class="blue-step">
+        <div class="blue-step-label">② Anterior BLUE points (A-line / B-line / Consolidation)</div>
+
+        <div class="blue-side-label">RIGHT</div>
+        <div class="grid-2" style="margin-bottom:8px">
+          <div class="field"><div class="field-label">Upper BLUE (Rt)</div>
+            <div class="blue-grp" id="bz-r-upper">
+              <button class="bbtn active-ba" onclick="setBlue('r-upper','A')">A-line</button>
+              <button class="bbtn" onclick="setBlue('r-upper','B')">B-line</button>
+              <button class="bbtn" onclick="setBlue('r-upper','C')">Consol</button>
+            </div></div>
+          <div class="field"><div class="field-label">Lower BLUE (Rt)</div>
+            <div class="blue-grp" id="bz-r-lower">
+              <button class="bbtn active-ba" onclick="setBlue('r-lower','A')">A-line</button>
+              <button class="bbtn" onclick="setBlue('r-lower','B')">B-line</button>
+              <button class="bbtn" onclick="setBlue('r-lower','C')">Consol</button>
+            </div></div>
+        </div>
+
+        <div class="blue-side-label">LEFT</div>
+        <div class="grid-2" style="margin-bottom:6px">
+          <div class="field"><div class="field-label">Upper BLUE (Lt)</div>
+            <div class="blue-grp" id="bz-l-upper">
+              <button class="bbtn active-ba" onclick="setBlue('l-upper','A')">A-line</button>
+              <button class="bbtn" onclick="setBlue('l-upper','B')">B-line</button>
+              <button class="bbtn" onclick="setBlue('l-upper','C')">Consol</button>
+            </div></div>
+          <div class="field"><div class="field-label">Lower BLUE (Lt)</div>
+            <div class="blue-grp" id="bz-l-lower">
+              <button class="bbtn active-ba" onclick="setBlue('l-lower','A')">A-line</button>
+              <button class="bbtn" onclick="setBlue('l-lower','B')">B-line</button>
+              <button class="bbtn" onclick="setBlue('l-lower','C')">Consol</button>
+            </div></div>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 3: PLAPS ═══ -->
+      <div class="blue-step">
+        <div class="blue-step-label">③ PLAPS Point (Posterolateral) — A-profile일 때 특히 중요</div>
+        <div class="grid-2">
+          <div class="field"><div class="field-label">PLAPS (Rt)</div>
+            <div class="blue-grp" id="bz-r-plaps">
+              <button class="bbtn active-ba" onclick="setBlue('r-plaps','A')">정상</button>
+              <button class="bbtn" onclick="setBlue('r-plaps','C')">Consol</button>
+              <button class="bbtn" onclick="setBlue('r-plaps','Eff')">흉수</button>
+            </div></div>
+          <div class="field"><div class="field-label">PLAPS (Lt)</div>
+            <div class="blue-grp" id="bz-l-plaps">
+              <button class="bbtn active-ba" onclick="setBlue('l-plaps','A')">정상</button>
+              <button class="bbtn" onclick="setBlue('l-plaps','C')">Consol</button>
+              <button class="bbtn" onclick="setBlue('l-plaps','Eff')">흉수</button>
+            </div></div>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 4: DVT (BLUE protocol decision tree에 포함) ═══ -->
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin:8px 4px 4px;font-style:italic">
+        ④ A-profile + sliding (+) 시 → 아래 DVT 섹션 확인 필요 (PE 감별)
       </div>
 
       <!-- BLUE Profile auto-diagnosis -->
       <div id="blueProfileSummary" class="blue-summary">
         <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--accent);margin-bottom:5px">BLUE PROFILE 자동 분석</div>
-        <div id="blueProfileResult" style="font-size:12px;color:var(--text2);line-height:1.7">— 프로파일 선택 시 자동 표시</div>
+        <div id="blueProfileResult" style="font-size:12px;color:var(--text2);line-height:1.7">— 입력 시 자동 표시</div>
       </div>
 
     </div>
   </div>
 
-<!-- ═══ VASCULAR / IVC ═══ -->
+  <!-- ═══ VASCULAR / IVC ═══ -->
   <div class="section mode-diag">
     <div class="section-header" onclick="toggleSection('vascular')">
       <span class="section-icon">🩸</span>
@@ -1965,13 +2001,13 @@ function buildConclusion() {
     const z = blueState;
     const ant = [z['r-upper'],z['r-lower'],z['l-upper'],z['l-lower']];
     const plaps = [z['r-plaps'],z['l-plaps']];
-    const allA = ant.every(v=>v==='A') && plaps.every(v=>v==='A');
-    const hasNS = ant.some(v=>v==='NS');
+    const allA = ant.every(v=>v==='A') && plaps.every(v=>v==='A') && slidingState.rt==='yes' && slidingState.lt==='yes';
+    const hasNS = (slidingState.rt === 'no' || slidingState.lt === 'no');
     const hasB = ant.filter(v=>v==='B').length;
     const hasC = ant.some(v=>v==='C') || plaps.some(v=>v==='C');
     const hasEff = plaps.some(v=>v==='Eff');
     if (allA) {
-      lines.push('폐는 양측 모두 <span class="key">A-line 패턴</span>으로 BLUE A-profile에 해당합니다.');
+      lines.push('폐는 양측 모두 <span class="key">A-line + lung sliding (+)</span>으로 정상 A-profile입니다.');
     } else {
       const lungBits = [];
       if (hasB >= 2) {
@@ -2190,6 +2226,15 @@ function resetAll() {
   });
   Object.keys(state.toggles).forEach(k=>setToggle(k,'neg'));
   Object.keys(blueState).forEach(z=>setBlue(z,'A'));
+  // Reset sliding (양측 yes)
+  slidingState.rt = 'yes';
+  slidingState.lt = 'yes';
+  ['rt','lt'].forEach(side => {
+    const yesBtn = document.getElementById('slide-' + side + '-yes');
+    const noBtn = document.getElementById('slide-' + side + '-no');
+    if (yesBtn) yesBtn.className = 'toggle-btn active-pos';
+    if (noBtn) noBtn.className = 'toggle-btn';
+  });
   Object.keys(state.rwma).forEach(seg => { state.rwma[seg] = 'norm'; });
   renderAllSegs();
   updateSummaryTable();
@@ -2258,15 +2303,33 @@ const blueState = {
   'l-upper': 'A', 'l-lower': 'A', 'l-plaps': 'A'
 };
 
-const BLUE_CLASS = { A:'active-ba', B:'active-bb', C:'active-bc', Eff:'active-beff', NS:'active-bns' };
+// Lung sliding (양측 별도 — Lichtenstein decision tree step 1)
+const slidingState = {
+  rt: 'yes',  // 'yes' | 'no'
+  lt: 'yes'
+};
+
+function setSliding(side, val) {
+  slidingState[side] = val;
+  document.getElementById('slide-' + side + '-yes').className = 'toggle-btn' + (val === 'yes' ? ' active-pos' : '');
+  document.getElementById('slide-' + side + '-no').className = 'toggle-btn' + (val === 'no' ? ' active-neg' : '');
+  if (state.assessed) state.assessed.lung = true;
+  analyzeBlue();
+  update();
+}
+
+const BLUE_CLASS = { A:'active-ba', B:'active-bb', C:'active-bc', Eff:'active-beff' };
 
 function setBlue(zone, val) {
   blueState[zone] = val;
   if (state.assessed) state.assessed.lung = true;
   const grp = document.getElementById('bz-' + zone);
   if (!grp) return;
+  // PLAPS는 [A, C, Eff], 일반은 [A, B, C]
+  const isPlaps = zone.endsWith('plaps');
+  const opts = isPlaps ? ['A','C','Eff'] : ['A','B','C'];
   grp.querySelectorAll('.bbtn').forEach((btn, i) => {
-    const v = ['A','B','C','Eff','NS'][i];
+    const v = opts[i];
     btn.className = 'bbtn' + (v === val ? ' ' + BLUE_CLASS[val] : '');
   });
   analyzeBlue();
@@ -2275,80 +2338,125 @@ function setBlue(zone, val) {
 
 function analyzeBlue() {
   const z = blueState;
-  const allA   = v => v === 'A';
-  const hasB   = v => v === 'B';
-  const hasC   = v => v === 'C';
-  const hasEff = v => v === 'Eff';
-  const hasNS  = v => v === 'NS';
+  const s = slidingState;
+  const ant = [z['r-upper'], z['r-lower'], z['l-upper'], z['l-lower']];
+  const plaps = [z['r-plaps'], z['l-plaps']];
 
-  const zones = Object.values(z);
-  const anterior = [z['r-upper'], z['r-lower'], z['l-upper'], z['l-lower']];
-  const plaps    = [z['r-plaps'], z['l-plaps']];
+  const profiles = [];
 
-  let profiles = [];
+  // ═══ Lichtenstein Decision Tree ═══
 
-  // A-profile: 전방 A-line + Sliding present (NS 없음)
-  const antAllA   = anterior.every(allA);
-  const antHasNS  = anterior.some(hasNS);
-  const antHasB   = anterior.some(hasB);
-  const antHasC   = anterior.some(hasC);
-  const plapsHasEff = plaps.some(hasEff);
-  const plapsHasC   = plaps.some(hasC);
-  const plapsAllA   = plaps.every(allA);
+  // STEP 1: Lung sliding 확인
+  const noSlideBoth = (s.rt === 'no' && s.lt === 'no');
+  const noSlideAny = (s.rt === 'no' || s.lt === 'no');
+  const slidePresent = (s.rt === 'yes' && s.lt === 'yes');
 
-  // PTX: anterior NS + A-line
-  if (antHasNS && anterior.filter(allA).length + anterior.filter(hasNS).length === 4) {
-    profiles.push({ label: '💨 Pneumothorax 의심', color: 'var(--red)',
-      basis: 'Ant NS + A-line (Lung point 확인 권고)' });
+  // STEP 2: Anterior pattern
+  const allAntA = ant.every(v => v === 'A');
+  const anyAntB = ant.some(v => v === 'B');
+  const numB = ant.filter(v => v === 'B').length;
+  const anyAntC = ant.some(v => v === 'C');
+  const rtAntB = (z['r-upper'] === 'B' || z['r-lower'] === 'B');
+  const ltAntB = (z['l-upper'] === 'B' || z['l-lower'] === 'B');
+  const rtAntA = (z['r-upper'] === 'A' && z['r-lower'] === 'A');
+  const ltAntA = (z['l-upper'] === 'A' && z['l-lower'] === 'A');
+
+  // STEP 3: PLAPS findings
+  const anyPlapsC = plaps.some(v => v === 'C');
+  const anyPlapsEff = plaps.some(v => v === 'Eff');
+
+  // ── A'-profile: Sliding 소실 + A-line → PTX
+  if (noSlideAny && allAntA) {
+    profiles.push({
+      label: '🔴 A\'-profile → Pneumothorax (PTX) 의심',
+      color: 'var(--red)',
+      basis: 'Sliding 소실 + A-line. Lung point 확인 권고. 민감도 88%, 특이도 100%.'
+    });
   }
-
-  // A-profile: 전방 A + PLAPS A → 정상 또는 PE 의심
-  if (antAllA && plapsAllA) {
-    profiles.push({ label: '🔵 A-Profile', color: 'var(--accent)',
-      basis: '전방 A-line + PLAPS A → 정상폐 or PE/폐색전 의심 (DVT scan 권고)' });
+  // ── B'-profile: Sliding 소실 + B-line → Pneumonia
+  else if (noSlideAny && anyAntB) {
+    profiles.push({
+      label: '🟠 B\'-profile → Pneumonia 의심',
+      color: 'var(--orange)',
+      basis: 'Sliding 소실 + B-line. 폐 강내 침투/실질 변화 시사.'
+    });
   }
-
-  // B-profile: 전방 B-line (양측)
-  if (anterior.filter(hasB).length >= 2) {
-    profiles.push({ label: '🟡 B-Profile', color: 'var(--yellow)',
-      basis: '전방 B-line ≥2구역 → 폐부종(심인성) 의심' });
+  // ── A-profile: Sliding (+) + A-line (양측)
+  else if (slidePresent && allAntA) {
+    if (anyPlapsC || anyPlapsEff) {
+      // A-no-V-PLAPS-profile (변형) → Pneumonia
+      profiles.push({
+        label: '🟠 A-profile + PLAPS abnormal → Pneumonia 의심',
+        color: 'var(--orange)',
+        basis: '전방 A-line + PLAPS consolidation/effusion → 후방 폐렴.'
+      });
+    } else {
+      // Pure A-profile → 정상 또는 PE/COPD/Asthma
+      profiles.push({
+        label: '✅ A-profile (정상 폐 패턴)',
+        color: 'var(--green)',
+        basis: '전방 A-line + sliding (+) + PLAPS 정상 → 정상 air-filled lung. 임상 맥락이 dyspnea면 → DVT 확인하여 PE 감별 (DVT+ → PE 81% 민감도) / COPD · asthma도 같은 패턴 가능.'
+      });
+    }
   }
-
-  // B'-profile: B-line + No Sliding
-  if (antHasB && antHasNS) {
-    profiles.push({ label: "🟡 B'-Profile", color: "var(--yellow)",
-      basis: "B-line + Lung Sliding 소실 → Pneumonia 의심" });
+  // ── B-profile: Sliding (+) + B-line 양측
+  else if (slidePresent && rtAntB && ltAntB) {
+    profiles.push({
+      label: '🟡 B-profile → Pulmonary Edema (심인성)',
+      color: 'var(--yellow)',
+      basis: '양측 전방 B-line + sliding (+). 심인성 폐부종 민감도 97%, 특이도 95%.'
+    });
   }
-
-  // A-profile + PLAPS C or Eff → A/B profile
-  if (antAllA && (plapsHasC || plapsHasEff)) {
-    profiles.push({ label: '🟠 A/B-Profile', color: 'var(--orange)',
-      basis: '전방 A-line + PLAPS consolidation/effusion → Pneumonia 의심' });
+  // ── Focal B-line (1구역만) - A/B-profile 보다 먼저 체크
+  else if (slidePresent && numB === 1) {
+    const bIdx = ant.indexOf('B');
+    const loc = ['우측 상부','우측 하부','좌측 상부','좌측 하부'][bIdx];
+    profiles.push({
+      label: `🟡 Focal B-line (${loc})`,
+      color: 'var(--yellow)',
+      basis: '국소적 B-line 1구역 — 부분 폐렴, 폐렴 초기, 또는 atelectasis 가능. (A/B-profile은 양측 비대칭이 명확할 때)'
+    });
   }
-
-  // C-profile (consolidation 전방)
-  if (antHasC) {
-    profiles.push({ label: '🟠 C-Profile', color: 'var(--orange)',
-      basis: '전방 Consolidation → Pneumonia 가능성 높음' });
+  // ── A/B-profile: 한쪽 A + 반대쪽 B (양측 모두 명확)
+  else if (slidePresent && ((rtAntA && ltAntB) || (ltAntA && rtAntB))) {
+    profiles.push({
+      label: '🟠 A/B-profile → Pneumonia 의심',
+      color: 'var(--orange)',
+      basis: '한쪽 A-line, 반대쪽 B-line (비대칭). 폐렴 가능성 높음.'
+    });
   }
+  // ── C-profile: 전방 Consolidation → Pneumonia
+  else if (anyAntC) {
+    profiles.push({
+      label: '🟠 C-profile → Pneumonia 의심',
+      color: 'var(--orange)',
+      basis: '전방 consolidation (tissue-like sign). 폐렴 진단.'
+    });
+  }
+  // ── (Focal B-line 케이스는 위에서 처리됨)
 
-  // Effusion 전방/PLAPS
-  if (plapsHasEff) {
-    profiles.push({ label: '🟣 Pleural Effusion', color: 'var(--purple)',
-      basis: 'PLAPS Effusion → 흉수 확인' });
+
+  // ── PLAPS effusion 표시 (단독 시)
+  if (anyPlapsEff && !profiles.some(p => p.label.includes('Effusion'))) {
+    profiles.push({
+      label: '🟣 Pleural Effusion (PLAPS)',
+      color: 'var(--purple)',
+      basis: 'PLAPS에 흉수 확인.'
+    });
   }
 
   const el = document.getElementById('blueProfileResult');
   if (!el) return;
   if (profiles.length === 0) {
-    el.innerHTML = '<span style="color:var(--text3)">— 프로파일 선택 시 자동 표시</span>';
+    el.innerHTML = '<span style="color:var(--text3)">— 정상 패턴 또는 입력 진행 중</span>';
   } else {
     el.innerHTML = profiles.map(p =>
-      `<div style="margin-bottom:4px"><span style="color:${p.color};font-family:var(--mono);font-weight:700">${p.label}</span><br>
+      `<div style="margin-bottom:6px"><span style="color:${p.color};font-family:var(--mono);font-weight:700">${p.label}</span><br>
        <span style="font-size:10px;color:var(--text3)">${p.basis}</span></div>`
     ).join('');
   }
 }
+
 
 const TIPS = {
   ef: { title: '❤️  EF — 좌심실 박출률', html: `
