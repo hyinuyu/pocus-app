@@ -659,6 +659,33 @@
     letter-spacing: 0.07em; color: var(--accent);
     margin-bottom: 8px; font-weight: 700;
   }
+  
+
+
+  /* ── SECONDARY BUTTONS (link copy + blog) ── */
+  .btn-secondary {
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.22);
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+  .btn-secondary:active {
+    background: rgba(0,212,255,0.12);
+    transform: scale(0.98);
+  }
+  .btn-blog {
+    background: rgba(187,134,252,0.05);
+    border-color: rgba(187,134,252,0.25);
+    color: var(--purple);
+  }
+  .btn-blog:active {
+    background: rgba(187,134,252,0.12);
+  }
 
 </style>
 </head>
@@ -1403,7 +1430,11 @@
     <button class="btn btn-copy" onclick="copyReport()">📋 의무기록 복사</button>
     <button class="btn btn-reset" onclick="resetAll()">↺ 초기화</button>
   </div>
-  <button class="btn btn-share-link" onclick="copyShareLink()" style="width:100%;margin-top:8px">🔗 앱 링크 복사 (동료에게 공유)</button>
+  <!-- Secondary action row: 링크 공유 + 제작자 블로그 -->
+  <div class="action-bar" style="margin-top:8px">
+    <button class="btn btn-secondary" onclick="copyShareLink()">🔗 앱 링크 복사</button>
+    <a class="btn btn-secondary btn-blog" href="https://blog.naver.com/hyinuyu" target="_blank" rel="noopener">✍️ 제작자 블로그</a>
+  </div>
   <div class="copy-success" id="copyMsg">✓ 클립보드에 복사되었습니다</div>
 
 </div><!-- /container -->
@@ -1633,7 +1664,7 @@ function markAbnormal(id, flag) {
 function hasBLines() { return Object.values(blueState).filter(v=>v==='B').length >= 2; }
 function allALines()  { return Object.values(blueState).every(v=>v==='A'); }
 function hasALines()  { return Object.values(blueState).some(v=>v==='A'); }
-function hasNSliding(){ return Object.values(blueState).some(v=>v==='NS'); }
+function hasNSliding(){ return slidingState.rt === 'no' || slidingState.lt === 'no'; }
 function dvtPos()     { return ['dvt-rf','dvt-rp','dvt-lf','dvt-lp'].some(k=>state.toggles[k]==='pos'); }
 
 
@@ -1794,12 +1825,12 @@ function update() {
   }
 
   // 6. Obstructive Shock — Tension Pneumothorax
-  if (!sk.lung && hasNSliding() && hasALines()) {
+  if (!sk.lung && state.assessed.lung && hasNSliding() && hasALines()) {
     imps.push({ label:'💨 Pneumothorax (Tension PTX 가능성)', cls:'badge-ptx' });
   }
 
   // ── BLUE Profile derivatives (호흡곤란) ──
-  if (!sk.lung) {
+  if (!sk.lung && state.assessed.lung) {
     const z = blueState;
     const ant = [z['r-upper'],z['r-lower'],z['l-upper'],z['l-lower']];
     const plaps = [z['r-plaps'],z['l-plaps']];
@@ -1810,12 +1841,15 @@ function update() {
     const anyPlapsC = plaps.some(v=>v==='C');
     
     // Pulmonary Edema (B-profile)
-    if (anyB >= 2 && !ant.some(v=>v==='NS')) {
-      // 이미 Cardiogenic shock으로 잡혔으면 중복 제외
+    if (anyB >= 2 && slidingState.rt === 'yes' && slidingState.lt === 'yes') {
       const alreadyCardio = imps.some(i=>i.label.includes('Cardiogenic'));
       if (!alreadyCardio) {
         imps.push({ label:'🟡 Pulmonary Edema (B-profile)', cls:'badge-edema' });
       }
+    } else if (anyB === 1 && slidingState.rt === 'yes' && slidingState.lt === 'yes') {
+      const bIdx = ant.indexOf('B');
+      const loc = ['우측 상부','우측 하부','좌측 상부','좌측 하부'][bIdx];
+      imps.push({ label: `🟡 Focal B-line (${loc}) - 부분 폐렴 가능`, cls:'badge-edema' });
     }
     // Pneumonia (A/B, B', C profile)
     if (anyC || (allAnt_A && (anyEff || anyPlapsC))) {
